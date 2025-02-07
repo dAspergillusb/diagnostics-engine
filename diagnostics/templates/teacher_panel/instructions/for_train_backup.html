@@ -1,0 +1,34 @@
+<div class="question-block w-90">
+    <label class="mb-3 h4">Введите здесь название вопроса:</label>
+    <input type="text" class="form-control mb-5 ms-4 mt-3 w-90" id="title" name="title" value="{{ title }}" placeholder="" required>
+
+    <label class="mb-3 h4">Введите здесь текст вопроса (задание):</label>
+    <div class="container-fluid ms-3">
+      <a class="btn btn-outline-secondary" style="width: 40px" onclick="insertBold('text')" type="button"><b>Ж</b></a>
+      <a class="btn btn-outline-secondary" style="width: 40px" onclick="insertItalic('text')" type="button"><i>К</i></a>
+      <a class="btn btn-outline-secondary" style="width: 40px" onclick="insertUnderscore('text')" type="button"><u>Ч</u></a>
+      <a class="btn btn-outline-secondary" style="width: 40px" onclick="insertSub('text')" type="button">x<sub>n</sub></a>
+      <a class="btn btn-outline-secondary" style="width: 40px" onclick="insertSup('text')" type="button">x<sup>n</sup></a>
+    </div>
+    <textarea class="form-control mb-5 ms-4 mt-3 w-90" id="text" name="text" rows="10" required></textarea>
+
+    <label class="mb-3 h4">Положите сюда картинку для вопроса, если она есть:</label>
+    <input type="file" class="form-control mb-5 ms-4 mt-3 w-90" id="image" name="image" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+
+    <label class="mb-3 h4">Добавьте варианты ответов здесь:</label>
+    <div class="container-fluid" id="answer">
+      <div class="input-group mb-3">
+        <div class="input-group-text">
+          <input class="form-check-input mt-0" type="checkbox" name="right_answer" id="right_answer" value="">
+        </div>
+        <input type="text" class="form-control" name="answer_variants" id="answer_variants" onchange="inputToCheckbox('answer_variants', 'right_answer')">
+      </div>
+    </div>
+
+    <button class="btn btn-outline-primary" onclick="addAnswer('answer', 'q_answer_variants', 'q_right_answer')" type="button">Добавить ответ</button>
+
+    <hr size="10" color="blue">
+    <div class="flex-row d-flex justify-content-start">
+        <button class="btn btn-secondary py-2 mb-2" data-bs-toggle="modal" value="train"  name="button" data-bs-target="#status_loading" type="submit">Сохранить вопрос</button>
+    </div>
+</div>

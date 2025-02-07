@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+  <head>
+    <link rel="stylesheet" href="/static/css/select2.min.css">
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/color-modes.js"></script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.122.0">
+    <title>Добро пожаловать в систему диагностик</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sign-in/">
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+
+<link href="/static/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      .b-example-divider {
+        width: 100%;
+        height: 3rem;
+        background-color: rgba(0, 0, 0, .1);
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 0;
+        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+      }
+
+      .b-example-vr {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+      }
+
+      .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+
+      .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+      }
+
+      .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .btn-bd-primary {
+        --bd-violet-bg: #712cf9;
+        --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+
+        --bs-btn-font-weight: 600;
+        --bs-btn-color: var(--bs-white);
+        --bs-btn-bg: var(--bd-violet-bg);
+        --bs-btn-border-color: var(--bd-violet-bg);
+        --bs-btn-hover-color: var(--bs-white);
+        --bs-btn-hover-bg: #6528e0;
+        --bs-btn-hover-border-color: #6528e0;
+        --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+        --bs-btn-active-color: var(--bs-btn-hover-color);
+        --bs-btn-active-bg: #5a23c8;
+        --bs-btn-active-border-color: #5a23c8;
+      }
+
+      .bd-mode-toggle {
+        z-index: 1500;
+      }
+
+      .bd-mode-toggle .dropdown-menu .active .bi {
+        display: block !important;
+      }
+
+      .questions {
+        text-align: center;
+       }
+
+      .question-block {
+        margin-top: 5rem!important;
+        margin-bottom: 5rem!important;
+      }
+
+      .sidebar {
+        height: 80vh;
+      }
+    </style>
+
+
+    <!-- Custom styles for this template -->
+    <link href="/static/css/sign-in.css" rel="stylesheet">
+  </head>
+  <body>
+    {% include "/styles/style_menu.html" %}
+
+    <nav class="navbar navbar-expand-lg bg-dark border-bottom border-bottom-dark mb-3 sticky-top" data-bs-theme="dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="{{ HOST }}">
+            <img class="" src="/static/svg/icon_white.svg" alt="" width="auto" height="72">
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Переключатель навигации">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle btn btn-primary" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color:white">
+                  Василий Тестович
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <li><a class="dropdown-item" href="#" type="button">Выход</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+<div class="container-fluid h-90">
+  <div class="row">
+    <!-- Sidebar Menu -->
+    <nav class="col-md-3 col-lg-2 d-md-block sidebar" data-bs-toggle="collapsing">
+        <div class="align-items-start">
+          <div class="nav flex-column nav-pills me-3 h-100" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <button class="nav-link active" id="question" data-bs-toggle="pill" data-bs-target="#my_question" type="button" role="tab" aria-controls="v-pills-message" aria-selected="true">Мой вопрос</button>
+          </div>
+        </div>
+    </nav>
+
+    <!-- Main content -->
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <form method="post" enctype="multipart/form-data">
+        <div class="tab-content" id="v-pills-tabContent">
+            <div class="tab-pane fade show active" id="my_question" role="tabpanel" aria-labelledby="v-pills-message-tab">
+              <div class="question-block">
+                <h1 class="h3 mb-3 fw-normal" align="middle">{{ test_data.get("title") }}</h1>
+                {% if test_data.get("text") and test_data.get("image") %}
+                  <div class="row align-items-center">
+                    <div class="col-4">
+                      <img
+                              class="figure-img img-fluid rounded mb-2"
+                              src="{{ test_data.get('image') }}"
+                              width="auto">
+                    </div>
+                    <div class="col-8">
+                        <h1 class="h4 mb-5 fw-normal lh-base">
+                            {{ test_data.get('text') | safe }}
+                        </h1>
+                    </div>
+                  </div>
+                {% elif not test_data.get("image") %}
+                  <div class="row">
+                    <div class="col">
+                        <h1 class="h4 mb-5 fw-normal lh-base">&emsp;
+                              {{ test_data.get('text') | safe }}
+                        </h1>
+                    </div>
+                  </div>
+                {% else %}
+                  <div align="middle">
+                    <figure class="figure">
+                      <img
+                              class="figure-img img-fluid rounded mb-2"
+                              src="{{ test_data.get('image') }}"
+                              width="300">
+                    </figure>
+                  </div>
+                {% endif %}
+                  <div class="form px-2">
+                    {% if test_data.get("answer_variants") %}
+                      {% if len(test_data.get("right_answer").split("&")) == 1 %}
+                        <label class="mb-5 px-2 h4">Выберете вариант ответа</label>
+                        <div class="row w-50">
+                          {% for answer_variant in test_data.get("answer_variants").split("&") %}
+                            <div class="col-md-6">
+                              <input class="form-check-input mb-5" id="{{ answer_variant }}" type="radio" name="answer" value="{{ answer_variant }}">
+                              <label class="form-check-label h4" for="{{ answer_variant }}">{{ answer_variant }}</label>
+                            </div>
+                          {% endfor %}
+                        </div>
+                      {% else %}
+                        <div class="form">
+                          <label class="mb-5 h4 px-2">Выберете несколько вариантов</label>
+                            <div class="row w-50">
+                              {% for answer_variant in test_data.get("answer_variants").split("&") %}
+                                <div class="col-md-6">
+                                  <input class="form-check-input mb-5" type="checkbox" id="{{ answer_variant }}" name="answer" value="{{ answer_variant }}">
+                                  <label class="form-check-label h4" for="{{ answer_variant }}">{{ answer_variant }}</label>
+                                </div>
+                              {% endfor %}
+                            </div>
+                        </div>
+                        <div class="mb-3"></div>
+                      {% endif %}
+                    {% else %}
+                      <p class="h5 ms-5" align="left">Ответ здесь</p>
+                      <input type="text" class="form-control mb-5 ms-4 mt-3 w-50" id="input" name="answer">
+                    {% endif %}
+                  </div>
+                </div>
+              <div class="mb-3"></div>
+              <hr size="10" color="blue">
+              <div class="flex-row d-flex justify-content-start">
+                <a class="btn btn-secondary py-2 mb-2">Закончить тест</a>
+              </div>
+            </div>
+          </div>
+      </form>
+    </main>
+  </div>
+</div>
+<script>
+  $(document).ready(function() {
+    $('table').addClass('table table-bordered table-hover');
+    $('tr').addClass('table-light');
+    $('blockquote').addClass('blockquote vr');
+  });
+</script>
+<script src="/static/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

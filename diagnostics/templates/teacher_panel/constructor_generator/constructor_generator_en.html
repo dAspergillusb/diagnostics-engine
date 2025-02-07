@@ -1,0 +1,114 @@
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar Menu -->
+    <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse h-100" data-bs-toggle="collapse" id="navigation">
+        <div class="align-items-start">
+          <div class="nav flex-column nav-pills me-3 h-100" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <button class="nav-link active" id="inf" data-bs-toggle="pill" data-bs-target="#information" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="true">Информация</button>
+            {% for num in _range %}
+            <button class="nav-link" id="q_{{ num }}" data-bs-toggle="pill" data-bs-target="#block_{{ num }}" type="button" role="tab" aria-controls="v-pills-message" aria-selected="false">Блок вопросов {{ num }}</button>
+            {% endfor %}
+          </div>
+        </div>
+    </nav>
+
+    <!-- Main content -->
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <form method="post" enctype=multipart/form-data>
+        <div class="tab-content" id="v-pills-tabContent">
+            <div class="tab-pane fade show active" id="information" role="tabpanel" aria-labelledby="v-pills-message-tab">
+              <hr size="10" color="blue">
+              <p class="h4 fw-bold">Краткая инструкция</p>
+              <hr size="10 mb-5" color="blue">
+              {% include "/teacher_panel/instructions/instruction_en.html" %}
+              <p class="h5"></p>
+            </div>
+            {% for block_number in _range %}
+            <div class="tab-pane fade" id="block_{{ block_number }}" role="tabpanel" aria-labelledby="v-pills-message-tab">
+              <div class="question-block">
+                <label class="mb-3 h4">Введите заголовок для блока вопросов (например "Аудирование"):</label>
+                <input type="text" class="form-control mb-5 ms-4 mt-3 w-90" id="title_{{ block_number }}" name="{{ block_number }} q_title" placeholder="">
+
+                {% if block_number == 1 %}
+                  <label class="mb-3 h4">Приложите аудио-файл для аудирования:</label>
+                  <input type="file" class="form-control mb-5 ms-4 mt-3" id="audio_{{ block_number }}" name="q_audio" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+                  {% for num in range(1, 11)  %}
+                    <label class="mb-5 h4">Введите вопрос {{ num }}:</label>
+
+                    <textarea class="ckeditor" id="1 question_{{ num }}" name="1 q_{{ num }}"></textarea>
+
+                    <label class="mb-3 h4">Добавьте варианты ответов:</label>
+                    <div class="container-fluid" id="1 answer_{{ num }}">
+                      <div class="input-group mb-3">
+                        <div class="input-group-text">
+                          <input class="form-check-input mt-0" type="checkbox" name="1 q_right_ans_{{ num }}" id="1 q_right_ans_{{ num }}" value="">
+                        </div>
+                        <input type="text" class="form-control" onchange="inputToCheckbox('1 q_ans_var_{{ num }}', '1 q_right_ans_{{ num }}')" id="1 q_ans_var_{{ num }}" name="1 q_ans_var_{{ num }}">
+                      </div>
+                    </div>
+
+                    <button class="btn btn-outline-primary" onclick="addAnswer('1 answer_{{ num }}', '1 q_ans_var_{{ num }}', '1 q_right_ans_{{ num }}')" type="button">Добавить ответ</button>
+
+                    <hr size="10" color="blue">
+                  {% endfor %}
+
+                {% elif block_number == 2 %}
+                  <label class="mb-5 h4">Заполните поле текстом, для которого будут вопросы:</label>
+                  <textarea class="ckeditor" id="text_{{ block_number }}" name="2 q_text"></textarea>
+
+                  {% for num in range(1, 11)  %}
+                    <label class="mb-5 h4">Введите вопрос {{ num }}:</label>
+
+                    <textarea class="ckeditor" id="2 question_{{ num }}" name="2 q_{{ num }}"></textarea>
+
+                    <label class="mb-3 h4">Добавьте варианты ответов:</label>
+                    <div class="container-fluid" id="2 answer_{{ num }}">
+                      <div class="input-group mb-3">
+                        <div class="input-group-text">
+                          <input class="form-check-input mt-0" type="checkbox" name="2 q_right_ans_{{ num }}" id="2 q_right_ans_{{ num }}" value="">
+                        </div>
+                        <input type="text" class="form-control" onchange="inputToCheckbox('2 q_ans_var_{{ num }}', '2 q_right_ans_{{ num }}')" id="2 q_ans_var_{{ num }}" name="2 q_ans_var_{{ num }}">
+                      </div>
+                    </div>
+
+                    <button class="btn btn-outline-primary" onclick="addAnswer('2 answer_{{ num }}', '2 q_ans_var_{{ num }}', '2 q_right_ans_{{ num }}')" type="button">Добавить ответ</button>
+
+                    <hr size="10" color="blue">
+                  {% endfor %}
+                {% else %}
+                  {% for num in range(1, 11)  %}
+                    <label class="mb-5 h4">Введите вопрос {{ num }}:</label>
+                    <textarea class="ckeditor" id="{{ block_number }} q_{{ num }}" name="{{ block_number }} q_{{ num }}"></textarea>
+
+                    <label class="mb-3 h4">Приложите сюда изображение, которое будет иллюстрацией для вопроса (если оно есть):</label>
+                    <input type="file" class="form-control mb-5 ms-4 mt-3" id="{{ block_number }} image_{{ num }}" name="{{ block_number }} q_i_{{ num }}" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+
+                    <label class="mb-3 h4">Добавьте варианты ответов:</label>
+                    <div class="container-fluid" id="{{ block_number }} answer_{{ num }}">
+                      <div class="input-group mb-3">
+                        <div class="input-group-text">
+                          <input class="form-check-input mt-0" type="checkbox" name="{{ block_number }} q_right_ans_{{ num }}" id="{{ block_number }} q_right_ans_{{ num }}" value="">
+                        </div>
+                        <input type="text" class="form-control" onchange="inputToCheckbox('{{ block_number }} q_ans_var_{{ num }}', '{{ block_number }} q_right_ans_{{ num }}')" id="{{ block_number }} q_ans_var_{{ num }}" name="{{ block_number }} q_ans_var_{{ num }}">
+                      </div>
+                    </div>
+
+                    <button class="btn btn-outline-primary" onclick="addAnswer('{{ block_number }} answer_{{ num }}', '{{ block_number }} q_ans_var_{{ num }}', '{{ block_number }} q_right_ans_{{ num }}')" type="button">Добавить ответ</button>
+
+                    <hr size="10" color="blue">
+                  {% endfor %}
+                {% endif %}
+                <div class="flex-row d-flex justify-content-start">
+                  <button class="btn btn-secondary py-2 mb-2" id="save_button" name="button" value="{{ block_number }}" data-bs-toggle="modal" data-bs-target="#status_loading" type="submit">Сохранить блок вопросов</button>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+        </div>
+      </form>
+      <br>
+      <br>
+      <br>
+    </main>
+  </div>
+</div>

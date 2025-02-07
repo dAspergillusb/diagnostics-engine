@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+  <head>
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/color-modes.js"></script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.122.0">
+    <title>Личный кабинет для {{ firstname }} {{ lastname }}</title>
+
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      .b-example-divider {
+        width: 100%;
+        height: 3rem;
+        background-color: rgba(0, 0, 0, .1);
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 0;
+        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+      }
+
+      .b-example-vr {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+      }
+
+      .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+
+      .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+      }
+
+      .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .btn-bd-primary {
+        --bd-violet-bg: #712cf9;
+        --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+
+        --bs-btn-font-weight: 600;
+        --bs-btn-color: var(--bs-white);
+        --bs-btn-bg: var(--bd-violet-bg);
+        --bs-btn-border-color: var(--bd-violet-bg);
+        --bs-btn-hover-color: var(--bs-white);
+        --bs-btn-hover-bg: #6528e0;
+        --bs-btn-hover-border-color: #6528e0;
+        --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+        --bs-btn-active-color: var(--bs-btn-hover-color);
+        --bs-btn-active-bg: #5a23c8;
+        --bs-btn-active-border-color: #5a23c8;
+      }
+
+      .bd-mode-toggle {
+        z-index: 1500;
+      }
+
+      .bd-mode-toggle .dropdown-menu .active .bi {
+        display: block !important;
+      }
+
+      .questions {
+        text-align: center;
+       }
+
+      .question-block {
+        margin-top: 5rem!important;
+        margin-bottom: 5rem!important;
+      }
+
+      .sidebar {
+        height: 80vh;
+      }
+    </style>
+
+    
+    <!-- Custom styles for this template -->
+    <link href="/static/css/sign-in.css" rel="stylesheet">
+  </head>
+  <body class="d-flex flex-column">
+    {% include "/styles/style_menu.html" %}
+
+{% include "navbar/navbar_top_teacher_menu.html" %}
+
+<main class="d-flex flex-nowrap h-100">
+  <div class="d-flex flex-column flex-shrink-0 p-3 bg-dark" style="width: 280px;" data-bs-theme="dark">
+    <ul class="nav nav-pills flex-column nav-fill">
+      <li class="nav-item">
+        <a href="{{ url_for('teacher_menu', username=user.username) }}" class="nav-link">
+          Личная информация
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link active" aria-current="page">
+          Личная статистика
+        </a>
+      </li>
+      <li class="nav-item dropdown">
+          <div class="btn-group dropend">
+            <button class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+              Статистика по предмету
+            </button>
+            <ul class="dropdown-menu">
+              {% for subject in user.subject.split("&") %}
+              <li><a class="dropdown-item" href="{{ url_for('teacher_subject_statistics', username=user.username, subject=subjects_links.get(subject)) }}" type="button">{{ subject.title() }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+        </li>
+      <li class="nav-item">
+        <a href="{{ url_for('teacher_subject_statistics_for_student', username=user.username) }}" class="nav-link">
+          Статистика по предмету для учеников
+        </a>
+      </li>
+    </ul>
+  </div>
+
+    <!-- Main content -->
+  <div class="col-md-10 px-md-auto mt-3">
+    <div class="row">
+      <h1 class="h4 mb-1 py-3 fw-semibold" style="color:#C62828;" align="middle">Общее количество вопросов по предметам</h1>
+      <div class="row row-cols-auto justify-content-md-center g-2">
+        {% for subject in common_statistics %}
+          <div class="col">
+            <div class="card border-primary text-center" style="width: 20rem; height: 12rem;">
+              <div class="card-body">
+                <h5 class="card-title h3">{{ subject }}</h5>
+                <p class="card-text h4 fw-bold">{{ common_statistics.get(subject, 0) }}</p>
+                <button class="btn btn-outline-primary" onclick="createModalStatistics({{ last_month_statistics.get(subject) }})" name="{{ subject }}" type="button">Статистика за месяц</button>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</main>
+
+<div id="container"></div>
+
+{% include "navbar/navbar_bottom.html" %}
+
+<script>
+  function createModalStatistics(datesAndValues) {
+    var a = document.createElement('a');
+    a.id = 'modalOpen';
+    a.setAttribute('data-bs-toggle', 'modal');
+    a.setAttribute('data-bs-target', '#statisticsGraph');
+
+    var modal = document.createElement('div');
+    modal.className = 'modal fade';
+    modal.id = 'statisticsGraph';
+    modal.setAttribute('aria-hidden', 'true');
+    modal.setAttribute('tabindex', '-1');
+    modal.setAttribute('aria-labelledby', 'exampleModalLabel');
+
+    var modalDialog = document.createElement('div');
+    modalDialog.className = 'modal-dialog modal-dialog-centered';
+
+    var modalContent = document.createElement('div');
+    modalContent.className = 'modal-content';
+
+    var modalHeader = document.createElement('div');
+    var modalTitle = document.createElement('h1');
+    modalTitle.className = 'modal-title fs-5';
+    modalTitle.id = 'exampleModalLabel';
+    modalTitle.innerHTML = 'Статистика за последний месяц';
+
+    var modalBody = document.createElement('div');
+    modalBody.className = 'modal-body';
+
+    var modalGraph = document.createElement('canvas');
+    modalGraph. id = 'lastMonthGraph';
+    modalGraph.setAttribute('width', 'auto');
+    modalGraph.setAttribute('height', 'auto');
+
+    var modalFooter = document.createElement('div');
+    modalFooter.className = 'modal-footer';
+
+    var buttonOk = document.createElement('button');
+    buttonOk.className = 'btn btn-secondary';
+    buttonOk.setAttribute('type', 'button');
+    buttonOk.setAttribute('data-bs-dismiss', 'modal');
+    buttonOk.innerHTML = 'Ok';
+
+    var container = document.getElementById('container');
+    container.appendChild(a);
+    container.appendChild(modal);
+    modal.appendChild(modalDialog);
+    modalDialog.appendChild(modalContent);
+    modalContent.appendChild(modalHeader);
+    modalHeader.appendChild(modalTitle);
+    modalContent.appendChild(modalBody);
+    modalBody.appendChild(modalGraph);
+    modalContent.appendChild(modalFooter);
+    modalFooter.appendChild(buttonOk);
+
+    var statistics = Map.from(JSON.parse(datesAndValue));
+    var datas = [];
+    var values = [];
+    for (var [data, value] of statistics) {
+
+    }
+
+    const graph = document.getElementById('lastMonthGraph');
+    new Chart(graph, {
+      type: 'bar';
+      data: {
+          labels: datas,
+      datasets: [{
+          label: '',
+          data: values,
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+    a.click()
+  };
+</script>
+<script src="/static/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

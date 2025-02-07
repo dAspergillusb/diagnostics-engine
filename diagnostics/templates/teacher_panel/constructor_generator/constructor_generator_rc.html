@@ -1,0 +1,129 @@
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar Menu -->
+    <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse h-100" data-bs-toggle="collapse" id="navigation">
+        <div class="align-items-start">
+          <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <button class="nav-link active" id="inf" data-bs-toggle="pill" data-bs-target="#information" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="true">Информация</button>
+            <button class="nav-link" id="text" data-bs-toggle="pill" data-bs-target="#text_to_problems_item" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">Конструктор теста</button>
+          </div>
+        </div>
+    </nav>
+
+    <!-- Main content -->
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <form method="post" enctype=multipart/form-data>
+        <div class="tab-content" id="v-pills-tabContent">
+          <div class="tab-pane fade show active" id="information" role="tabpanel" aria-labelledby="v-pills-message-tab">
+            <hr size="10" color="blue">
+            <p class="h4 fw-bold">Краткая инструкция</p>
+            <hr size="10 mb-5" color="blue">
+            {% include "/teacher_panel/instructions/instruction_rc.html" %}
+            <p class="h5"></p>
+          </div>
+            <div class="tab-pane fade" id="text_to_problems_item" role="tabpanel" aria-labelledby="v-pills-message-tab">
+              <label class="mb-3 h4">Введите заголовок для теста (например по тематике текста):</label>
+                <input type="text" class="form-control mb-5 ms-4 mt-3 w-90" id="test_title" name="test_title" value="{{ session_input.get('test_title', '') }}" placeholder="">
+              <label class="mb-5 h4">Заполните поле текстом, для которого будут вопросы:</label>
+
+              <textarea class="ckeditor" id="test_text" name="test_text">
+                {{ session_input.get('test_text', '') }}
+              </textarea>
+
+              <hr size="10" color="blue">
+
+            {% for question_number in range(1, 16) %}
+              <div class="question-block w-90">
+                <label class="mb-5 h4">Введите содержимое вопроса {{ question_number }} (задание):</label>
+
+                <textarea class="ckeditor" id="q_{{ question_number }}" name="q_{{ question_number }}">
+                  {{ session_input.get('q_%d' % (question_number), '') }}
+                </textarea>
+                <div class="mb-5"></div>
+
+                <label class="mb-3 h4">Приложите сюда изображение, которое будет иллюстрацией для вопроса (если оно есть):</label>
+                <input type="file" class="form-control mb-5 ms-4 mt-3 w-90" id="image_{{ question_number }}" name="q_i_{{ question_number }}" value="{{ session_input.get('q_i_%d' % (question_number), '') }}" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+
+                <label class="mb-3 h4">Добавьте варианты ответов:</label>
+                <div class="container-fluid" id="answer_{{ question_number }}">
+                  {% if session_input.getlist("q_right_ans_%d" % (question_number)) and session_input.getlist("q_ans_var_%d" % (question_number)) %}
+                    {% for value in session_input.getlist("q_ans_var_%d" % (question_number)) %}
+                      <div class="input-group mb-3">
+                        <div class="input-group-text">
+                          {% if value in session_input.getlist("q_right_ans_%d" % (question_number)) %}
+                            <input
+                                    class="form-check-input mt-0"
+                                    type="checkbox"
+                                    name="q_right_ans_{{ question_number }}"
+                                    id="q_right_ans_{{ question_number }}{{ value }}"
+                                    value="{{ value }}"
+                                    checked
+                            >
+                            </div>
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    name="q_ans_var_{{ question_number }}"
+                                    id="q_ans_var_{{ question_number }}{{ value }}"
+                                    onchange="inputToCheckbox('q_ans_var_{{ question_number }}{{ value }}', 'q_right_ans_{{ question_number }}{{ value }}')"
+                                    value="{{ value }}"
+                            >
+                          {% else %}
+                            <input
+                                    class="form-check-input mt-0"
+                                    type="checkbox"
+                                    name="q_right_ans_{{ question_number }}"
+                                    id="q_right_ans_{{ question_number }}{{ value }}"
+                                    value=""
+                            >
+                            </div>
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    name="q_ans_var_{{ question_number }}"
+                                    id="q_ans_var_{{ question_number }}{{ value }}"
+                                    onchange="inputToCheckbox('q_ans_var_{{ question_number }}{{ value }}', 'q_right_ans_{{ question_number }}{{ value }}')"
+                                    value="{{ value }}"
+                            >
+                          {% endif %}
+                      </div>
+                    {% endfor %}
+                  {% else %}
+                    <div class="input-group mb-3">
+                      <div class="input-group-text">
+                        <input
+                                class="form-check-input mt-0"
+                                type="checkbox"
+                                name="q_right_ans_{{ question_number }}"
+                                id="q_right_ans_{{ question_number }}"
+                                value=""
+                        >
+                      </div>
+                      <input
+                              type="text"
+                              class="form-control"
+                              name="q_ans_var_{{ question_number }}" id="q_ans_var_{{ question_number }}"
+                              id="q_ans_var_{{ question_number }}"
+                              onchange="inputToCheckbox('q_ans_var_{{ question_number }}', 'q_right_ans_{{ question_number }}')"
+                      >
+                    </div>
+                  {% endif %}
+                </div>
+
+                <button class="btn btn-outline-primary" onclick="addAnswer('answer_{{ question_number }}', 'q_ans_var_{{ question_number }}', 'q_right_ans_{{ question_number }}')" type="button">Добавить ответ</button>
+
+              </div>
+              <hr size="10" color="blue">
+            {% endfor %}
+              <div class="container">
+                <button class="btn btn-secondary py-2 mb-2" type="submit">Сохранить вопросы</button>
+              </div>
+            </div>
+        </div>
+      </form>
+      <br>
+      <br>
+      <br>
+    </main>
+  </div>
+</div>

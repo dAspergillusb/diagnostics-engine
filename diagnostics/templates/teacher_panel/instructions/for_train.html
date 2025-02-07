@@ -1,0 +1,33 @@
+<div class="question-block w-90">
+    <label class="mb-3 h4">Введите заголовок для вопроса (например "Решить задачу"):</label>
+    <input type="text" class="form-control mb-5 ms-4 mt-3 w-90" id="title" name="title" value="{{ title }}" placeholder="" required>
+
+    <label class="mb-3 h4">Введите содержимое вопроса (задание):</label>
+    <textarea class="ckeditor" id="editor" name="text">
+        {{ text }}
+    </textarea>
+    <div class="mb-5"></div>
+
+    <label class="mb-3 h4">Приложите сюда изображение, которое будет иллюстрацией для вопроса (если оно есть):</label>
+    <input type="file" class="form-control mb-5 ms-4 mt-3 w-90" id="image" name="image" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+
+    <label class="mb-3 h4">Добавьте варианты ответов:</label>
+    <div class="container-fluid" id="answer">
+      <div class="input-group mb-3">
+        <div class="input-group-text">
+          <input class="form-check-input mt-0" type="checkbox" name="right_answer" id="right_answer" value="">
+        </div>
+        <input type="text" class="form-control" name="answer_variants" id="answer_variants" onchange="inputToCheckbox('answer_variants', 'right_answer')">
+      </div>
+    </div>
+
+    <button class="btn btn-outline-primary" onclick="addAnswer('answer', 'answer_variants', 'right_answer')" type="button">Добавить ответ</button>
+
+    <hr size="10" color="blue">
+    <div class="flex-row d-flex justify-content-start">
+        <button class="btn btn-secondary py-2 mb-2" data-bs-toggle="modal" value="train" name="button" data-bs-target="#status_loading" type="submit">Сохранить вопрос</button>
+    </div>
+</div>
+<br>
+<br>
+<br>

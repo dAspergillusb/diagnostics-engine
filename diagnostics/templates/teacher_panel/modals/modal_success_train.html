@@ -1,0 +1,23 @@
+<a id="modal_open" data-bs-toggle="modal" data-bs-target="#exampleModal"></a>
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Успешная операция!</h1>
+            </div>
+            <div class="modal-body">
+              <p class="mb-3">
+                Вы всё сделали правильно! Теперь вы можете переходить к заполнению вопросов и наполнению базы данных.
+              Также вы можете посмотреть как будет выглядеть ваш вариант вопроса, нажав на соответствующую кнопку.
+              </p>
+              <p>
+                Спасибо за участие в развитии системы диагностик!
+              </p>
+            </div>
+            <div class="modal-footer">
+              <a class="btn btn-outline-primary" href="{{ url_for('test_view', username=username) }}" target="_blank" type="button">Посмотреть мой вариант вопроса</a>
+              <a class="btn btn-secondary" href="{{ url_for('teacher', username=username) }}" type="button">Ok</a>
+            </div>
+          </div>
+        </div>
+      </div>

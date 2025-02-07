@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+  <head>
+    <link rel="stylesheet" href="/static/css/ckeditor5.css"/>
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/color-modes.js"></script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.122.0">
+    <title>Добро пожаловать в систему диагностик</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sign-in/">
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+
+<link href="/static/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      .b-example-divider {
+        width: 100%;
+        height: 3rem;
+        background-color: rgba(0, 0, 0, .1);
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 0;
+        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+      }
+
+      .b-example-vr {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+      }
+
+      .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+
+      .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+      }
+
+      .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .btn-bd-primary {
+        --bd-violet-bg: #712cf9;
+        --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+
+        --bs-btn-font-weight: 600;
+        --bs-btn-color: var(--bs-white);
+        --bs-btn-bg: var(--bd-violet-bg);
+        --bs-btn-border-color: var(--bd-violet-bg);
+        --bs-btn-hover-color: var(--bs-white);
+        --bs-btn-hover-bg: #6528e0;
+        --bs-btn-hover-border-color: #6528e0;
+        --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+        --bs-btn-active-color: var(--bs-btn-hover-color);
+        --bs-btn-active-bg: #5a23c8;
+        --bs-btn-active-border-color: #5a23c8;
+      }
+
+      .bd-mode-toggle {
+        z-index: 1500;
+      }
+
+      .bd-mode-toggle .dropdown-menu .active .bi {
+        display: block !important;
+      }
+
+      .questions {
+        text-align: center;
+       }
+
+      .question-block {
+        margin-top: 5rem!important;
+        margin-bottom: 5rem!important;
+      }
+
+      .sidebar {
+        height: 80vh;
+      }
+    </style>
+
+    
+    <!-- Custom styles for this template -->
+    <link href="/static/css/sign-in.css" rel="stylesheet">
+  </head>
+  <body>
+    {% include "/styles/style_menu.html" %}
+
+{% include "navbar/navbar_top_student.html" %}
+
+<div class="container-fluid h-90">
+  <div class="row">
+    <!-- Sidebar Menu -->
+    <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse h-100" data-bs-toggle="collapse" id="navigation">
+        <div class="align-items-start">
+          <div class="nav flex-column nav-pills me-3 h-100" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <button class="nav-link active" id="inf" data-bs-toggle="pill" data-bs-target="#information" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="true">Информация</button>
+            {% for block in variant %}
+              <button class="nav-link" id="test_tab_{{ block }}" data-bs-toggle="pill" data-bs-target="#block_{{ block }}" type="button" role="tab" aria-controls="v-pills-message" aria-selected="false">Блок вопросов {{ block }}</button>
+            {% endfor %}
+          </div>
+        </div>
+    </nav>
+
+    <!-- Main content -->
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <form method="post">
+        <div class="tab-content" id="v-pills-tabContent">
+            <div class="tab-pane fade show active" id="information" role="tabpanel" aria-labelledby="v-pills-message-tab">
+              {% include "student/instructions/for_test_en.html" %}
+            </div>
+
+          {% for block in variant %}
+            <div class="tab-pane fade" id="block_{{ block }}" role="tabpanel" aria-labelledby="v-pills-message-tab">
+              <div class="question-block">
+                <h1 class="h2 mb-5 fw-normal fw-bold" align="middle">{{ getattr(variant[block], "q_title") }}</h1>
+                {% if block == 1 %}
+                  <figure>
+                    <figcaption class="h4">Прослушайте аудио:</figcaption>
+                    <audio controls class="mb-5" src="{{ getattr(variant[block], 'q_audio') }}"></audio>
+                  </figure>
+                {% elif block == 2 %}
+                  <table class="table table-secondary mb-5">
+                    <tbody>
+                      <tr>
+                        <td>
+                          <h1 class="h4 mb-5 fw-normal lh-base">&emsp;
+                            {{ getattr(variant[block], "q_text") | safe }}
+                          </h1>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                {% endif %}
+                {% for q_num in range(1, 11) %}
+                  {% if (getattr(variant[block], "q_%d" % (q_num)) or getattr(variant[block], "q_i_%d" % (q_num))) and getattr(variant[block], "q_right_ans_%d" % (q_num)) %}
+                      <h1 class="h3 mb-3 fw-normal fw-bold">Вопрос {{ q_num }}</h1>
+                      {% if getattr(variant[block], "q_%d" % (q_num)) and getattr(variant[block], "q_i_%d" % (q_num)) %}
+                        <div class="row align-items-center">
+                          <div class="col-4">
+                            <img class="figure-img img-fluid rounded mb-5" src="{{ getattr(variant[block], 'q_i_%d' % (q_num)) }}" width="auto">
+                          </div>
+                          <div class="col-8">
+                              <h1 class="h4 mb-5 fw-normal lh-base">&emsp;
+                                 {{ getattr(variant[block], 'q_%d' % (q_num)) | safe }}
+                              </h1>
+                          </div>
+                        </div>
+                      {% elif not getattr(variant[block], "q_i_%d" % (q_num)) %}
+                      <div class="row">
+                        <div class="col">
+                          <h1 class="h4 mb-5 fw-normal lh-base">&emsp;
+                             {{ getattr(variant[block], 'q_%d' % (q_num)) | safe }}
+                          </h1>
+                        </div>
+                      </div>
+                      {% else %}
+                      <div>
+                        <figure class="figure">
+                          <img class="img-fluid figure-img mb-5" src="{{ getattr(variant[block], 'q_i_%d' % (q_num)) }}" width="300">
+                        </figure>
+                      </div>
+                      {% endif %}
+                      <div class="form px-2">
+                        {% if getattr(variant[block], "q_ans_var_%d" % (q_num)) %}
+                          {% if len(getattr(variant[block], "q_right_ans_%d" % (q_num)).split("&")) == 1 %}
+                            <label class="mb-5 px-2 h4">Выберете вариант ответа</label>
+                            <div class="row w-50">
+                              {% for answer_variant in getattr(variant[block], "q_ans_var_%d" % (q_num)).split("&") %}
+                                {% if answer_variant %}
+                                  <div class="col-md-6">
+                                    <input class="form-check-input mb-5" id="radio_{{ q_num }}_{{ answer_variant }}" type="radio" name="{{ block }}_{{ q_num }}" value="{{ answer_variant }}">
+                                    <label class="form-check-label h4" for="radio_{{ q_num }}_{{ answer_variant }}">{{ answer_variant }}</label>
+                                  </div>
+                                {% endif %}
+                              {% endfor %}
+                            </div>
+                          {% else %}
+                            <div class="form">
+                                <label class="mb-5 h4 px-2">Выберете несколько вариантов</label>
+                                <div class="row w-50">
+                                  {% for answer_variant in getattr(variant[block], "q_ans_var_%d" % (q_num)).split("&") %}
+                                    {% if answer_variant %}
+                                      <div class="col-md-6">
+                                        <input class="form-check-input mb-5" type="checkbox" id="check_{{ q_num }}_{{ answer_variant }}" name="{{ block }}_{{ q_num }}" value="{{ answer_variant }}">
+                                        <label class="form-check-label h4" for="check_{{ q_num }}_{{ answer_variant }}">{{ answer_variant }}</label>
+                                      </div>
+                                    {% endif %}
+                                  {% endfor %}
+                                </div>
+                            </div>
+                          {% endif %}
+                        {% else %}
+                          <p class="h5 ms-5" align="left">Ответ здесь</p>
+                          <input type="text" class="form-control mb-5 ms-4 mt-3 w-50" id="{{ block }}_{{ q_num }}" name="{{ block }}_{{ q_num }}">
+                        {% endif %}
+                        <div class="mb-5"></div>
+                        <hr size="10" color="blue">
+                      </div>
+                  {% endif %}
+                  {% if block == len(variant) and q_num == 10 %}
+                    <div class="mb-3"></div>
+                    <div class="flex-row d-flex justify-content-start">
+                      <button class="btn btn-secondary py-2 mb-2" data-bs-toggle="modal" data-bs-target="#loading" type="submit">Закончить тест</button>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </form>
+    </main>
+  </div>
+</div>
+
+{% include "navbar/navbar_bottom.html" %}
+<script>
+  $(document).ready(function() {
+    $('table').addClass('table table-bordered table-hover');
+    $('tr').addClass('table-light');
+    $('blockquote').addClass('blockquote vr');
+  });
+</script>
+<script src="/static/js/bootstrap.bundle.min.js"></script>
+<script>
+  let time = {{ test_time }}; // Задаём начальное время
+  const timer = setInterval(() => {
+    if (time == 300) {
+      document.getElementById('clock').className = "btn btn-outline-warning"
+    }
+    else if (time == 120) {
+      document.getElementById('clock').className = "btn btn-outline-danger"
+    }
+    if (time > 0) {
+      document.getElementById('countdown').textContent = ('0' + Math.floor(time/60)).slice(-2) + " : " + ('0' + Math.floor(time % 60)).slice(-2);
+    }
+    else if (time == 0) {
+      document.getElementById('countdown').textContent = "Необходимо закончить тест"
+    }
+    else if (time <= -10) {
+      clearInterval(timer) // Останавливаем таймер, поскольку время истекло
+      document.getElementById('finish').click();
+     }
+      time--; // С каждой секундой уменьшаем время
+  }, 1000); // Интервал делаем одной секунды
+</script>
+</body>
+</html>

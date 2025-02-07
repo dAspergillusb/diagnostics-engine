@@ -1,0 +1,23 @@
+<a id="modal_open" data-bs-toggle="modal" data-bs-target="#exampleModal"></a>
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Ошибка!</h1>
+            </div>
+            <div class="modal-body">
+              <p>
+                К сожалению, вы допустили какую-то ошибку при заполнении форы для вопроса! Проверьте, заполнено ли поле
+                с <i><u>названием вопроса</u></i>, а также поле для <i><u>текста самого вопроса</u></i>. Кроме того, убедитесь, что
+                поля для вариантов ответа заполнены корректно:
+              </p>
+              <p>1. Если ответ открытый, то напротив одного варианта ответа галочка не установлена;</p>
+              <p>2. Если вариантов много, то установлена хотя бы одна галочка.</p>
+              <p>Пожалуйста, попробуйте заполнить тестовый вопрос ещё раз.</p>
+            </div>
+            <div class="modal-footer">
+              <a class="btn btn-secondary" href="{{ url_for('teacher', username=username) }}" type="button">Ok</a>
+            </div>
+          </div>
+        </div>
+      </div>

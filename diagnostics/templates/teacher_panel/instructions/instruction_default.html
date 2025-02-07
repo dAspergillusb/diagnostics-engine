@@ -1,0 +1,252 @@
+<table class="table table-light">
+  <tbody>
+    <tr>
+      <td class="h4">
+        <p class="h3 lh-lg" align="middle"><b>Общая информация</b></p>
+        <p class="h4 lh-base">
+            &emsp;Добро пожаловать в конструктор вопросов для тестов диагностик. Здесь вы можете добавлять как один вопрос
+            для конкретного класса по своему предмету, так и весь тест целиком. Для 2-4-х в конструкторе можно добавить
+            до 8-и вопросов классов 5-6-х — 12 вопросов, для 7-9 — 16 вопросов, для 10-11 — 20 вопросов. Каждый вопрос
+            находится в отдельной ячейке для удобной навигации между ними.
+        </p>
+        <p class="h4 lh-base">
+            &emsp;Давайте познакомимся с интерфейсом конструктора и разберёмся с тем, как создавать отдельные вопросы или
+            тесты целиком, и чтобы не возникало ошибок при создании.
+        </p>
+        <p class="h4 lh-base mb-4">
+            &emsp;Во-первых, если посмотреть на навигационную панель сверху, то там можно найти слова "Информация", "Класс"
+            и ваше имя и фамилию, указанные при регистрации. Первая опция служит для того, чтобы вы могли выбирать
+            предмет, по которому собираетесь создать вопрос (или тест целиком), вторая — для выбора класса, третья —
+            панель для пользователя. На изображениях ниже показаны выпадающие списки предметов, классов и содержимое
+            панели пользователя:
+        </p>
+        <div class="row justify-content-center mb-2">
+            <div class="col-auto">
+                <img src="/static/images/teacher_instruction/default/subjects.png" class="img-fluid">
+            </div>
+            <div class="col-auto">
+                <img src="/static/images/teacher_instruction/default/school_class.png" class="img-fluid">
+            </div>
+            <div class="col-auto">
+                <img src="/static/images/teacher_instruction/default/user_panel.png" class="img-fluid">
+            </div>
+        </div>
+        <p class="h4 lh-base">
+            &emsp;Для конкретного учителя список предметов будет своим (зависит от того, какие предметы учитель выбрал
+            при регистрации). В выпадающем списке классов появляются лишь те, начиная с которых конкретный предмет
+            вводится в нагрузку. Для того чтобы отобразились предметы или классы, нужно кликнуть левой кнопкой мыши на
+            соответствующей кнопке.
+            <b class="text text-decoration-underline">В первую очередь необходимо выбрать предмет, а потом класс.</b>
+            Только тогда вы попадёте в нужное меню!
+        </p>
+        <p class="h3 lh-lg" align="middle"><b>Как создавать вопросы для тестов?</b></p>
+        <p class="h4 lh-base mb-4">
+            &emsp;После выбора предмета и класса вы попадаёте в конструктор для создания вопросов (или теста целиком) по
+            своему предмету. На изображении ниже приведён пример конструктора предмета "Информатика" для 7-го класса:
+        </p>
+        <div class="row justify_content-center mb-4">
+            <img src="/static/images/teacher_instruction/default/constructor_main.png" class="img-fluid" width="50%">
+        </div>
+        <p class="h4 lh-base mb-4">
+            &emsp;Здесь на главной странице конструктора есть краткая инструкция. Для того чтобы начать разрабатывать
+            вопрос(ы), нужно перейти во вкладку с номером вопроса, который вы хотите добавить и в правой части заполнять
+            необходимые поля для вопроса.
+            <b><i class="text-decoration-underline" style="color:#C62828">Красным</i></b> цветом выделены обязательные к заполнению поля,
+            <b><i class="text-decoration-underline" style="color:#2E7D32">зелёным</i></b> цветом — одно необходимо заполнить
+            (можно оба сразу).
+        </p>
+        <div class="row justify_content-center mb-4">
+            <img src="/static/images/teacher_instruction/default/question_creating.png" class="img-fluid" width="50%">
+        </div>
+        <p class="h4 lh-lg"><b><i>Заполнение полей текста и картинки для вопроса</i></b></p>
+        <p class="h4 lh-base mb-5">
+            &emsp;Если в вашем вопросе должны быть и картинка, и текст, то нужно заполнить поле текста вопроса и приложить
+              файл изображения в соответствующее поле для картинки. Для случая, когда присутствуют оба элемента в тесте
+              будет выглядеть примерно следующим образом:
+        </p>
+        <hr size="5" color="black">
+        <div class="row justify-content-center mb-4">
+          <table>
+              <tbody>
+                <tr>
+                  <td>
+                      <img src="/static/images/teacher_instruction/default/example_question.png" class="img-fluid">
+                  </td>
+                  <td>
+                      <h1 class="h4 fw-normal px-5">
+                          &emsp;На рисунке изображено устройство, составная часть системного блока. Это устройство позволяет
+                          кратковременно хранить информацию в текущий момент времени. Как называется это устройство?
+                      </h1>
+                  </td>
+                </tr>
+              </tbody>
+          </table>
+        </div>
+        <hr size="7" color="black">
+        <p class="h4 lh-base mb-4">
+            &emsp;Для варианта, если был указан только текст:
+        </p>
+        <hr class="mb-3" size="5" color="black">
+        <div class="row justify-content-center mb-4">
+            <h1 class="h4 fw-normal px-5 mb-3">
+              &emsp;На рисунке изображено устройство, составная часть системного блока. Это устройство позволяет
+              кратковременно хранить информацию в текущий момент времени. Как называется это устройство?
+            </h1>
+        </div>
+        <hr size="7" color="black">
+        <p class="h4 lh-base">
+            &emsp;И если было загружено только изображение:
+        </p>
+        <hr size="5" color="black">
+        <div class="row justify-content-center mb-4">
+            <img src="/static/images/teacher_instruction/default/example_question.png" class="img-fluid w-50">
+        </div>
+        <hr size="7" color="black">
+        <p class="h4 lh-base mb-4">
+            &emsp;Кроме того, в поле для текста вопроса можно редактировать формат текста (отступы, режимы начертания, шрифты и т.д).
+            Для этого в верхней части поля есть соответствующие кнопки. Интерфейс понятен интуитивно.
+        </p>
+        <p class="h4 lh-lg"><b><i>Заполнение вариантов ответа</i></b></p>
+        <p class="h4 lh-base mb-4">
+            &emsp;Поле для заполнения вариантов ответа представляет собой поле для текста и чекбокс для выбора правильного
+            варианта ответа, а также кнопка для добавления вариантов ответов. При нажатии на кнопку
+            <a class="btn btn-outline-primary">Добавить ответ</a>, добавляется ещё одна пара чекбокс и поле для текста.
+            Выглядит это следующим образом:
+        </p>
+        <hr size="5" color="black">
+        <div class="row justify-content-center mb-4">
+            <img src="/static/images/teacher_instruction/default/answers.png" class="img-fluid">
+        </div>
+        <hr size="7" color="black">
+        <p class="h4 lh-base mb-4">
+            &emsp;Для случая, если вы хотите создать вопрос, для которого будет открытый ответ без вариантов, нужно
+            заполнить только поле с текстом. При этом галочку ставить <b style="color:#C62828">не нужно</b>. В тесте это будет выглядеть
+            следующим образом:
+        </p>
+        <hr size="5" color="black">
+        <p class="h5 ms-5" align="left">Ответ здесь</p>
+        <input type="text" class="form-control mb-4 ms-4 mt-3 w-50">
+        <hr size="7" color="black">
+        <p class="h4 lh-base mb-4">
+            &emsp;Для случая, когда вам нужно сделать несколько вариантов ответа, но правильный ответ будет только один,
+            вам необходимо нажать на кнопку <a class="btn btn-outline-primary">Добавить ответ</a>,
+            заполнить текстовые поля с вариантами ответа, и установить галочку на правильном.
+            Пример подобного заполнения:
+        </p>
+        <hr size="5" color="black">
+        <img src="/static/images/teacher_instruction/default/once_default.png" class="img-fluid">
+        <hr size="7" color="black">
+        <p class="h4 lh-base mb-4">
+            &emsp;В тесте такой вариант заполнения будет выглядеть следующим образом:
+        </p>
+        <hr size="5" color="black">
+        <label class="mb-5 h4 px-2">Выберете один вариант:</label>
+        <div class="row">
+            <div class="col-6">
+                <div class="form-check mb-3">
+                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                  <label class="form-check-label" for="flexRadioDefault1">
+                    процессор
+                  </label>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-check mb-3">
+                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                  <label class="form-check-label" for="flexRadioDefault2">
+                    материнская плата
+                  </label>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-check mb-3">
+                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+                  <label class="form-check-label" for="flexRadioDefault3">
+                    кулер
+                  </label>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-check mb-3">
+                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault4">
+                  <label class="form-check-label" for="flexRadioDefault4">
+                    оперативная память
+                  </label>
+                </div>
+            </div>
+        </div>
+        <hr size="7" color="black">
+        <p class="h4 lh-base mb-4">
+            &emsp;Для случая, когда вам нужно сделать несколько вариантов ответа и несколько правильных ответов,
+            вам необходимо нажать на кнопку <a class="btn btn-outline-primary">Добавить ответ</a>,
+            заполнить текстовые поля с вариантами ответа, и установить галочки на правильных ответах. Пример подобного
+            заполнения:
+        </p>
+        <hr size="5" color="black">
+        <img src="/static/images/teacher_instruction/default/many_default.png" class="img-fluid">
+        <hr size="7" color="black">
+        <p class="h4 lh-base mb-4">
+        <p class="h4 lh-base mb-4">
+            &emsp;В тесте такой вариант заполнения будет выглядеть следующим образом:
+        </p>
+        <div class="form mb-4">
+            <hr size="5" color="black">
+            <label class="mb-5 h4 px-2">Выберете несколько вариантов:</label>
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-check mb-3">
+                      <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="flexRadioDefault5">
+                      <label class="form-check-label" for="flexRadioDefault5">
+                        процессор
+                      </label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check mb-3">
+                      <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="flexRadioDefault6">
+                      <label class="form-check-label" for="flexRadioDefault6">
+                        материнская плата
+                      </label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check mb-3">
+                      <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="flexRadioDefault7">
+                      <label class="form-check-label" for="flexRadioDefault7">
+                        кулер
+                      </label>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-check mb-3">
+                      <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="flexRadioDefault8">
+                      <label class="form-check-label" for="flexRadioDefault8">
+                        оперативная память
+                      </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr size="7" color="black">
+        <p class="h4 lh-base">
+            &emsp;Обратите внимание на то, что примеры с ответами активны и с ними можно взаимодействовать. Можете попробовать
+            выбрать один, несколько или вписать открытый варианты ответов.
+        </p>
+        <p class="h4 lh-lg"><b><i>Вместо заключения</i></b></p>
+        <p class="h4 lh-base">
+            &emsp;Таким образом в конструкторе учителя следует разрабатывать вопросы для тестов. По завершении разработки
+            необходимо нажать на кнопку <a class="btn btn-secondary">Сохранить вопрос</a> внизу страницы если вы
+            создали только один вопрос. Если же вы создали более одного вопроса, о вам необходимо во вкладке последнего
+            вопроса нажать на кнопку <a class="btn btn-primary">Сохранить все вопросы</a>. Система автоматически
+            выберет заполненные вами вопросы и сохранит их в базу данных.
+        </p>
+        <p class="h4 lh-base">
+            &emsp;Спасибо за использование системы диагностик. Вы помогаете нам становиться лучше!
+        </p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<br>
+<br>
