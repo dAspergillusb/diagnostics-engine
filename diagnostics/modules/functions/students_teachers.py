@@ -5,7 +5,8 @@ from ..config import (
     FOR_CARDS_ELEMENTARY,
     FOR_CARDS_JUNIOR,
     FOR_CARDS_MIDDLE,
-    FOR_CARDS_SENIOR
+    FOR_CARDS_SENIOR,
+TEST_DATA
 )
 from ..tests_engine.QuestionsRange import QuestionsRange
 from .files_operations import get_test_filepath
@@ -36,13 +37,12 @@ def get_test_attempt_page(username: str, firstname: str, lastname: str, subjects
                         len(answer_variants) == 1 and not right_answer,
                         len(answer_variants) > 1 and right_answer
                 )))):
-        session["title"] = title
-        session["text"] = text
-        session["image"] = filepath
+        TEST_DATA["title"] = title
+        TEST_DATA["text"] = text
+        TEST_DATA["image"] = filepath
         #session["image_type"] = _type
-        session["answer_variants"] = "&".join(answer_variants) if right_answer else ""
-        session["right_answer"] = "&".join(right_answer) if right_answer else "&".join(answer_variants)
-
+        TEST_DATA["answer_variants"] = "&".join(answer_variants) if right_answer else ""
+        TEST_DATA["right_answer"] = "&".join(right_answer) if right_answer else "&".join(answer_variants)
         return render_template(
             "/teacher_panel/teacher_panel.html",
             firstname=firstname,

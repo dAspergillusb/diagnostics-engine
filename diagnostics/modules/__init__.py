@@ -98,7 +98,8 @@ from .config import (
     FOR_CARDS_ELEMENTARY,
     FOR_CARDS_JUNIOR,
     FOR_CARDS_MIDDLE,
-    FOR_CARDS_SENIOR
+    FOR_CARDS_SENIOR,
+    TEST_DATA
 )
 from .ranks import ranks
 

@@ -70,7 +70,8 @@ from modules import (
     SUBJECTS_NAME_TO_LINK,
     SUBJECTS_RANGES_FOR_CLASS,
     ELEMENTARY_SCHOOL,
-    UNIQUE_SUBJECTS
+    UNIQUE_SUBJECTS,
+    TEST_DATA
 )
 from modules import ranks
 from modules import BaseTable, DataBase
@@ -378,26 +379,26 @@ def teacher_subject_statistics_for_student(username: str) -> str | Response:
 @MAIN.route("/teacher/<username>/test_view")
 def test_view(username: str) -> str | Response:
     if all((session.get("user_id"), session.get("rank") == "teacher")):
-        title = session.get("title")
+        """title = session.get("title")
         text = session.get("text")
         filepath = session.get("image")
         answer_variants = session.get("answer_variants")
-        right_answer = session.get("right_answer")
-        if all((title, text, right_answer)):
-            test_data: dict[str, str] = {
+        right_answer = session.get("right_answer")"""
+        if all((TEST_DATA.get("title"), TEST_DATA.get("text"), TEST_DATA.get("right_answer"))):
+            """test_data: dict[str, str] = {
                 "title": title,
                 "text": text,
                 "image": filepath,
                 "image_type": session.get("image_type"),
                 "answer_variants": answer_variants,
                 "right_answer": right_answer
-            }
+            }"""
 
             return render_template(
                 "/teacher_panel/test_view/test_view.html",
                 firstname=session.get("firstname"),
                 lastname=session.get("lastname"),
-                test_data=test_data,
+                test_data=TEST_DATA,
                 len=len
             )
         else:
