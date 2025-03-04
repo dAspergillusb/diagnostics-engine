@@ -7,7 +7,7 @@ from sqlalchemy import (
     Connection
 )
 from random import randint
-from diagnostics.modules.types.Types import DataBase, BaseTable
+from diagnostics.modules._types.Types import DataBase, BaseTable
 from diagnostics.modules.config import SUBJECTS
 from diagnostics.modules.databases.EnglishDB import English
 from diagnostics.modules.databases.ReadingComprehensionDB import ReadingComprehension

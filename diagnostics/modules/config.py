@@ -1,27 +1,27 @@
 from typing import Type
 from .functions.key_operations import import_secret_key
-from .types.Types import DataBase, BaseTable
-from .databases.AlgebraDB import Algebra, AlgebraDB
-from .databases.GeometryDB import Geometry, GeometryDB
-from .databases.MathematicsDB import Mathematics, MathematicsDB
-from .databases.MathematicsBaseDB import MathematicsBase, MathematicsBaseDB
-from .databases.MathematicsProfileDB import MathematicsProfile, MathematicsProfileDB
-from .databases.BiologyDB import Biology, BiologyDB
-from .databases.ChemistryDB import Chemistry, ChemistryDB
-from .databases.GeographyDB import Geography, GeographyDB
-from .databases.EnglishDB import English, EnglishDB
-from .databases.HistoryDB import History, HistoryDB
-from .databases.SocialScienceDB import SocialScience, SocialScienceDB
-from .databases.RussianDB import Russian, RussianDB
-from .databases.ReadingComprehensionDB import ReadingComprehension, ReadingComprehensionDB
-from .databases.OutwardThingsDB import OutwardThings, OutwardThingsDB
-from .databases.InformaticsDB import Informatics, InformaticsDB
-from .databases.PhysicsDB import Physics, PhysicsDB
-from .databases.LiteratureDB import Literature, LiteratureDB
-from .databases.ProbabilityTheoryDB import ProbabilityTheory, ProbabilityTheoryDB
-from .databases.MathematicsDepthDB import MathematicsDepth, MathematicsDepthDB
-from .databases.TeacherStatisticsDB import TeacherStatistics, TeacherStatisticsDB
-from .databases.UsersStatisticsDB import UsersStatistics, UsersStatisticsDB
+from ._types import DataBase, BaseTable
+from .databases import Algebra, AlgebraDB
+from .databases import Geometry, GeometryDB
+from .databases import Mathematics, MathematicsDB
+from .databases import MathematicsBase, MathematicsBaseDB
+from .databases import MathematicsProfile, MathematicsProfileDB
+from .databases import Biology, BiologyDB
+from .databases import Chemistry, ChemistryDB
+from .databases import Geography, GeographyDB
+from .databases import English, EnglishDB
+from .databases import History, HistoryDB
+from .databases import SocialScience, SocialScienceDB
+from .databases import Russian, RussianDB
+from .databases import ReadingComprehension, ReadingComprehensionDB
+from .databases import OutwardThings, OutwardThingsDB
+from .databases import Informatics, InformaticsDB
+from .databases import Physics, PhysicsDB
+from .databases import Literature, LiteratureDB
+from .databases import ProbabilityTheory, ProbabilityTheoryDB
+from .databases import MathematicsDepth, MathematicsDepthDB
+from .databases import TeacherStatistics, TeacherStatisticsDB
+from .databases import UsersStatistics, UsersStatisticsDB
 
 
 HOST: str = "диагностики.1381.рф"
@@ -34,8 +34,8 @@ SECRET_KEY: str = import_secret_key()
 ICON_WHITE: str = "/static/svg/icon_white.svg"
 ICON_BLACK: str = "/static/svg/icon_black.svg"
 
-MAIL_LOGIN: str = "diagnostics@1381.xn--p1ai"  # Name of mail that will send a messages of registration/restore password
-MAIL_PASSWORD: str = "ptNT*Tesb3Dy"  # This password is not for account, it's for sendmail only!
+"""MAIL_LOGIN: str = "diagnostics@1381.xn--p1ai"  # Name of mail that will send a messages of registration/restore password
+MAIL_PASSWORD: str = "ptNT*Tesb3Dy"  # This password is not for account, it's for sendmail only!"""
 
 SUBJECTS: dict[str, dict[str, BaseTable | DataBase]] = {
     "algebra": {"base": Algebra, "db": AlgebraDB},

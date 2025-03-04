@@ -14,7 +14,7 @@ from flask import (
 from sqlalchemy import Column, String, Integer, Boolean
 from werkzeug.datastructures import FileStorage
 
-from diagnostics.modules.functions.questions_and_answers import add_statistics_and_log
+from modules import add_statistics_and_log
 from modules import (
     is_correct_firstname,
     is_correct_lastname,

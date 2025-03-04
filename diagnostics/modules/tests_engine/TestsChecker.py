@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String
 from jinja2.filters import do_striptags
-from diagnostics.modules.types.Types import BaseTable
+from diagnostics.modules._types.Types import BaseTable
 from diagnostics.modules.databases.ReadingComprehensionDB import ReadingComprehension
 from diagnostics.modules.databases.EnglishDB import English
 

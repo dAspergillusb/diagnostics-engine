@@ -7,8 +7,7 @@ from sqlalchemy import (
     Connection
 )
 from sqlalchemy.orm import declarative_base, sessionmaker, Session
-from diagnostics.modules.types.Types import DataBase
-
+from .._types.Types import DataBase
 
 BASE: declarative_base = declarative_base()
 
@@ -57,7 +56,7 @@ class AlgebraDB(DataBase):
         self.engine = self._create_engine()
         BASE.metadata.create_all(self.engine)
         BASE.metadata.bind = self.engine
-        self.db_session: sessionmaker[[Session]] = sessionmaker(bind=self.engine)
+        self.db_session: sessionmaker[Session] = sessionmaker(bind=self.engine)
         self.session: Session = self.db_session()
 
     def _create_engine(self) -> Engine:
@@ -84,7 +83,7 @@ class AlgebraDB(DataBase):
 
 
 if __name__ == '__main__':
-    _question = AlgebraDB()
+    _question = AlgebraDB("../../database")
     #for num in range(100):
     #    _question.add_question(
     #        question_number=num,
@@ -93,5 +92,5 @@ if __name__ == '__main__':
     #        question_class="9-Б",
     #        question_image="",
     #    )
-    for question_num in range(21):
-        print(_question.session.query(Algebra).all()[question_num].question_name)
+    for __question in _question.session.query(Algebra).all():
+        print(__question)

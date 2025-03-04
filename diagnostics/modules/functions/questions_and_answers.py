@@ -11,8 +11,8 @@ from sqlalchemy import (
 from diagnostics.modules.tests_engine.QuestionsRange import QuestionsRange
 from diagnostics.modules.databases.EnglishDB import English
 from diagnostics.modules.databases.TeacherStatisticsDB import TeacherStatisticsDB
-from diagnostics.modules.logging.LogEngine import AddQuestionLog
-from diagnostics.modules.types.Types import BaseTable, DataBase
+from diagnostics.modules.log.LogEngine import AddQuestionLog
+from diagnostics.modules._types.Types import BaseTable, DataBase
 from diagnostics.modules.config import SUBJECTS, SUPPORTED_IMAGE_TYPES, SUBJECTS_NAME_TO_LINK, SUBJECTS_RANGES_FOR_CLASS
 from diagnostics.modules.functions.files_operations import write_image_file, get_filepath
 

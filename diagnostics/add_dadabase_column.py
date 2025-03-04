@@ -4,7 +4,7 @@ from diagnostics.modules.databases.GeographyDB import GeographyDB, Geography
 from diagnostics.modules.databases.InformaticsDB import InformaticsDB, Informatics
 from diagnostics.modules.databases.ReadingComprehensionDB import ReadingComprehensionDB
 from diagnostics.modules.databases.SocialScienceDB import SocialScienceDB, SocialScience
-from diagnostics.modules.types.Types import DataBase
+from diagnostics.modules._types.Types import DataBase
 from modules.config import STATISTICS, SUBJECTS
 from diagnostics.modules.databases.TeacherStatisticsDB import TeacherStatistics, TeacherStatisticsDB
 from diagnostics.modules.databases.UsersStatisticsDB import UsersStatisticsDB

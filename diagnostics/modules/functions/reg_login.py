@@ -8,7 +8,7 @@ from flask import (
     Response
 )
 from sqlalchemy import Column, String, Integer
-from diagnostics.modules.config import ELEMENTARY_SCHOOL
+from ..config import ELEMENTARY_SCHOOL
 from .is_correct_check import (
     is_correct_firstname,
     is_correct_lastname,
@@ -18,12 +18,12 @@ from .is_correct_check import (
     is_correct_password,
     encoding_password
 )
-from diagnostics.modules.ranks import ranks
-from diagnostics.modules.databases.UsersDB import Users, UsersDB
-from diagnostics.modules.email_engine.EmailSender import EmailSender
-from diagnostics.modules.logging.LogEngine import LogingLog
-from diagnostics.modules.logging.LogEngine import UsersRegisterLog
-from diagnostics.modules.logging.LogEngine import EmailSenderLog
+from ..ranks import ranks
+from diagnostics.modules import Users, UsersDB
+from diagnostics.modules import EmailSender
+from ..log.LogEngine import LogingLog
+from ..log.LogEngine import UsersRegisterLog
+from ..log.LogEngine import EmailSenderLog
 
 
 # Functions for login operations

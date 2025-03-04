@@ -1,6 +1,9 @@
 from smtplib import SMTP
 from email.mime.text import MIMEText
-from diagnostics.modules.config import MAIL_LOGIN, MAIL_PASSWORD
+#from config import MAIL_LOGIN, MAIL_PASSWORD
+
+MAIL_LOGIN: str = "diagnostics@1381.xn--p1ai"  # Name of mail that will send a messages of registration/restore password
+MAIL_PASSWORD: str = "ptNT*Tesb3Dy"  # This password is not for account, it's for sendmail only!
 
 
 class EmailSender(SMTP):
@@ -32,7 +35,7 @@ class EmailSender(SMTP):
 
 
 if __name__ == '__main__':
-    message_ = "Для того, чтобы осстановить пароль, перейдите по ссылке снизу:\n"
+    message_ = "Для того, чтобы восстановить пароль, перейдите по ссылке снизу:\n"
     mail = EmailSender(
         MAIL_LOGIN,
         message_

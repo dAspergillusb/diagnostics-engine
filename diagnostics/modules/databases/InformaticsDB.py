@@ -7,7 +7,7 @@ from sqlalchemy import (
     Connection
 )
 from sqlalchemy.orm import declarative_base, sessionmaker, Session
-from diagnostics.modules.types.Types import DataBase
+from .._types.Types import DataBase
 
 
 BASE: declarative_base = declarative_base()

@@ -5,7 +5,7 @@ from diagnostics.modules.databases.ReadingComprehensionDB import ReadingComprehe
 from diagnostics.modules.databases.EnglishDB import EnglishDB
 from diagnostics.modules.databases.TeacherStatisticsDB import TeacherStatisticsDB
 from diagnostics.modules.databases.UsersStatisticsDB import UsersStatisticsDB
-from diagnostics.modules.types.Types import DataBase
+from diagnostics.modules._types.Types import DataBase
 from diagnostics.modules.config import SUBJECTS, STATISTICS
 from diagnostics.modules.ranks import ranks
 
