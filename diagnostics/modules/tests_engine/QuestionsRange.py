@@ -7,7 +7,7 @@ class QuestionsRange:
 
         self.SUBJECT_QUESTIONS_RANGE: dict[str, dict[str, range]] = {
             "mathematics": {"2": range(1, 7), "3": range(1, 7), "4": range(1, 7),
-                            "5": range(1, 12), "6": range(1, 12)},
+                            "5": range(1, 12), "6": range(1, 12), "7": range(1, 11), "8": range(1, 12)},
             "mathematics_depth": {"7": range(1, 13), "8": range(1, 13), "9": range(1, 13)},
             "mathematics_base": {"10": range(1, 18), "11": range(1, 18)},
             "mathematics_profile": {"10": range(1, 12), "11": range(1, 12)},

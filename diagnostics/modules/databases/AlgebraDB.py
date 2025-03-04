@@ -35,11 +35,10 @@ class Algebra(BASE):
 
     def get_question(self) -> dict[str, Column[String] | Column[Integer]]:
         return {
-            "id": self.id,
             "q_number": self.q_number,
             "q_title": self.q_title,
             "q_text": self.q_text,
-            "q_class": self.school_class,
+            "school_class": self.school_class,
             "q_image": self.q_image,
             "q_answer_variants": self.q_answer_variants,
             "q_right_answer": self.q_right_answer

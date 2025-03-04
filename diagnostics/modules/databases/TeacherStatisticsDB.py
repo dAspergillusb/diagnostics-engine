@@ -85,6 +85,16 @@ class TeacherStatisticsDB:
         self.session.add(statistics)
         self.session.commit()
 
+    def change_statistics(self, *, stat_id: Column[Integer], subject: Column[String] = None,
+                          questions_id: Column[String] = None) -> None:
+        current_stat: TeacherStatistics = self.session.query(TeacherStatistics).get(stat_id)
+        if subject:
+            current_stat.subject = subject
+        if questions_id:
+            current_stat.questions_id = questions_id
+
+        self.session.commit()
+
 
 if __name__ == '__main__':
     _statistics: TeacherStatisticsDB = TeacherStatisticsDB()

@@ -92,13 +92,13 @@ SUBJECTS_NAME_TO_LINK: dict[str, str] = {
 
 #  Subjects ranges for school classes. What school class value of subject.
 SUBJECTS_RANGES_FOR_CLASS: dict[str, range] = {
-    "mathematics": range(2, 7),
+    "mathematics": range(2, 9),
     "mathematics_depth": range(7, 10),
     "probability_theory": range(7, 12),
     "mathematics_base": range(10, 12),
     "mathematics_profile": range(10, 12),
-    "algebra": range(7, 10),
-    "geometry": range(7, 10),
+    "algebra": range(9, 10),
+    "geometry": range(9, 10),
     "biology": range(5, 12),
     "chemistry": range(8, 12),
     "geography": range(5, 12),
