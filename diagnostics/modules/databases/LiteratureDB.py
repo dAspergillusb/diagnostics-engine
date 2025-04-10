@@ -52,7 +52,7 @@ class LiteratureDB(DataBase):
     Class creates or connects to database with questions for tests with Literature subject. Class can create new question
     in database.
     """
-    def __init__(self, db_name: str = "chemistry_db"):
+    def __init__(self, db_name: str = "literature_db"):
         self.db_name = db_name
         self.engine = self._create_engine()
         BASE.metadata.create_all(self.engine)

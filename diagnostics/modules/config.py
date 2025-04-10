@@ -145,7 +145,7 @@ FOR_CARDS_JUNIOR: dict[int, tuple[str, str, str, str]] = {
         "reading_comprehension"),
 }
 
-FOR_CARDS_MIDDLE: dict[int, tuple[str, str, str, str]] = {
+FOR_CARDS_NINTH: dict[int, tuple[str, str, str, str]] = {
     1: ("/static/images/for_subjects/algebra.svg", "Алгебра", "алгебре", "algebra"),
     2: ("/static/images/for_subjects/english.svg", "Английский язык", "английскому языку", "english"),
     3: ("/static/images/for_subjects/biology.svg", "Биология", "биологии", "biology"),
@@ -160,6 +160,22 @@ FOR_CARDS_MIDDLE: dict[int, tuple[str, str, str, str]] = {
     12: ("/static/images/for_subjects/probability_theory.svg", "Теория вероятностей", "теории вероятностей", "probability_theory"),
     13: ("/static/images/for_subjects/physics.svg", "Физика", "физике", "physics"),
     14: ("/static/images/for_subjects/chemistry.svg", "Химия", "химии", "chemistry")
+}
+
+FOR_CARDS_MIDDLE: dict[int, tuple[str, str, str, str]] = {
+    1: ("/static/images/for_subjects/english.svg", "Английский язык", "английскому языку", "english"),
+    2: ("/static/images/for_subjects/biology.svg", "Биология", "биологии", "biology"),
+    3: ("/static/images/for_subjects/geography.svg", "География", "географии", "geography"),
+    4: ("/static/images/for_subjects/informatics.svg", "Информатика", "информатике", "informatics"),
+    5: ("/static/images/for_subjects/history.svg", "История", "истории", "history"),
+    6: ("/static/images/for_subjects/literature.svg", "Литература", "литературе", "literature"),
+    7: ("/static/images/for_subjects/mathematics.svg", "Математика", "математике", "mathematics"),
+    8: ("/static/images/for_subjects/mathematics.svg", "Математика (углубленная)", "математике (углубленная)", "mathematics_depth"),
+    9: ("/static/images/for_subjects/social_science.svg", "Обществознание", "обществознанию", "social_science"),
+    10: ("/static/images/for_subjects/russian.svg", "Русский язык", "русскому языку", "russian"),
+    11: ("/static/images/for_subjects/probability_theory.svg", "Теория вероятностей", "теории вероятностей", "probability_theory"),
+    12: ("/static/images/for_subjects/physics.svg", "Физика", "физике", "physics"),
+    13: ("/static/images/for_subjects/chemistry.svg", "Химия", "химии", "chemistry")
 }
 
 FOR_CARDS_SENIOR: dict[int, tuple[str, str, str, str]] = {
