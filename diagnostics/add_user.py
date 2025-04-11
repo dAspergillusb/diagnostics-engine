@@ -1,6 +1,7 @@
 from sys import argv
 from os import path, mkdir
-from diagnostics.modules.databases.UsersDB import UsersDB, Users
+from modules import UsersDB, Users
+#from diagnostics.modules.databases.UsersDB import UsersDB, Users
 from diagnostics.modules.functions.is_correct_check import encoding_password
 from diagnostics.modules.errors.Errors import ErrorCreateUser
 

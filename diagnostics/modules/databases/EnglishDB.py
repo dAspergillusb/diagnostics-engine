@@ -65,11 +65,11 @@ class English(BASE):
     q_right_ans_10: Column[String] = Column(String(50), nullable=False)
 
     def __str__(self):
-        return f"English(\nid={self.id},\nnumber={self.q_block},\nclass={self.school_class}\n,title={self.q_title}\n)\n"
+        return f"English(\nid={self.id},\nnumber={self.q_block},\nclass={self.school_class}\n,title={self.q_title}\n)\ntext={self.q_text}\n"
 
     def __repr__(self):
         return f"English(\nid={self.id},\nq_block={self.q_block},\n" + \
-                f"school_class={self.school_class}\nq_title={self.q_title})\n"
+                f"school_class={self.school_class}\nq_title={self.q_title})\ntext={self.q_text}\n"
 
 
 class EnglishDB:
@@ -161,4 +161,5 @@ if __name__ == '__main__':
             _question.session.delete(block)
             _question.session.commit()"""
 
-    print(_question.session.query(English).all())
+    for question in _question.session.query(English).all():
+        print(question)

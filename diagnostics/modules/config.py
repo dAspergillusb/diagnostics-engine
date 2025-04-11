@@ -205,3 +205,31 @@ TEST_DATA: dict[str, str] = {
     "right_answer": ""
 }
 
+TEST_DATA_READING_COMPREHENSION: dict[str, str] = {
+    "test_title": "",
+    "test_text": "",
+    "q_1": "", "q_2": "", "q_3": "", "q_4": "", "q_5": "", "q_6": "", "q_7": "", "q_8": "", "q_9": "", "q_10": "",
+    "q_11": "", "q_12": "", "q_13": "", "q_14": "", "q_15": "", 
+    "q_i_1": "", "q_i_2": "", "q_i_3": "", "q_i_4": "", "q_i_5": "", "q_i_6": "", "q_i_7": "", "q_i_8": "", "q_i_9": "",
+    "q_i_10": "", "q_i_11": "", "q_i_12": "", "q_i_13": "", "q_i_14": "", "q_i_15": "",
+    "q_ans_var_1": "", "q_ans_var_2": "", "q_ans_var_3": "", "q_ans_var_4": "", "q_ans_var_5": "", "q_ans_var_6": "",
+    "q_ans_var_7": "", "q_ans_var_8": "", "q_ans_var_9": "", "q_ans_var_10": "", "q_ans_var_11": "", "q_ans_var_12": "",
+    "q_ans_var_13": "", "q_ans_var_14": "", "q_ans_var_15": "",
+    "q_right_ans_1": "", "q_right_ans_2": "", "q_right_ans_3": "", "q_right_ans_4": "", "q_right_ans_5": "",
+    "q_right_ans_6": "", "q_right_ans_7": "", "q_right_ans_8": "", "q_right_ans_9": "", "q_right_ans_10": "",
+    "q_right_ans_11": "", "q_right_ans_12": "", "q_right_ans_13": "", "q_right_ans_14": "", "q_right_ans_15": ""
+}
+
+TEST_DATA_ENGLISH = {
+    "q_block": "",
+    "q_title": "",
+    "q_audio": "",
+    "q_text": "",
+    "q_i_1": "", "q_i_2": "", "q_i_3": "", "q_i_4": "", "q_i_5": "", "q_i_6": "", "q_i_7": "", "q_i_8": "", "q_i_9": "",
+    "q_i_10": "",
+    "q_1": "", "q_2": "", "q_3": "", "q_4": "", "q_5": "", "q_6": "", "q_7": "", "q_8": "", "q_9": "", "q_10": "",
+    "q_ans_var_1": "", "q_ans_var_2": "", "q_ans_var_3": "", "q_ans_var_4": "", "q_ans_var_5": "", "q_ans_var_6": "",
+    "q_ans_var_7": "", "q_ans_var_8": "", "q_ans_var_9": "", "q_ans_var_10": "",
+    "q_right_ans_1": "", "q_right_ans_2": "", "q_right_ans_3": "", "q_right_ans_4": "", "q_right_ans_5": "",
+    "q_right_ans_6": "", "q_right_ans_7": "", "q_right_ans_8": "", "q_right_ans_9": "", "q_right_ans_10": ""
+}

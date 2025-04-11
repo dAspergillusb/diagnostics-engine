@@ -34,8 +34,8 @@ class QuestionsRange:
                                    "10": range(1, 11), "11": range(1, 11)},
             "reading_comprehension": {"2": range(1, 16), "3": range(1, 16), "4": range(1, 16),
                                       "5": range(1, 16), "6": range(1, 16)},
-            "english": {"2": range(1, 5), "3": range(1, 5), "4": range(1, 5), "5": range(1, 5), "6": range(1, 6),
-                        "7": range(1, 7), "8": range(1, 8), "9": range(1, 9), "10": range(1, 10), "11": range(1, 11)}
+            "english": {"2": range(1, 5), "3": range(1, 5), "4": range(1, 5), "5": range(1, 5), "6": range(1, 4),
+                        "7": range(1, 4), "8": range(1, 4), "9": range(1, 4), "10": range(1, 7), "11": range(1, 7)}
         }
 
     def get_range(self) -> range:
