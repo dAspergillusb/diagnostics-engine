@@ -113,8 +113,26 @@
                   <div class="flex-row d-flex justify-content-start">
                     <div class="d-grid gap-2 d-md-block">
                       <button class="btn btn-secondary py-2 mb-2" data-bs-toggle="modal" value="{{ question_number }}"  name="button" data-bs-target="#status_loading" type="submit">Сохранить вопрос</button>
+                      <button
+                              formtarget="_blank"
+                              class="btn btn-outline-secondary py-2 mb-2"
+                              type="submit"
+                              name="button"
+                              value="question_view {{ question_number }}"
+                      >
+                        Посмотреть мой вариант вопроса
+                      </button>
                       {% if question_number == _range[-1] %}
                         <button class="btn btn-primary py-2 mb-2" data-bs-toggle="modal" value="all"  name="button" data-bs-target="#status_loading" type="submit">Сохранить все вопросы</button>
+                        <button
+                              onclick="window.open('{{ url_for('test_view', username=username) }}', '_blank')"
+                              class="btn btn-outline-primary py-2 mb-2"
+                              type="submit"
+                              name="button"
+                              value="question_view"
+                        >
+                          Посмотреть мой вариант теста
+                        </button>
                       {% endif %}
                     </div>
                   </div>

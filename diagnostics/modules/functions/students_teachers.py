@@ -1,4 +1,6 @@
-from flask import request, session, render_template
+from base64 import b64encode
+from flask import request, session, render_template, redirect, url_for, Response
+from werkzeug.datastructures import FileStorage
 from ..config import (
     SUBJECTS_NAME_TO_LINK,
     SUBJECTS_RANGES_FOR_CLASS,
@@ -27,12 +29,20 @@ def choose_student_grade(school_class: str) -> tuple[str, dict[int, tuple[str, s
 
 
 # Functions for teacher
-def get_test_attempt_page(username: str, firstname: str, lastname: str, subjects: list[str]) -> str:
-    title: str = request.form.get("title")
-    text: str = request.form.get("text")
-    answer_variants: list[str] = request.form.getlist("answer_variants")
-    right_answer: list[str] = request.form.getlist("right_answer")
-    filepath: str = get_test_filepath()
+def get_test_attempt_page(
+        username: str,
+        firstname: str,
+        lastname: str,
+        subjects: list[str],
+        q_number: str = ""
+) -> str | Response:
+    title: str = request.form.get(f"q_title_{q_number}") if q_number else request.form.get("title")
+    text: str = request.form.get(f"q_text_{q_number}") if q_number else request.form.get("text")
+    answer_variants: list[str] = request.form.getlist(f"q_answer_variants_{q_number}") if q_number else request.form.getlist("answer_variants")
+    right_answer: list[str] = request.form.getlist(f"q_right_answer_{q_number}") if q_number else request.form.getlist("right_answer")
+    image: FileStorage = request.files.get(f"q_image_{q_number}") if q_number else request.files.get("image")
+    image_type: str = f"data:image/{image.filename.split(".")[-1]};base64," if image else ""
+    #filepath: str = get_test_filepath()
     if all((title, text,
             any(
                 (
@@ -41,10 +51,12 @@ def get_test_attempt_page(username: str, firstname: str, lastname: str, subjects
                 )))):
         TEST_DATA["title"] = title
         TEST_DATA["text"] = text
-        TEST_DATA["image"] = filepath
-        #session["image_type"] = _type
+        TEST_DATA["image"] = b64encode(image.read()).decode()
+        TEST_DATA["image_type"] = image_type
         TEST_DATA["answer_variants"] = "&".join(answer_variants) if right_answer else ""
         TEST_DATA["right_answer"] = "&".join(right_answer) if right_answer else "&".join(answer_variants)
+        if q_number:
+            return redirect(url_for("test_view", username=username))
         return render_template(
             "/teacher_panel/teacher_panel.html",
             firstname=firstname,

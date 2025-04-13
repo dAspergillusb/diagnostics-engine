@@ -120,7 +120,9 @@ from .config import (
     FOR_CARDS_JUNIOR,
     FOR_CARDS_MIDDLE,
     FOR_CARDS_SENIOR,
-    TEST_DATA
+    TEST_DATA,
+    TEST_DATA_READING_COMPREHENSION,
+    TEST_DATA_ENGLISH
 )
 from .ranks import ranks
 

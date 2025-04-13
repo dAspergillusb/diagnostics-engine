@@ -71,7 +71,9 @@ from modules import (
     SUBJECTS_RANGES_FOR_CLASS,
     ELEMENTARY_SCHOOL,
     UNIQUE_SUBJECTS,
-    TEST_DATA
+    TEST_DATA,
+    TEST_DATA_READING_COMPREHENSION,
+    TEST_DATA_ENGLISH
 )
 from modules import ranks
 from modules import BaseTable, DataBase
@@ -394,13 +396,54 @@ def test_view(username: str) -> str | Response:
     return redirect(url_for("login"))
 
 
+@MAIN.route("/teacher/<username>/test_view_rc")
+def test_view_reading_comprehension(username: str) -> str | Response:
+    if all((session.get("user_id"), session.get("rank") == "teacher")):
+        return render_template(
+            "/teacher_panel/test_view/test_view_rc.html",
+            firstname=session.get("firstname"),
+            lastname=session.get("lastname"),
+            variant=TEST_DATA_READING_COMPREHENSION,
+            len=len
+        )
+
+    return redirect((url_for("login")))
+
+
+@MAIN.route("/teacher/<username>/test_view_en")
+def test_view_english(username: str) -> str | Response:
+    print(TEST_DATA_ENGLISH)
+    if all((session.get("user_id"), session.get("rank") == "teacher")):
+        return render_template(
+            "/teacher_panel/test_view/test_view_en.html",
+            firstname=session.get("firstname"),
+            lastname=session.get("lastname"),
+            block=TEST_DATA_ENGLISH.get("q_block"),
+            variant=TEST_DATA_ENGLISH,
+            len=len,
+            range=range
+        )
+
+    return redirect(url_for("login"))
+
+
 @MAIN.route("/teacher_panel/<username>/<input_subject>", methods=["GET", "POST"])
-def teacher_panel(username: str, input_subject: str) -> str | Response:
+def teacher_panel(username: str, input_subject: str) -> str | tuple[str, int] | Response:
     if all((session.get("user_id"), session.get("rank") == "teacher")):
         if request.method == "POST":
+            clicked_button: str = request.form.get("button")
+            if "question_view" in clicked_button:
+                q_number = clicked_button.split()[1]
+                return get_test_attempt_page(
+                    username=username,
+                    firstname="",
+                    lastname="",
+                    subjects=[],
+                    q_number=q_number
+                )
             subject_db: DataBase = connect_database_subject(input_subject)
             if subject_db:
-                clicked_button: str = request.form.get("button")
+
                 match clicked_button:
                     case "all":
                         return save_all_questions(subject_db, input_subject)
@@ -416,11 +459,16 @@ def teacher_panel(username: str, input_subject: str) -> str | Response:
 def reading_comprehension(username: str) -> str | Response:
     if all((session.get("user_id"), session.get("rank") == "teacher")):
         if request.method == "POST":
+            clicked_button: str = request.form.get("button")
             _reading_comprehension: ReadingComprehensionDB = connect_database_subject("reading_comprehension")
             if _reading_comprehension:
-                datas: str | dict[str, str] = get_datas_rc()
+                datas: str | dict[str, str] = get_datas_rc(test=True) if clicked_button == "test_view" else get_datas_rc()
                 if isinstance(datas, str):
                     return datas
+                elif clicked_button == "test_view":
+                    for data in datas:
+                        TEST_DATA_READING_COMPREHENSION[data] = datas[data]
+                    return redirect(url_for("test_view_reading_comprehension", username=username))
 
                 _reading_comprehension.add_test(datas)
                 add_statistics_and_log(
@@ -450,11 +498,17 @@ def reading_comprehension(username: str) -> str | Response:
 def english_panel(username: str):
     if all((session.get("user_id"), session.get("rank") == "teacher")):
         if request.method == "POST":
+            clicked_button: str = request.form.get("button")
+            is_test_view: bool = not clicked_button.isdigit()
             _english: EnglishDB = connect_database_subject("english")
             if _english:
-                block_data: str | dict[str, list[str] | str | int | None] | dict[str, str | int] = get_block_data_english(username=username)
+                block_data: str | dict[str, list[str] | str | int | None] | dict[str, str | int] = get_block_data_english(username=username, test=is_test_view)
                 if isinstance(block_data, str):
                     return block_data
+                elif is_test_view:
+                    for block in block_data:
+                        TEST_DATA_ENGLISH[block] = block_data[block]
+                    return redirect(url_for("test_view_english", username=username))
 
                 _english.add_block(block_data)
                 questions_ids: list[str] = [f"{_english.session.query(English).all()[-1].id}"]

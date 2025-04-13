@@ -1,6 +1,5 @@
 from datetime import date, datetime
-from importlib.metadata import files
-
+from base64 import b64encode
 from werkzeug.datastructures import FileStorage
 from flask import request, render_template, session
 from sqlalchemy import (
@@ -233,7 +232,7 @@ def save_all_questions(subject_db: DataBase, input_subject: str) -> str:
     )
 
 
-def get_datas_rc() -> str | dict[str, str]:
+def get_datas_rc(test: bool = False) -> str | dict[str, str]:
     """
     Gets the data from test form. If there is at least one mistake, returns html-string with mistake message.
     :return: Html-string if there is mistake else  datas dictionary.
@@ -278,34 +277,56 @@ def get_datas_rc() -> str | dict[str, str]:
                 template="reading_comprehension"
             )
     # If it's ok, then we're adding all images
-    datas.update(
-        {
-            f"q_i_{number}": get_filepath(
-                subject="reading_comprehension",
-                file=request.files.get(f"q_i_{number}"),
-                num=number) for number in range(1, 16)}
-    )
+    if test:
+        for number in range(1, 16):
+            image = request.files.get(f"q_i_{number}")
+            image_type = image.filename.split(".")[-1] if image else ""
+            b64_image = b64encode(image.read()).decode() if image else ""
+            datas.update({
+                f"q_i_{number}": f"data:image/{image_type};base64,{b64_image}" if image else ""
+            })
+    else:
+        datas.update(
+            {
+                f"q_i_{number}": get_filepath(
+                    subject="reading_comprehension",
+                    file=request.files.get(f"q_i_{number}"),
+                    num=number) for number in range(1, 16)
+            }
+        )
 
     return datas
 
 
-def get_block_data_english(username: str) -> str | dict[str, list[str] | str | int | None] | dict[str, str | int]:
+def get_block_data_english(username: str, test: bool = False) -> str | dict[str, list[str] | str | int | None] | dict[str, str | int]:
     school_class: str = request.args.get("school_class")
-    block_number: str = request.form.get("button")
+    block_number: str = request.form.get("button").split()[-1] if test else request.form.get("button")
     block_data: dict[str, list[str] | str | int | None] | dict[str, str | int] = {
         "q_block": int(block_number), "school_class": school_class
     }
     match block_number:
         case "1":
-            data = get_block_data_english_one(username=username, block_data=block_data)
+            data = get_block_data_english_one(
+                username=username,
+                block_data=block_data,
+                test=test
+            )
             if isinstance(data, str):
                 return data
         case "2":
-            data = get_block_data_english_two(username=username, block_data=block_data)
+            data = get_block_data_english_two(
+                username=username,
+                block_data=block_data
+            )
             if isinstance(data, str):
                 return data
         case _:
-            data = get_block_data_english_other(username=username, block_data=block_data, block_number=block_number)
+            data = get_block_data_english_other(
+                username=username,
+                block_data=block_data,
+                block_number=block_number,
+                test=test
+            )
             if isinstance(data, str):
                 return data
 
@@ -315,7 +336,8 @@ def get_block_data_english(username: str) -> str | dict[str, list[str] | str | i
 
 def get_block_data_english_one(
         username: str,
-        block_data: dict[str, list[str] | str | int | None]
+        block_data: dict[str, list[str] | str | int | None],
+        test: bool
 ) -> str | dict[str, list[str] | str | int | None]:
     audio_file: FileStorage = request.files.get("q_audio")
     block_data.update({"q_title": request.form.get("1 q_title")})
@@ -327,7 +349,12 @@ def get_block_data_english_one(
                 f"q_right_ans_{num}": request.form.getlist(f"1 q_right_ans_{num}")
             }
         )
-    q_audio: str = get_filepath(subject="english", file=audio_file)
+    if test:
+        audio_file_type = audio_file.filename.split(".")[-1] if audio_file else ""
+        audio_file_b64 = b64encode(audio_file.read()).decode() if audio_file else ""
+        q_audio: str = f"data:audio/{audio_file_type};base64,{audio_file_b64}" if audio_file else ""
+    else:
+        q_audio: str = get_filepath(subject="english", file=audio_file)
     block_data.update({"q_audio": q_audio})
     if not all((
             q_audio,
@@ -383,7 +410,8 @@ def get_block_data_english_two(
 def get_block_data_english_other(
         username: str,
         block_data: dict[str, str | int],
-        block_number: str
+        block_number: str,
+        test: bool
 ) -> str | dict[str, str | int]:
     block_data.update({"q_title": request.form.get(f"{block_number} q_title")})
     for num in range(1, 11):
@@ -407,14 +435,23 @@ def get_block_data_english_other(
             template="english"
         )
     # If it's ok then we're adding images
-    block_data.update(
-        {
-            f"q_i_{num}": get_filepath(
-                subject="english",
-                file=request.files.get(f"{block_number} q_i_{num}"),
-                num=num) for num in range(1, 11)
-        }
-    )
+    if test:
+        for num in range(1, 11):
+            image = request.files.get(f"{block_number} q_i_{num}")
+            image_type = image.filename.split(".")[-1] if image else ""
+            b64_image = b64encode(image.read()).decode() if image else ""
+            block_data.update({
+                f"q_i_{num}": f"data:image/{image_type};base64,{b64_image}" if image else ""
+            })
+    else:
+        block_data.update(
+            {
+                f"q_i_{num}": get_filepath(
+                    subject="english",
+                    file=request.files.get(f"{block_number} q_i_{num}"),
+                    num=num) for num in range(1, 11)
+            }
+        )
 
     return block_data
 

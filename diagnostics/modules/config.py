@@ -196,7 +196,7 @@ FOR_CARDS_SENIOR: dict[int, tuple[str, str, str, str]] = {
     13: ("/static/images/for_subjects/chemistry.svg", "Химия", "химии", "chemistry")
 }
 
-TEST_DATA: dict[str, str] = {
+TEST_DATA: dict[str, str | None | bytes] = {
     "title": "",
     "text": "",
     "image": "",

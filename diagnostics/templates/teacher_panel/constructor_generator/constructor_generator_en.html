@@ -99,7 +99,18 @@
                   {% endfor %}
                 {% endif %}
                 <div class="flex-row d-flex justify-content-start">
-                  <button class="btn btn-secondary py-2 mb-2" id="save_button" name="button" value="{{ block_number }}" data-bs-toggle="modal" data-bs-target="#status_loading" type="submit">Сохранить блок вопросов</button>
+                  <div class="d-grid gap-2 d-md-block">
+                    <button class="btn btn-secondary py-2 mb-2" id="save_button" name="button" value="{{ block_number }}" data-bs-toggle="modal" data-bs-target="#status_loading" type="submit">Сохранить блок вопросов</button>
+                    <button
+                            formtarget="_blank"
+                            class="btn btn-outline-secondary py-2 mb-2"
+                            type="submit"
+                            name="button"
+                            value="block_view {{ block_number }}"
+                    >
+                      Посмотреть мой вариант блока вопросов
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
