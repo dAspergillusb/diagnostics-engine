@@ -74,7 +74,6 @@ class TestsGenerator:
         for block in self.blocks_variants:
             all_block_variants: int = len(self.blocks_variants[block]) - 1
             generated_test[block] = self.blocks_variants[block][randint(0, all_block_variants)]
-        print(generated_test)
         return generated_test
 
     def generate_other(self) -> dict[Column[Integer], BaseTable]:

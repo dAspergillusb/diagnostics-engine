@@ -198,10 +198,10 @@
                         {% if getattr(variant[block], "q_ans_var_%d" % (q_num)) %}
                           {% if len(getattr(variant[block], "q_right_ans_%d" % (q_num)).split("&")) == 1 %}
                             <label class="mb-5 px-2 h4">Выберете вариант ответа</label>
-                            <div class="row w-50">
+                            <div class="row">
                               {% for answer_variant in getattr(variant[block], "q_ans_var_%d" % (q_num)).split("&") %}
                                 {% if answer_variant %}
-                                  <div class="col-md-6">
+                                  <div class="col-auto">
                                     <input class="form-check-input mb-5" id="radio_{{ q_num }}_{{ answer_variant }}" type="radio" name="{{ block }}_{{ q_num }}" value="{{ answer_variant }}">
                                     <label class="form-check-label h4" for="radio_{{ q_num }}_{{ answer_variant }}">{{ answer_variant }}</label>
                                   </div>
@@ -211,10 +211,10 @@
                           {% else %}
                             <div class="form">
                                 <label class="mb-5 h4 px-2">Выберете несколько вариантов</label>
-                                <div class="row w-50">
+                                <div class="row">
                                   {% for answer_variant in getattr(variant[block], "q_ans_var_%d" % (q_num)).split("&") %}
                                     {% if answer_variant %}
-                                      <div class="col-md-6">
+                                      <div class="col-auto">
                                         <input class="form-check-input mb-5" type="checkbox" id="check_{{ q_num }}_{{ answer_variant }}" name="{{ block }}_{{ q_num }}" value="{{ answer_variant }}">
                                         <label class="form-check-label h4" for="check_{{ q_num }}_{{ answer_variant }}">{{ answer_variant }}</label>
                                       </div>

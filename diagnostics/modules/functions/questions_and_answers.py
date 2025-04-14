@@ -316,7 +316,8 @@ def get_block_data_english(username: str, test: bool = False) -> str | dict[str,
         case "2":
             data = get_block_data_english_two(
                 username=username,
-                block_data=block_data
+                block_data=block_data,
+                test=test
             )
             if isinstance(data, str):
                 return data
@@ -342,11 +343,16 @@ def get_block_data_english_one(
     audio_file: FileStorage = request.files.get("q_audio")
     block_data.update({"q_title": request.form.get("1 q_title")})
     for num in range(1, 11):
+        q_ans_var: list[str] | str = request.form.getlist(f"1 q_ans_var_{num}")
+        q_right_ans: list[str] | str = request.form.getlist(f"1 q_right_ans_{num}")
+        if test:
+            q_ans_var = "&".join(q_ans_var) if q_right_ans else ""
+            q_right_ans = "&".join(q_right_ans) if q_right_ans else "&".join(q_ans_var)
         block_data.update(
             {
                 f"q_{num}": request.form.get(f"1 q_{num}"),
-                f"q_ans_var_{num}": request.form.getlist(f"1 q_ans_var_{num}"),
-                f"q_right_ans_{num}": request.form.getlist(f"1 q_right_ans_{num}")
+                f"q_ans_var_{num}": q_ans_var,
+                f"q_right_ans_{num}": q_right_ans
             }
         )
     if test:
@@ -377,15 +383,21 @@ def get_block_data_english_one(
 
 def get_block_data_english_two(
         username: str,
-        block_data: dict[str, list[str] | str | int | None]
+        block_data: dict[str, list[str] | str | int | None],
+        test: bool
 ) -> str | dict[str, list[str] | str | int | None]:
     block_data.update({"q_title": request.form.get("2 q_title"), "q_text": request.form.get("2 q_text")})
     for num in range(1, 11):
+        q_ans_var: list[str] | str = request.form.getlist(f"1 q_ans_var_{num}")
+        q_right_ans: list[str] | str = request.form.getlist(f"1 q_right_ans_{num}")
+        if test:
+            q_ans_var = "&".join(q_ans_var) if q_right_ans else ""
+            q_right_ans = "&".join(q_right_ans) if q_right_ans else "&".join(q_ans_var)
         block_data.update(
             {
                 f"q_{num}": request.form.get(f"2 q_{num}"),
-                f"q_ans_var_{num}": request.form.getlist(f"2 q_ans_var_{num}"),
-                f"q_right_ans_{num}": request.form.getlist(f"2 q_right_ans_{num}")
+                f"q_ans_var_{num}": q_ans_var,
+                f"q_right_ans_{num}": q_right_ans
             }
         )
     if not all((
@@ -415,10 +427,15 @@ def get_block_data_english_other(
 ) -> str | dict[str, str | int]:
     block_data.update({"q_title": request.form.get(f"{block_number} q_title")})
     for num in range(1, 11):
+        q_ans_var: list[str] | str = request.form.getlist(f"1 q_ans_var_{num}")
+        q_right_ans: list[str] | str = request.form.getlist(f"1 q_right_ans_{num}")
+        if test:
+            q_ans_var = "&".join(q_ans_var) if q_right_ans else ""
+            q_right_ans = "&".join(q_right_ans) if q_right_ans else "&".join(q_ans_var)
         block_data.update({
             f"q_{num}": request.form.get(f"{block_number} q_{num}"),
-            f"q_ans_var_{num}": request.form.getlist(f"{block_number} q_ans_var_{num}"),
-            f"q_right_ans_{num}": request.form.getlist(f"{block_number} q_right_ans_{num}"),
+            f"q_ans_var_{num}": q_ans_var,
+            f"q_right_ans_{num}": q_right_ans,
         })
     if not all((
             block_data.get("q_title"),

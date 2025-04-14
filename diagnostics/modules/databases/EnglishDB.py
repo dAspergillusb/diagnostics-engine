@@ -1,3 +1,4 @@
+from typing import Type
 from sqlalchemy import (
     create_engine,
     Engine,
@@ -145,9 +146,20 @@ class EnglishDB:
         self.session.add(question)
         self.session.commit()
 
+    def change_question(self, new_block: int,  q_id: int = None, q_block: int = None) -> bool | None:
+        if q_id:
+            question: English = self.session.query(English).get(q_id)
+        elif q_block:
+            question: Type[English] = [q for q in self.session.query(English).all() if q.q_block == q_block][0]
+        else:
+            return False
+
+        question.q_block = new_block
+        self.session.commit()
+
 
 if __name__ == '__main__':
-    _question = EnglishDB(database_path="../../../database")
+    _questions = EnglishDB(database_path="../../../database")
     #for num in range(100):
     #    _question.add_question(
     #        question_number=num,
@@ -161,5 +173,9 @@ if __name__ == '__main__':
             _question.session.delete(block)
             _question.session.commit()"""
 
-    for question in _question.session.query(English).all():
-        print(question)
+    _questions.change_question(
+        new_block=3,
+        q_id=19
+    )
+
+    print(_questions.session.query(English).get(19))

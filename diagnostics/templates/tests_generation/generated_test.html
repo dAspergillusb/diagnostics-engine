@@ -176,7 +176,7 @@
                     {% if variant[question_number].q_answer_variants %}
                       {% if len(variant[question_number].q_right_answer.split("&")) == 1 %}
                         <label class="mb-5 px-2 h4">Выберете вариант ответа</label>
-                        <div class="row w-50">
+                        <div class="row w-100">
                           {% for answer_variant in variant[question_number].q_answer_variants.split("&") %}
                             <div class="col-md-6">
                               <input class="form-check-input mb-5" id="radio_{{ question_number }}" type="radio" name="{{ question_number }}" value="{{ answer_variant }}">
@@ -187,7 +187,7 @@
                       {% else %}
                         <div class="form">
                           <label class="mb-5 h4 px-2">Выберете несколько вариантов</label>
-                            <div class="row w-50">
+                            <div class="row w-100">
                               {% for answer_variant in variant[question_number].q_answer_variants.split("&") %}
                                 <div class="col-md-6">
                                   <input class="form-check-input mb-5" type="checkbox" id="check_{{ question_number }}" name="{{ question_number }}" value="{{ answer_variant }}">
