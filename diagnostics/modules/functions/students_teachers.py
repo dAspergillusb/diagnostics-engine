@@ -41,7 +41,7 @@ def get_test_attempt_page(
     answer_variants: list[str] = request.form.getlist(f"q_answer_variants_{q_number}") if q_number else request.form.getlist("answer_variants")
     right_answer: list[str] = request.form.getlist(f"q_right_answer_{q_number}") if q_number else request.form.getlist("right_answer")
     image: FileStorage = request.files.get(f"q_image_{q_number}") if q_number else request.files.get("image")
-    image_type: str = f"data:image/{image.filename.split(".")[-1]};base64," if image else ""
+    image_type: str = f"data:image/{image.filename.split('.')[-1]};base64," if image else ""
     #filepath: str = get_test_filepath()
     if all((title, text,
             any(
