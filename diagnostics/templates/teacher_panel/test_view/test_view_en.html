@@ -180,7 +180,7 @@
                   </table>
                 {% endif %}
                 {% for q_num in range(1, 11) %}
-                  {% if (variant.get("q_%d" % (q_num)) or variant.get("q_i_%d" % (q_num))) and variant.get("q_ans_var_%d" % (q_num)) %}
+                  {% if (variant.get("q_%d" % (q_num)) or variant.get("q_i_%d" % (q_num))) and variant.get("q_right_ans_%d" % (q_num)) %}
                       <h1 class="h3 mb-3 fw-normal fw-bold">Вопрос {{ q_num }}</h1>
                       {% if variant.get("q_%d" % (q_num)) and variant.get("q_i_%d" % (q_num)) %}
                         <div class="row align-items-center">

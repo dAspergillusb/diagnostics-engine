@@ -205,6 +205,8 @@ TEST_DATA: dict[str, str | None | bytes] = {
     "right_answer": ""
 }
 
+TEST_DATA_FULL_TEST: dict[int, dict[str, str | bytes]] = {}
+
 TEST_DATA_READING_COMPREHENSION: dict[str, str] = {
     "test_title": "",
     "test_text": "",

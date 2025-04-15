@@ -142,95 +142,12 @@
         </div>
       </nav>
 
-<div class="container-fluid h-90">
-  <div class="row">
-    <!-- Sidebar Menu -->
-    <nav class="col-md-3 col-lg-2 d-md-block sidebar" data-bs-toggle="collapsing">
-        <div class="align-items-start">
-          <div class="nav flex-column nav-pills me-3 h-100" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-            <button class="nav-link active" id="question" data-bs-toggle="pill" data-bs-target="#my_question" type="button" role="tab" aria-controls="v-pills-message" aria-selected="true">Мой вопрос</button>
-          </div>
-        </div>
-    </nav>
+    {% if full %}
+      {% include "/teacher_panel/test_view/questions_value/full_test.html" %}
+    {% else %}
+      {% include "/teacher_panel/test_view/questions_value/one.html" %}
+    {% endif %}
 
-    <!-- Main content -->
-    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-      <form method="post" enctype="multipart/form-data">
-        <div class="tab-content" id="v-pills-tabContent">
-            <div class="tab-pane fade show active" id="my_question" role="tabpanel" aria-labelledby="v-pills-message-tab">
-              <div class="question-block">
-                <h1 class="h3 mb-3 fw-normal" align="middle">{{ test_data.get("title") }}</h1>
-                {% if test_data.get("text") and test_data.get("image") %}
-                  <div class="row align-items-center">
-                    <div class="col-4">
-                      <img
-                              class="figure-img img-fluid rounded mb-2"
-                              src="{{ test_data.get('image_type') }}{{ test_data.get('image') | safe }}"
-                              width="auto">
-                    </div>
-                    <div class="col-8">
-                        {{ test_data.get('text') | safe }}
-                    </div>
-                  </div>
-                {% elif not test_data.get("image") %}
-                  <div class="row">
-                    <div class="col">
-                      {{ test_data.get('text') | safe }}
-                    </div>
-                  </div>
-                {% else %}
-                  <div align="middle">
-                    <figure class="figure">
-                      <img
-                        class="figure-img img-fluid rounded mb-2"
-                        src="{{ test_data.get('image') }}"
-                        width="300">
-                    </figure>
-                  </div>
-                {% endif %}
-                  <div class="form px-2">
-                    {% if test_data.get("answer_variants") %}
-                      {% if len(test_data.get("right_answer").split("&")) == 1 %}
-                        <label class="mb-5 px-2 h4">Выберете вариант ответа</label>
-                        <div class="row w-50">
-                          {% for answer_variant in test_data.get("answer_variants").split("&") %}
-                            <div class="col-md-6">
-                              <input class="form-check-input mb-5" id="{{ answer_variant }}" type="radio" name="answer" value="{{ answer_variant }}">
-                              <label class="form-check-label h4" for="{{ answer_variant }}">{{ answer_variant }}</label>
-                            </div>
-                          {% endfor %}
-                        </div>
-                      {% else %}
-                        <div class="form">
-                          <label class="mb-5 h4 px-2">Выберете несколько вариантов</label>
-                            <div class="row w-50">
-                              {% for answer_variant in test_data.get("answer_variants").split("&") %}
-                                <div class="col-md-6">
-                                  <input class="form-check-input mb-5" type="checkbox" id="{{ answer_variant }}" name="answer" value="{{ answer_variant }}">
-                                  <label class="form-check-label h4" for="{{ answer_variant }}">{{ answer_variant }}</label>
-                                </div>
-                              {% endfor %}
-                            </div>
-                        </div>
-                        <div class="mb-3"></div>
-                      {% endif %}
-                    {% else %}
-                      <p class="h5 ms-5" align="left">Ответ здесь</p>
-                      <input type="text" class="form-control mb-5 ms-4 mt-3 w-50" id="input" name="answer">
-                    {% endif %}
-                  </div>
-                </div>
-              <div class="mb-3"></div>
-              <hr size="10" color="blue">
-              <div class="flex-row d-flex justify-content-start">
-                <a class="btn btn-secondary py-2 mb-2">Закончить тест</a>
-              </div>
-            </div>
-          </div>
-      </form>
-    </main>
-  </div>
-</div>
 <script>
   $(document).ready(function() {
     $('table').addClass('table table-bordered table-hover');

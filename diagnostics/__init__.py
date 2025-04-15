@@ -72,6 +72,7 @@ from modules import (
     ELEMENTARY_SCHOOL,
     UNIQUE_SUBJECTS,
     TEST_DATA,
+    TEST_DATA_FULL_TEST,
     TEST_DATA_READING_COMPREHENSION,
     TEST_DATA_ENGLISH
 )
@@ -381,14 +382,30 @@ def teacher_subject_statistics_for_student(username: str) -> str | Response:
 @MAIN.route("/teacher/<username>/test_view")
 def test_view(username: str) -> str | Response:
     if all((session.get("user_id"), session.get("rank") == "teacher")):
-
         if all((TEST_DATA.get("title"), TEST_DATA.get("text"), TEST_DATA.get("right_answer"))):
-
             return render_template(
                 "/teacher_panel/test_view/test_view.html",
                 firstname=session.get("firstname"),
                 lastname=session.get("lastname"),
                 test_data=TEST_DATA,
+                full=False,
+                len=len
+            )
+        else:
+            return redirect(url_for("teacher", username=session.get("username")))
+    return redirect(url_for("login"))
+
+
+@MAIN.route("/teacher/<username>/test_view_full")
+def test_view_full(username: str) -> str | Response:
+    if all((session.get("user_id"), session.get("rank") == "teacher")):
+        if all((TEST_DATA.get("title"), TEST_DATA.get("text"), TEST_DATA.get("right_answer"))):
+            return render_template(
+                "/teacher_panel/test_view/test_view.html",
+                firstname=session.get("firstname"),
+                lastname=session.get("lastname"),
+                test_data=TEST_DATA_FULL_TEST,
+                full=True,
                 len=len
             )
         else:
@@ -412,7 +429,6 @@ def test_view_reading_comprehension(username: str) -> str | Response:
 
 @MAIN.route("/teacher/<username>/test_view_en")
 def test_view_english(username: str) -> str | Response:
-    print(TEST_DATA_ENGLISH)
     if all((session.get("user_id"), session.get("rank") == "teacher")):
         return render_template(
             "/teacher_panel/test_view/test_view_en.html",
@@ -441,6 +457,19 @@ def teacher_panel(username: str, input_subject: str) -> str | tuple[str, int] | 
                     subjects=[],
                     q_number=q_number
                 )
+            elif clicked_button == "test_view":
+                _range: range = QuestionsRange(input_subject, request.args.get("school_class")).get_range()
+                for q_num in _range:
+                    get_test_attempt_page(
+                        username=username,
+                        firstname="",
+                        lastname="",
+                        subjects=[],
+                        q_number=q_num
+                    )
+                    TEST_DATA_FULL_TEST[q_num] = TEST_DATA.copy()
+                return "", 204
+
             subject_db: DataBase = connect_database_subject(input_subject)
             if subject_db:
 
@@ -628,7 +657,7 @@ def generate_test(subject: str):
             ids = {question.id: question for question in
                    SUBJECTS[subject]["db"]().session.query(SUBJECTS[subject]["base"]).all()}
             variant = {q_num: ids[session["test_variant_ids"][q_num - 1]] for q_num in range(1, length + 1)}
-            print(f"{variant=}")
+            #print(f"{variant=}")
             if request.form.get("back"):
                 return redirect(url_for("student", username=session.get("username")))
             elif request.form.get("start_test"):
@@ -687,7 +716,7 @@ def generate_test(subject: str):
                 subject=subject,
                 _range=_range
             )
-            print(f"{answers=}")
+            #print(f"{answers=}")
 
             check_: TestsChecker = TestsChecker(
                 subject=subject,
@@ -695,7 +724,7 @@ def generate_test(subject: str):
                 variant=variant
             )
             marks, questions = check_.check_test()  # Here we get  list of test marks and test questions
-            print(f"{marks=}\n{questions=}")
+            #print(f"{marks=}\n{questions=}")
             max_value = marks.pop()  # Takes the sum of max test score
             value = sum(marks)  # Takes the value of test score
             not_right = sum([1 for mark in marks if not mark])  # Count of not right answers

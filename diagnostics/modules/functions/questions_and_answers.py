@@ -117,7 +117,6 @@ def save_one_question(subject_db: DataBase, input_subject: str, q_number: int) -
     """
     username: str = session.get("username")
     parameters: dict[str, str | int] = get_parameters(input_subject=input_subject, q_number=q_number)
-    print(parameters)
     if all([parameters.get("q_title"), parameters.get("q_text"),
             any(
                 [
@@ -340,14 +339,15 @@ def get_block_data_english_one(
         block_data: dict[str, list[str] | str | int | None],
         test: bool
 ) -> str | dict[str, list[str] | str | int | None]:
+    if test:
+        return get_block_data_english_one_test(
+            block_data=block_data
+        )
     audio_file: FileStorage = request.files.get("q_audio")
     block_data.update({"q_title": request.form.get("1 q_title")})
     for num in range(1, 11):
-        q_ans_var: list[str] | str = request.form.getlist(f"1 q_ans_var_{num}")
-        q_right_ans: list[str] | str = request.form.getlist(f"1 q_right_ans_{num}")
-        if test:
-            q_ans_var = "&".join(q_ans_var) if q_right_ans else ""
-            q_right_ans = "&".join(q_right_ans) if q_right_ans else "&".join(q_ans_var)
+        q_ans_var: list[str] = request.form.getlist(f"1 q_ans_var_{num}")
+        q_right_ans: list[str] = request.form.getlist(f"1 q_right_ans_{num}")
         block_data.update(
             {
                 f"q_{num}": request.form.get(f"1 q_{num}"),
@@ -355,12 +355,7 @@ def get_block_data_english_one(
                 f"q_right_ans_{num}": q_right_ans
             }
         )
-    if test:
-        audio_file_type = audio_file.filename.split(".")[-1] if audio_file else ""
-        audio_file_b64 = b64encode(audio_file.read()).decode() if audio_file else ""
-        q_audio: str = f"data:audio/{audio_file_type};base64,{audio_file_b64}" if audio_file else ""
-    else:
-        q_audio: str = get_filepath(subject="english", file=audio_file)
+    q_audio: str = get_filepath(subject="english", file=audio_file)
     block_data.update({"q_audio": q_audio})
     if not all((
             q_audio,
@@ -381,18 +376,44 @@ def get_block_data_english_one(
     return block_data
 
 
+def get_block_data_english_one_test(
+        block_data: dict[str, str | int]
+) -> dict[str, str | int]:
+    audio_file: FileStorage = request.files.get("q_audio")
+    block_data.update({"q_title": request.form.get("1 q_title")})
+    for num in range(1, 11):
+        q_ans_var_source: list[str] = request.form.getlist(f"1 q_ans_var_{num}")
+        q_right_ans_source: list[str] = request.form.getlist(f"1 q_right_ans_{num}")
+        q_ans_var = "&".join(q_ans_var_source) if q_right_ans_source else ""
+        q_right_ans = "&".join(q_right_ans_source) if q_right_ans_source else "&".join(q_ans_var_source)
+        block_data.update(
+            {
+                f"q_{num}": request.form.get(f"1 q_{num}"),
+                f"q_ans_var_{num}": q_ans_var,
+                f"q_right_ans_{num}": q_right_ans
+            }
+        )
+    audio_file_type = audio_file.filename.split(".")[-1] if audio_file else ""
+    audio_file_b64 = b64encode(audio_file.read()).decode() if audio_file else ""
+    q_audio: str = f"data:audio/{audio_file_type};base64,{audio_file_b64}" if audio_file else ""
+    block_data.update({"q_audio": q_audio})
+
+    return block_data
+
+
 def get_block_data_english_two(
         username: str,
         block_data: dict[str, list[str] | str | int | None],
         test: bool
 ) -> str | dict[str, list[str] | str | int | None]:
+    if test:
+        return get_block_data_english_two_test(
+            block_data=block_data
+        )
     block_data.update({"q_title": request.form.get("2 q_title"), "q_text": request.form.get("2 q_text")})
     for num in range(1, 11):
-        q_ans_var: list[str] | str = request.form.getlist(f"1 q_ans_var_{num}")
-        q_right_ans: list[str] | str = request.form.getlist(f"1 q_right_ans_{num}")
-        if test:
-            q_ans_var = "&".join(q_ans_var) if q_right_ans else ""
-            q_right_ans = "&".join(q_right_ans) if q_right_ans else "&".join(q_ans_var)
+        q_ans_var: list[str] | str = request.form.getlist(f"2 q_ans_var_{num}")
+        q_right_ans: list[str] | str = request.form.getlist(f"2 q_right_ans_{num}")
         block_data.update(
             {
                 f"q_{num}": request.form.get(f"2 q_{num}"),
@@ -419,19 +440,41 @@ def get_block_data_english_two(
     return block_data
 
 
+def get_block_data_english_two_test(
+        block_data: dict[str, str | int]
+) -> dict[str, str | int]:
+    block_data.update({"q_title": request.form.get("2 q_title"), "q_text": request.form.get("2 q_text")})
+    for num in range(1, 11):
+        q_ans_var_source: list[str] | str = request.form.getlist(f"2 q_ans_var_{num}")
+        q_right_ans_source: list[str] | str = request.form.getlist(f"2 q_right_ans_{num}")
+        q_ans_var = "&".join(q_ans_var_source) if q_right_ans_source else ""
+        q_right_ans = "&".join(q_right_ans_source) if q_right_ans_source else "&".join(q_ans_var_source)
+        block_data.update(
+            {
+                f"q_{num}": request.form.get(f"2 q_{num}"),
+                f"q_ans_var_{num}": q_ans_var,
+                f"q_right_ans_{num}": q_right_ans
+            }
+        )
+
+    return block_data
+
+
 def get_block_data_english_other(
         username: str,
         block_data: dict[str, str | int],
         block_number: str,
         test: bool
 ) -> str | dict[str, str | int]:
+    if test:
+        return get_block_data_english_other_test(
+            block_data=block_data,
+            block_number=block_number
+        )
     block_data.update({"q_title": request.form.get(f"{block_number} q_title")})
     for num in range(1, 11):
-        q_ans_var: list[str] | str = request.form.getlist(f"1 q_ans_var_{num}")
-        q_right_ans: list[str] | str = request.form.getlist(f"1 q_right_ans_{num}")
-        if test:
-            q_ans_var = "&".join(q_ans_var) if q_right_ans else ""
-            q_right_ans = "&".join(q_right_ans) if q_right_ans else "&".join(q_ans_var)
+        q_ans_var: list[str] | str = request.form.getlist(f"{block_number} q_ans_var_{num}")
+        q_right_ans: list[str] | str = request.form.getlist(f"{block_number} q_right_ans_{num}")
         block_data.update({
             f"q_{num}": request.form.get(f"{block_number} q_{num}"),
             f"q_ans_var_{num}": q_ans_var,
@@ -452,23 +495,41 @@ def get_block_data_english_other(
             template="english"
         )
     # If it's ok then we're adding images
-    if test:
-        for num in range(1, 11):
-            image = request.files.get(f"{block_number} q_i_{num}")
-            image_type = image.filename.split(".")[-1] if image else ""
-            b64_image = b64encode(image.read()).decode() if image else ""
-            block_data.update({
-                f"q_i_{num}": f"data:image/{image_type};base64,{b64_image}" if image else ""
-            })
-    else:
-        block_data.update(
-            {
-                f"q_i_{num}": get_filepath(
-                    subject="english",
-                    file=request.files.get(f"{block_number} q_i_{num}"),
-                    num=num) for num in range(1, 11)
-            }
-        )
+    block_data.update(
+        {
+            f"q_i_{num}": get_filepath(
+                subject="english",
+                file=request.files.get(f"{block_number} q_i_{num}"),
+                num=num) for num in range(1, 11)
+        }
+    )
+
+    return block_data
+
+
+def get_block_data_english_other_test(
+        block_data: dict[str, str | int],
+        block_number: str
+) -> dict[str, str | int]:
+    block_data.update({"q_title": request.form.get(f"{block_number} q_title")})
+    for num in range(1, 11):
+        q_ans_var_source: list[str] | str = request.form.getlist(f"{block_number} q_ans_var_{num}")
+        q_right_ans_source: list[str] | str = request.form.getlist(f"{block_number} q_right_ans_{num}")
+        q_ans_var = "&".join(q_ans_var_source) if q_right_ans_source else ""
+        q_right_ans = "&".join(q_right_ans_source) if q_right_ans_source else "&".join(q_ans_var_source)
+        block_data.update({
+            f"q_{num}": request.form.get(f"{block_number} q_{num}"),
+            f"q_ans_var_{num}": q_ans_var,
+            f"q_right_ans_{num}": q_right_ans,
+        })
+    # If it's ok then we're adding images as base64 code
+    for num in range(1, 11):
+        image = request.files.get(f"{block_number} q_i_{num}")
+        image_type = image.filename.split(".")[-1] if image else ""
+        b64_image = b64encode(image.read()).decode() if image else ""
+        block_data.update({
+            f"q_i_{num}": f"data:image/{image_type};base64,{b64_image}" if image else ""
+        })
 
     return block_data
 

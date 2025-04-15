@@ -34,8 +34,8 @@ def get_test_attempt_page(
         firstname: str,
         lastname: str,
         subjects: list[str],
-        q_number: str = ""
-) -> str | Response:
+        q_number: str | int = ""
+) -> str | Response | None:
     title: str = request.form.get(f"q_title_{q_number}") if q_number else request.form.get("title")
     text: str = request.form.get(f"q_text_{q_number}") if q_number else request.form.get("text")
     answer_variants: list[str] = request.form.getlist(f"q_answer_variants_{q_number}") if q_number else request.form.getlist("answer_variants")
@@ -55,8 +55,10 @@ def get_test_attempt_page(
         TEST_DATA["image_type"] = image_type
         TEST_DATA["answer_variants"] = "&".join(answer_variants) if right_answer else ""
         TEST_DATA["right_answer"] = "&".join(right_answer) if right_answer else "&".join(answer_variants)
-        if q_number:
+        if all((q_number, isinstance(q_number, str))):
             return redirect(url_for("test_view", username=username))
+        elif all((q_number, isinstance(q_number, int))):
+            return None
         return render_template(
             "/teacher_panel/teacher_panel.html",
             firstname=firstname,
