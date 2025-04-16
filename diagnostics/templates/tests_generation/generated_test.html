@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en" data-bs-theme="auto">
   <head>
-    <link rel="stylesheet" href="/static/css/ckeditor5.css"/>
+    <link rel="stylesheet" href="/static/css/ckeditor5-content.css"/>
     <script src="/static/js/jquery.min.js"></script>
     <script src="/static/js/color-modes.js"></script>
 
@@ -10,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.122.0">
-    <title>Добро пожаловать в систему диагностик</title>
+    <title>Тест</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sign-in/">
 
@@ -144,7 +144,7 @@
             </div>
             {% for question_number in variant %}
             <div class="tab-pane fade" id="question_{{ question_number }}" role="tabpanel" aria-labelledby="v-pills-message-tab">
-              <div class="question-block">
+              <div class="ck-content question-block">
                 <h1 class="h3 mb-3 fw-normal" align="middle">{{ variant[question_number].q_title }}</h1>
                 {% if variant[question_number].q_text and variant[question_number].q_image %}
                   <div class="row align-items-center">

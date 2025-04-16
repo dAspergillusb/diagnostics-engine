@@ -12,6 +12,7 @@ from flask import (
     Response
 )
 from sqlalchemy import Column, String, Integer, Boolean
+from werkzeug import Request
 from werkzeug.datastructures import FileStorage
 
 from modules import add_statistics_and_log
@@ -63,6 +64,7 @@ from modules import (
     HOST,
     PORT,
     ICON_BLACK,
+    MAX_FORM_MEMORY_SIZE,
     SUPPORTED_IMAGE_TYPES,
     SUPPORTED_AUDIO_TYPES,
     SUBJECTS,
@@ -105,6 +107,7 @@ from modules import (
 
 MAIN: Flask = Flask(import_name=__name__)
 MAIN.config["SECRET_KEY"] = SECRET_KEY
+MAIN.config['MAX_FORM_MEMORY_SIZE'] = MAX_FORM_MEMORY_SIZE
 
 
 @MAIN.route("/")

@@ -25,7 +25,7 @@
             {% else %}
               <div class="tab-pane fade" id="my_question_{{ q_num }}" role="tabpanel" aria-labelledby="v-pills-message-tab">
             {% endif %}
-              <div class="question-block">
+              <div class="ck-content question-block">
                 <h1 class="h3 mb-3 fw-normal" align="middle">{{ test_data[q_num].get("title") }}</h1>
                 {% if test_data[q_num].get("text") and test_data[q_num].get("image") %}
                   <div class="row align-items-center">

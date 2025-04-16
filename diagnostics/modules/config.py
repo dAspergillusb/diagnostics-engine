@@ -33,6 +33,8 @@ PORT: int = 5000
 SECRET_KEY: str = import_secret_key()
 ICON_WHITE: str = "/static/svg/icon_white.svg"
 ICON_BLACK: str = "/static/svg/icon_black.svg"
+MEGABYTE = 1024 * 1024
+MAX_FORM_MEMORY_SIZE = 50 * MEGABYTE
 
 """MAIL_LOGIN: str = "diagnostics@1381.xn--p1ai"  # Name of mail that will send a messages of registration/restore password
 MAIL_PASSWORD: str = "ptNT*Tesb3Dy"  # This password is not for account, it's for sendmail only!"""

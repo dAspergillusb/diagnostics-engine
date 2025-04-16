@@ -108,6 +108,7 @@ from .config import (
     HOST,
     PORT,
     ICON_BLACK,
+    MAX_FORM_MEMORY_SIZE,
     SUPPORTED_IMAGE_TYPES,
     SUPPORTED_AUDIO_TYPES,
     SUBJECTS,
