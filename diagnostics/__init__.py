@@ -107,7 +107,9 @@ from modules import (
 
 MAIN: Flask = Flask(import_name=__name__)
 MAIN.config["SECRET_KEY"] = SECRET_KEY
-MAIN.config['MAX_FORM_MEMORY_SIZE'] = MAX_FORM_MEMORY_SIZE
+MAIN.config["MAX_FORM_MEMORY_SIZE"] = MAX_FORM_MEMORY_SIZE
+MAIN.config["MAX_CONTENT_LENGTH"] = MAX_FORM_MEMORY_SIZE
+MAIN.config["MAX_FORM_PARTS"] = MAX_FORM_MEMORY_SIZE
 
 
 @MAIN.route("/")
