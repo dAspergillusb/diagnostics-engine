@@ -51,23 +51,23 @@
                       <div class="input-group mb-3">
                         <div class="input-group-text">
                           {% if value in session_input.getlist("q_right_ans_%d" % (question_number)) %}
-                            <input
-                                    class="form-check-input mt-0"
-                                    type="checkbox"
-                                    name="q_right_ans_{{ question_number }}"
-                                    id="q_right_ans_{{ question_number }}{{ value }}"
-                                    value="{{ value }}"
-                                    checked
-                            >
+                              <input
+                                      class="form-check-input mt-0"
+                                      type="checkbox"
+                                      name="q_right_ans_{{ question_number }}"
+                                      id="q_right_ans_{{ question_number }}{{ value }}"
+                                      value="{{ value }}"
+                                      checked
+                              >
                             </div>
-                            <input
-                                    type="text"
-                                    class="form-control"
-                                    name="q_ans_var_{{ question_number }}"
-                                    id="q_ans_var_{{ question_number }}{{ value }}"
-                                    onchange="inputToCheckbox('q_ans_var_{{ question_number }}{{ value }}', 'q_right_ans_{{ question_number }}{{ value }}')"
-                                    value="{{ value }}"
-                            >
+                              <input
+                                      type="text"
+                                      class="form-control"
+                                      name="q_ans_var_{{ question_number }}"
+                                      id="q_ans_var_{{ question_number }}{{ value }}"
+                                      onchange="inputToCheckbox('q_ans_var_{{ question_number }}{{ value }}', 'q_right_ans_{{ question_number }}{{ value }}')"
+                                      value="{{ value }}"
+                              >
                           {% else %}
                             <input
                                     class="form-check-input mt-0"
@@ -115,7 +115,7 @@
               </div>
               <hr size="10" color="blue">
             {% endfor %}
-              <div class="container">
+              <div class="d-grid gap-2 d-md-block">
                 <button class="btn btn-secondary py-2 mb-2" type="submit">Сохранить вопросы</button>
                 <button
                               formtarget="_blank"
