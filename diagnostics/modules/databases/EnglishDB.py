@@ -66,11 +66,12 @@ class English(BASE):
     q_right_ans_10: Column[String] = Column(String(50), nullable=False)
 
     def __str__(self):
-        return f"English(\nid={self.id},\nnumber={self.q_block},\nclass={self.school_class}\n,title={self.q_title}\n)\ntext={self.q_text}\n"
+        return (f"English(\nid={self.id},\nnumber={self.q_block},\n"
+                f"class={self.school_class}\n,title={self.q_title},\ntext={self.q_text}\naudio={self.q_audio}\n)\n")
 
     def __repr__(self):
         return f"English(\nid={self.id},\nq_block={self.q_block},\n" + \
-                f"school_class={self.school_class}\nq_title={self.q_title})\ntext={self.q_text}\n"
+                f"school_class={self.school_class}\nq_title={self.q_title}\ntext={self.q_text})\n"
 
 
 class EnglishDB:
@@ -84,7 +85,7 @@ class EnglishDB:
         self.engine = self._create_engine()
         BASE.metadata.create_all(self.engine)
         BASE.metadata.bind = self.engine
-        self.db_session: sessionmaker[[Session]] = sessionmaker(bind=self.engine)
+        self.db_session: sessionmaker[Session] = sessionmaker(bind=self.engine)
         self.session: Session = self.db_session()
 
     def _create_engine(self) -> Engine:
@@ -168,14 +169,16 @@ if __name__ == '__main__':
     #        question_class="9-Б",
     #        question_image="",
     #    )
-    """for block in _question.session.query(English).all():
-        if block.id <= 26:
-            _question.session.delete(block)
-            _question.session.commit()"""
-
-    _questions.change_question(
+    for block in _questions.session.query(English).all():
+        if block.id in {1, 60, 62, 65, 66, 67}:
+            _questions.session.delete(block)
+            _questions.session.commit()
+    for q in _questions.session.query(English).all():
+        if all((q.school_class == "7", q.q_block == 1)):
+            print(q)
+    """_questions.change_question(
         new_block=3,
         q_id=19
-    )
+    )"""
 
-    print(_questions.session.query(English).get(19))
+    #print(_questions.session.query(English).get(19))

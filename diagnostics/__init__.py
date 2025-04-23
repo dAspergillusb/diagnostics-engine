@@ -319,6 +319,30 @@ def teacher_menu(username: str) -> str | Response:
     return redirect(url_for("login"))
 
 
+@MAIN.route("/teacher_questions/<username>", methods=["GET", "POST"])
+def teacher_questions(username: str) -> str | Response:
+    if all((session.get("user_id"), session.get("rank") == "teacher")):
+        subjects: list[str] = session.get("subjects").split("&")
+
+        _teacher_questions_ids: dict[Column[String], list[int]] = defaultdict(list)
+        for stat in connect_database_statistics(session.get("rank")).session.query(TeacherStatistics).filter(TeacherStatistics.username == username).all():
+            _teacher_questions_ids[stat.subject].extend(map(int, stat.questions_id.split("&")))
+
+        _teacher_questions: dict[str, list[BaseTable | English | ReadingComprehension]] = defaultdict(list)
+        for subject in _teacher_questions_ids:
+            database = connect_database_subject(f"{subject}").session.query(SUBJECTS[f"{subject}"]["base"]).all()
+            _teacher_questions = {
+                f"{subject}": [question for question in database if question.id in _teacher_questions_ids[subject]] for subject in _teacher_questions_ids
+            }
+        """print(subjects)
+        print(_teacher_questions_ids)
+        print(_teacher_questions)"""
+        return render_template(
+            "/teacher_menu/teacher_menu_questions.html",
+        )
+    return redirect(url_for("login"))
+
+
 @MAIN.route("/teacher_statistics/<username>")
 def teacher_statistics(username: str) -> str | Response:
     if all((session.get("user_id"), session.get("rank") == "teacher")):

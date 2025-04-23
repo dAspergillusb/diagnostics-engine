@@ -123,6 +123,11 @@
         </a>
       </li>
       <li class="nav-item">
+        <a href="{{ url_for('teacher_questions', username=user.username) }}" class="nav-link">
+          Мои вопросы
+        </a>
+      </li>
+      <li class="nav-item">
         <a href="{{ url_for('teacher_statistics', username=user.username) }}" class="nav-link">
           Личная статистика
         </a>
