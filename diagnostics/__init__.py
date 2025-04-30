@@ -344,7 +344,8 @@ def teacher_questions(username: str) -> str | Response:
             template_name_or_list="/teacher_menu/teacher_menu_questions.html",
             user=user,
             subjects_links=SUBJECTS_NAME_TO_LINK,
-            teacher_questions=_teacher_questions
+            teacher_questions=_teacher_questions,
+            len=len
         )
     return redirect(url_for("login"))
 
