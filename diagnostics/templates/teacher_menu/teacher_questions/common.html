@@ -1,0 +1,43 @@
+{% for subject in teacher_questions %}
+  <h1 class="h4 mb-1 py-3 fw-semibold" style="color:#C62828;" align="middle">{{ subject }}</h1>
+  {% for question in teacher_questions.get(subject) %}
+    <table class="table table-hover" align="middle" id="{{ question.id }}">
+        <tbody>
+          <tr class="table-light">
+            <th scope="row">
+              {{ question.q_title }}
+            </th>
+          </tr>
+          <tr class="table-light">
+            <th scope="row">
+              {{ question.q_text | safe }}
+            </th>
+          </tr>
+          <tr class="table-light">
+            <th scope="row">Имя:</th>
+              <td>
+                {{ user.firstname }}
+              </td>
+          </tr>
+          <tr class="table-light">
+            <th scope="row">Фамилия:</th>
+              <td>
+                {{ user.lastname }}
+              </td>
+          </tr>
+          <tr class="table-light">
+            <th scope="row">Предметы:</th>
+              <td>
+                {{ ", ".join(user.subject.split("&")) }}
+              </td>
+          </tr>
+          <tr class="table-light">
+            <th scope="row">Email:</th>
+              <td>
+                {{ user.email }}
+              </td>
+          </tr>
+        </tbody>
+      </table>
+    {% endfor %}
+{% endfor %}

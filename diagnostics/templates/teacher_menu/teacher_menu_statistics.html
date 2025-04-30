@@ -227,16 +227,16 @@
     modalContent.appendChild(modalFooter);
     modalFooter.appendChild(buttonOk);
 
-    var statistics = Map.from(JSON.parse(datesAndValue));
+    var statistics = Map.from(JSON.parse(datesAndValues));
     var datas = [];
     var values = [];
     for (var [data, value] of statistics) {
 
-    }
+    };
 
     const graph = document.getElementById('lastMonthGraph');
     new Chart(graph, {
-      type: 'bar';
+      type: 'bar',
       data: {
           labels: datas,
       datasets: [{

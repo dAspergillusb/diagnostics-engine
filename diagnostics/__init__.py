@@ -324,7 +324,8 @@ def teacher_menu(username: str) -> str | Response:
 @MAIN.route("/teacher_questions/<username>", methods=["GET", "POST"])
 def teacher_questions(username: str) -> str | Response:
     if all((session.get("user_id"), session.get("rank") == "teacher")):
-        subjects: list[str] = session.get("subjects").split("&")
+        user: Users = connect_database_users().session.query(Users).get(session.get("user_id"))
+        #subjects: list[str] = session.get("subjects").split("&")
 
         _teacher_questions_ids: dict[Column[String], list[int]] = defaultdict(list)
         for stat in connect_database_statistics(session.get("rank")).session.query(TeacherStatistics).filter(TeacherStatistics.username == username).all():
@@ -340,7 +341,10 @@ def teacher_questions(username: str) -> str | Response:
         print(_teacher_questions_ids)
         print(_teacher_questions)"""
         return render_template(
-            "/teacher_menu/teacher_menu_questions.html",
+            template_name_or_list="/teacher_menu/teacher_menu_questions.html",
+            user=user,
+            subjects_links=SUBJECTS_NAME_TO_LINK,
+            teacher_questions=_teacher_questions
         )
     return redirect(url_for("login"))
 

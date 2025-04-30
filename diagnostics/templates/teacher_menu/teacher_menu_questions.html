@@ -155,18 +155,14 @@
     <!-- Main content -->
   <div class="col-md-10 px-md-auto mt-3">
     <div class="row">
-      <h1 class="h4 mb-1 py-3 fw-semibold" style="color:#C62828;" align="middle">Общее количество вопросов по предметам</h1>
-      <div class="row row-cols-auto justify-content-md-center g-2">
-        {% for subject in common_statistics %}
-          <div class="col">
-            <div class="card border-primary text-center" style="width: 20rem; height: 12rem;">
-              <div class="card-body">
-                <h5 class="card-title h3">{{ subject }}</h5>
-                <p class="card-text h4 fw-bold">{{ common_statistics.get(subject, 0) }}</p>
-                <button class="btn btn-outline-primary" onclick="createModalStatistics({{ last_month_statistics.get(subject) }})" name="{{ subject }}" type="button">Статистика за месяц</button>
-              </div>
-            </div>
-          </div>
+        {% for subject_type in teacher_questions.keys() %}
+          {% if subject_type == "reading_comprehension" %}
+            {% include "teacher_menu/teacher_questions/reading_comprehension.html" %}
+          {% elif subject_type == "english" %}
+              {% include "teacher_menu/teacher_questions/english.html" %}
+          {% else %}
+              {% include "teacher_menu/teacher_questions/common.html" %}
+          {% endif %}
         {% endfor %}
       </div>
     </div>
@@ -175,93 +171,8 @@
 
 <div id="container"></div>
 
-{% include "navbar/navbar_bottom.html" %}
-
-<script>
-  function createModalStatistics(datesAndValues) {
-    var a = document.createElement('a');
-    a.id = 'modalOpen';
-    a.setAttribute('data-bs-toggle', 'modal');
-    a.setAttribute('data-bs-target', '#statisticsGraph');
-
-    var modal = document.createElement('div');
-    modal.className = 'modal fade';
-    modal.id = 'statisticsGraph';
-    modal.setAttribute('aria-hidden', 'true');
-    modal.setAttribute('tabindex', '-1');
-    modal.setAttribute('aria-labelledby', 'exampleModalLabel');
-
-    var modalDialog = document.createElement('div');
-    modalDialog.className = 'modal-dialog modal-dialog-centered';
-
-    var modalContent = document.createElement('div');
-    modalContent.className = 'modal-content';
-
-    var modalHeader = document.createElement('div');
-    var modalTitle = document.createElement('h1');
-    modalTitle.className = 'modal-title fs-5';
-    modalTitle.id = 'exampleModalLabel';
-    modalTitle.innerHTML = 'Статистика за последний месяц';
-
-    var modalBody = document.createElement('div');
-    modalBody.className = 'modal-body';
-
-    var modalGraph = document.createElement('canvas');
-    modalGraph. id = 'lastMonthGraph';
-    modalGraph.setAttribute('width', 'auto');
-    modalGraph.setAttribute('height', 'auto');
-
-    var modalFooter = document.createElement('div');
-    modalFooter.className = 'modal-footer';
-
-    var buttonOk = document.createElement('button');
-    buttonOk.className = 'btn btn-secondary';
-    buttonOk.setAttribute('type', 'button');
-    buttonOk.setAttribute('data-bs-dismiss', 'modal');
-    buttonOk.innerHTML = 'Ok';
-
-    var container = document.getElementById('container');
-    container.appendChild(a);
-    container.appendChild(modal);
-    modal.appendChild(modalDialog);
-    modalDialog.appendChild(modalContent);
-    modalContent.appendChild(modalHeader);
-    modalHeader.appendChild(modalTitle);
-    modalContent.appendChild(modalBody);
-    modalBody.appendChild(modalGraph);
-    modalContent.appendChild(modalFooter);
-    modalFooter.appendChild(buttonOk);
-
-    var statistics = Map.from(JSON.parse(datesAndValue));
-    var datas = [];
-    var values = [];
-    for (var [data, value] of statistics) {
-
-    }
-
-    const graph = document.getElementById('lastMonthGraph');
-    new Chart(graph, {
-      type: 'bar';
-      data: {
-          labels: datas,
-      datasets: [{
-          label: '',
-          data: values,
-          borderWidth: 1
-        }]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        }
-      }
-    });
-
-    a.click()
-  };
-</script>
-<script src="/static/js/bootstrap.bundle.min.js"></script>
-</body>
+    {% include "navbar/navbar_bottom.html" %}
+    <script type="module" src="/static/js/classic.editor.mjs"></script>
+    <script src="/static/js/bootstrap.bundle.min.js"></script>
+  </body>
 </html>
