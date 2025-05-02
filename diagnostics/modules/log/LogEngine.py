@@ -14,13 +14,13 @@ class LogingLog:
     def add_log_login(self) -> None:
         with open("log_loging.log", "a") as loging_log:
             loging_log.write(
-                f"Login:: {str(self._date)}: {self.user_id}; {self.username}; {self.rank}; {self.school_class}\n"
+                f"Login:: {str(self._date)}:\n[\nuser_id: {self.user_id};\nusername: {self.username};\nrank: {self.rank};\nschool_class: {self.school_class}\n]\n"
             )
 
     def add_log_logout(self) -> None:
         with open("log_loging.log", "a") as loging_log:
             loging_log.write(
-                f"Logout:: {str(self._date)}: {self.user_id}; {self.username}; {self.rank}; {self.school_class}\n"
+                f"Logout:: {str(self._date)}:\n[\nuser_id: {self.user_id};\nusername: {self.username};\nrank: {self.rank};\nschool_class: {self.school_class}\n]\n"
             )
 
 
@@ -35,13 +35,13 @@ class AddQuestionLog:
     def add_log_new_entry(self) -> None:
         with open("log_subjects.log", "a") as subject_log:
             subject_log.write(
-                f"New entry:: {str(self._date)}: {self.username}; {self.subject}; {self.question_value=}; {self.question_ids}\n"
+                f"New entry:: {str(self._date)}:\n[\nusername: {self.username};\nsubject: {self.subject};\nq_value: {self.question_value=};\nq_ids: {self.question_ids}\n]\n"
             )
 
     def add_log_remove_entry(self) -> None:
         with open("log_subjects.log", "a") as subject_log:
             subject_log.write(
-                f"Remove entry:: {str(self._date)}: {self.username}; {self.subject}; {self.question_value=}; {self.question_ids}\n"
+                f"Remove entry:: {str(self._date)}:\n[\nusername: {self.username};\nsubject: {self.subject};\nq_value: {self.question_value=};\nq_ids: {self.question_ids}\n]\n"
             )
 
 
@@ -56,7 +56,7 @@ class UsersRegisterLog:
     def add_log_register(self) -> None:
         with open ("log_register.log", "a") as register_log:
             register_log.write(
-                f"Registration:: {str(self._date)}; {self.user_id}; {self.username}; {self.rank}\n"
+                f"Registration:: {str(self._date)}:\n[\nuser_id: {self.user_id};\nusername: {self.username};\nrank: {self.rank}\n]\n"
             )
 
     def add_log_activity(self) -> None:
