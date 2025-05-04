@@ -345,7 +345,9 @@ def teacher_questions(username: str) -> str | Response:
             user=user,
             subjects_links=SUBJECTS_NAME_TO_LINK,
             teacher_questions=_teacher_questions,
-            len=len
+            subjects_names={value: key for key, value in SUBJECTS_NAME_TO_LINK.items()},
+            len=len,
+            enumerate=enumerate
         )
     return redirect(url_for("login"))
 

@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="en" data-bs-theme="auto">
   <head>
+    <link rel="stylesheet" href="/static/css/ckeditor5-content.css"/>
+    <link rel="stylesheet" href="/static/css/ckeditor5.css"/>
     <script src="/static/js/jquery.min.js"></script>
     <script src="/static/js/color-modes.js"></script>
 
@@ -153,8 +155,8 @@
   </div>
 
     <!-- Main content -->
-  <div class="col-md-10 px-md-auto mt-3">
-    <div class="row">
+  <div class="col-md-8 ms-sm-auto col-lg-10 px-md-auto mt-3">
+    <div class="row w-90">
         {% for subject_type in teacher_questions.keys() %}
           {% if subject_type == "reading_comprehension" %}
             {% include "teacher_menu/teacher_questions/reading_comprehension.html" %}
@@ -171,8 +173,17 @@
 
 <div id="container"></div>
 
-    {% include "navbar/navbar_bottom.html" %}
-    <script type="module" src="/static/js/classic.editor.mjs"></script>
-    <script src="/static/js/bootstrap.bundle.min.js"></script>
+{% include "navbar/navbar_bottom.html" %}
+<script type="importmap">
+{
+    "imports": {
+        "ckeditor5": "/static/js/ckeditor5.js",
+        "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/43.3.1/"
+    }
+}
+</script>
+<script src="/static/js/add.answer.js"></script>
+<script type="module" src="/static/js/classic.editor.mjs"></script>
+<script src="/static/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
