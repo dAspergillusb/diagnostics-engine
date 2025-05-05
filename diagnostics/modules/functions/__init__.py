@@ -35,7 +35,9 @@ from .questions_and_answers import (
     save_all_questions,
     get_datas_rc,
     get_block_data_english,
-    add_statistics_and_log
+    add_statistics_and_log,
+    get_teacher_questions,
+    get_data_question_to_change
 )
 from .files_operations import (
     write_test_image,

@@ -1,3 +1,4 @@
+from collections import defaultdict
 from datetime import date, datetime
 from base64 import b64encode
 from werkzeug.datastructures import FileStorage
@@ -9,7 +10,9 @@ from sqlalchemy import (
 )
 from diagnostics.modules.tests_engine.QuestionsRange import QuestionsRange
 from diagnostics.modules.databases.EnglishDB import English
-from diagnostics.modules.databases.TeacherStatisticsDB import TeacherStatisticsDB
+from diagnostics.modules.databases.ReadingComprehensionDB import ReadingComprehension
+from diagnostics.modules.databases.TeacherStatisticsDB import TeacherStatisticsDB, TeacherStatistics
+from diagnostics.modules.functions.databases_connections import connect_database_statistics, connect_database_subject
 from diagnostics.modules.log.LogEngine import AddQuestionLog
 from diagnostics.modules._types.Types import BaseTable, DataBase
 from diagnostics.modules.config import SUBJECTS, SUPPORTED_IMAGE_TYPES, SUBJECTS_NAME_TO_LINK, SUBJECTS_RANGES_FOR_CLASS
@@ -109,7 +112,7 @@ def for_other_subjects(subject: str, variant, marks: list[int], questions: list[
 def save_one_question(subject_db: DataBase, input_subject: str, q_number: int) -> str:
     """
     Saves one test question for subjects excepts reading comprehension and english. If there is at least one
-    mistake while filling form function returns htmp-pade with modal about mistake.
+    mistake while filling form function returns html-page with modal about mistake.
     :param subject_db: Subject database-object.
     :param input_subject: What subject is? (for example -> mathematics)
     :param q_number: What question number of test is?
@@ -588,4 +591,36 @@ def failed_with_data(username: str, subject: str, html_page: str, template: str)
         _range=QuestionsRange(template, request.args.get("school_class")).get_range(),
         modal_failed=True
     )
+
+
+def get_teacher_questions_ids(username: str) -> dict[Column[String], list[int]]:
+    _teacher_questions_ids: dict[Column[String], list[int]] = defaultdict(list)
+    for stat in connect_database_statistics(session.get("rank")).session.query(TeacherStatistics).filter(
+            TeacherStatistics.username == username).all():
+        _teacher_questions_ids[stat.subject].extend(map(int, stat.questions_id.split("&")))
+
+    return _teacher_questions_ids
+
+
+def get_teacher_questions(username: str) -> dict[Column[String], list[BaseTable | English | ReadingComprehension]]:
+    _teacher_questions_ids: dict[Column[String], list[int]] = get_teacher_questions_ids(username=username)
+    print(_teacher_questions_ids)
+    _teacher_questions: dict[Column[String], list[BaseTable | English | ReadingComprehension]] = defaultdict(list)
+    for subject in _teacher_questions_ids:
+        database = connect_database_subject(f"{subject}").session.query(SUBJECTS[f"{subject}"]["base"]).all()
+        _teacher_questions[subject].extend([question for question in database if question.id in _teacher_questions_ids[subject]])
+
+    return _teacher_questions
+
+
+def get_data_question_to_change() -> dict[str, str | int]:
+    q_answer_variants: list[str] = request.form.getlist(f"q_answer_variants")
+    q_right_answer: list[str] = request.form.getlist(f"q_right_answer")
+    return {
+        "q_title": request.form.get("q_title"),
+        "q_text": request.form.get("q_text"),
+        "q_answer_variants": "&".join(q_answer_variants) if q_right_answer else "",
+        "q_right_answer": "&".join(q_right_answer) if q_right_answer else "&".join(q_answer_variants)
+    }
+
 

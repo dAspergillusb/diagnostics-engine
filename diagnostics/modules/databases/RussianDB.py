@@ -82,6 +82,14 @@ class RussianDB(DataBase):
         self.session.add(question)
         self.session.commit()
 
+    def change_question(self, *, question_id: str, data: dict[str, str]) -> None:
+        question: Russian = self.session.query(Russian).get(question_id)
+        question.q_title = data.get("q_title")
+        question.q_text = data.get("q_text")
+        question.q_answer_variants = data.get("q_answer_variants")
+        question.q_right_answer = data.get("q_right_answer")
+        self.session.commit()
+
 
 if __name__ == '__main__':
     _question = RussianDB()

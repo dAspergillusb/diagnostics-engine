@@ -1,5 +1,10 @@
 var count = 1;
 
+function removeInput(inputId) {
+    var inputGroup = document.getElementById(inputId);
+    inputGroup.remove();
+};
+
 function inputToCheckbox(tagInput, tagCheckbox) {
     var inputValue = document.getElementById(tagInput);
     var checkboxValue  = document.getElementById(tagCheckbox);

@@ -1,5 +1,6 @@
 <h1 class="h4 mb-1 py-3 fw-semibold" style="color:#C62828;" align="middle">{{ subjects_names.get(subject_type).title() }}</h1>
 {% for num, question in enumerate(teacher_questions.get(subject_type), start=1) %}
+  <form name="{{ subject_type }}_{{ question.id }}" method="post">
     <div class="ck-content question-block">
       <h1 class="h3 mb-3 fw-normal" align="middle">{{ question.q_title }}</h1>
       {% if question.q_text and question.q_image %}
@@ -35,7 +36,7 @@
               <div class="row w-100">
                 {% for answer_variant in question.q_answer_variants.split("&") %}
                   <div class="col-md-6">
-                    <input class="form-check-input mb-5" id="radio_{{ answer_variant }}" type="radio" name="{{ question.id }}" value="{{ answer_variant }}">
+                    <input class="form-check-input mb-5" id="radio_{{ answer_variant }}" type="radio" value="{{ answer_variant }}">
                     <label class="form-check-label h4" for="radio_{{ answer_variant }}">{{ answer_variant }}</label>
                   </div>
                 {% endfor %}
@@ -47,12 +48,12 @@
                     {% for answer_variant in question.q_answer_variants.split("&") %}
                       {% if answer_variant in question.q_right_answer %}
                         <div class="col-md-6">
-                          <input checked class="form-check-input mb-5" type="checkbox" id="check_{{ answer_variant }}" name="{{ question.id }}" value="{{ answer_variant }}">
+                          <input checked class="form-check-input mb-5" type="checkbox" id="check_{{ answer_variant }}" value="{{ answer_variant }}">
                           <label class="form-check-label h4" for="check_{{ answer_variant }}">{{ answer_variant }}</label>
                         </div>
                       {% else %}
                         <div class="col-md-6">
-                          <input class="form-check-input mb-5" type="checkbox" id="check_{{ answer_variant }}" name="{{ question.id }}" value="{{ answer_variant }}">
+                          <input class="form-check-input mb-5" type="checkbox" id="check_{{ answer_variant }}" value="{{ answer_variant }}">
                           <label class="form-check-label h4" for="check_{{ answer_variant }}">{{ answer_variant }}</label>
                         </div>
                       {% endif %}
@@ -68,25 +69,100 @@
                     class="form-control mb-5 ms-4 mt-3 w-50"
                     id="{{ num }}"
                     value="{{ question.q_right_answer }}"
-                    name="{{ question.id }}"
             >
           {% endif %}
         </div>
       <button class="btn btn-primary" name="{{ subject_type }} {{question.id }}" data-bs-toggle="modal" data-bs-target="#{{ subject_type }}{{ question.id }}" type="button">Изменить вопрос</button>
     </div>
     <hr size="10" color="blue">
-    <div class="modal fade" id="{{ subject_type }}{{ question.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
+    <div class="modal fade w-90" data-bs-backdrop="static" id="{{ subject_type }}{{ question.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable modal-xl">
         <div class="modal-content">
-           <input type="text" class="form-control mb-5 ms-4 mt-3 w-90" id="title_{{ num }}" name="q_title_{{ num }} {{ question.id }}" value="{{ question.q_title }}" placeholder="">
-          <textarea class="ckeditor" id="text_{{ num }}" name="q_text_{{ num }} {{ question.id }}">
-            {{ question.q_text | safe }}
-          </textarea>
-          <div class="modal-footer">
-            <button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">Сохранить изменения</button>
-            <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Закрыть</button>
-          </div>
+            <div class="modal-body">
+             <input type="text" class="form-control mt-3 mb-3" id="title_{{ num }}" name="q_title" value="{{ question.q_title }}" placeholder="">
+             <textarea class="ckeditor mb-3" id="text_{{ question.id }}" name="q_text">
+              {{ question.q_text | safe }}
+             </textarea>
+             <p class="mt-2 mb-2"></p>
+            {% if len(question.q_answer_variants.split("&")) == 1 %}
+              <div class="container-fluid" id="answer_{{ subject_type }}_{{ question.id }}">
+                <div class="input-group mb-3">
+                  <div class="input-group-text">
+                    <input
+                                class="form-check-input mt-0"
+                                type="checkbox"
+                                name="q_right_answer"
+                                id="q_right_answer_{{ q_num }}{{ value }}"
+                                value="{{ question.q_right_answer }}"
+                    >
+                  </div>
+                  <input
+                              type="text"
+                              class="form-control"
+                              name="q_answer_variants"
+                              id="q_answer_variants_{{ q_num }}{{ value }}"
+                              onchange="inputToCheckbox('q_answer_variants_{{ q_num }}{{ value }}', 'q_right_answer_{{ q_num }}{{ value }}')"
+                              value="{{ question.q_right_answer }}"
+                  >
+                </div>
+              </div>
+            {% else %}
+            <div class="container-fluid" id="answer_{{ subject_type }}_{{ question.id }}">
+              {% for q_num, value in enumerate(question.q_answer_variants.split("&"), start=1) %}
+                <div class="input-group mb-3" id="inputGroup_{{ subject_type }}_{{ question.id }}_{{ q_num }}">
+                  <div class="input-group-text">
+                    {% if value in question.q_right_answer %}
+                      <input
+                              class="form-check-input mt-0"
+                              type="checkbox"
+                              name="q_right_answer"
+                              id="q_right_answer_{{ q_num }}{{ value }}"
+                              value="{{ value }}"
+                              checked
+                      >
+                    {% else %}
+                      <input
+                              class="form-check-input mt-0"
+                              type="checkbox"
+                              name="q_right_answer"
+                              id="q_right_answer_{{ q_num }}{{ value }}"
+                              value="{{ value }}"
+                      >
+                    {% endif %}
+                  </div>
+                    <input
+                            type="text"
+                            class="form-control"
+                            name="q_answer_variants"
+                            id="q_answer_variants_{{ q_num }}{{ value }}"
+                            onchange="inputToCheckbox('q_answer_variants_{{ q_num }}{{ value }}', 'q_right_answer_{{ q_num }}{{ value }}')"
+                            value="{{ value }}"
+                    >
+                <button
+                        class="btn btn-secondary"
+                        type="button"
+                        id="remove_{{ subject_type }}_{{ q_num }}"
+                        onclick="removeInput('inputGroup_{{ subject_type }}_{{ question.id }}_{{ q_num }}')"
+                >
+                  Удалить
+                </button>
+                </div>
+              {% endfor %}
+            </div>
+            {% endif %}
+            <button
+                    class="btn btn-outline-primary"
+                    onclick="addAnswer('answer_{{ subject_type }}_{{ question.id }}', 'q_answer_variants', 'q_right_answer_{{ num }}')"
+                    type="button">
+              Добавить ответ
+            </button>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-outline-primary" id="save_changes" name="save_changes" value="{{ subject_type }} {{ question.id }}" type="submit">Сохранить изменения</button>
+              <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Закрыть</button>
+            </div>
         </div>
       </div>
     </div>
+  </form>
 {% endfor %}

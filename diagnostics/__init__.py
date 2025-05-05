@@ -51,7 +51,9 @@ from modules import (
     save_one_question,
     save_all_questions,
     get_datas_rc,
-    get_block_data_english
+    get_block_data_english,
+    get_teacher_questions,
+    get_data_question_to_change
 )
 from modules import (
     get_filepath,
@@ -326,20 +328,22 @@ def teacher_questions(username: str) -> str | Response:
     if all((session.get("user_id"), session.get("rank") == "teacher")):
         user: Users = connect_database_users().session.query(Users).get(session.get("user_id"))
         #subjects: list[str] = session.get("subjects").split("&")
+        if request.method == "POST":
+            subject, question_id = request.form.get("save_changes").split()
+            database: DataBase | EnglishDB | ReadingComprehensionDB = connect_database_subject(subject)
+            """question_to_change: BaseTable | ReadingComprehension | English = database.session.query(
+                SUBJECTS[f"{subject}"]["base"]
+            ).get(question_id)"""
+            database.change_question(
+                question_id=question_id,
+                data=get_data_question_to_change()
+            )
 
-        _teacher_questions_ids: dict[Column[String], list[int]] = defaultdict(list)
-        for stat in connect_database_statistics(session.get("rank")).session.query(TeacherStatistics).filter(TeacherStatistics.username == username).all():
-            _teacher_questions_ids[stat.subject].extend(map(int, stat.questions_id.split("&")))
+        _teacher_questions: dict[Column[String], list[BaseTable | English | ReadingComprehension]] = get_teacher_questions(
+            username=username
+        )
+        #print(_teacher_questions)
 
-        _teacher_questions: dict[str, list[BaseTable | English | ReadingComprehension]] = defaultdict(list)
-        for subject in _teacher_questions_ids:
-            database = connect_database_subject(f"{subject}").session.query(SUBJECTS[f"{subject}"]["base"]).all()
-            _teacher_questions = {
-                f"{subject}": [question for question in database if question.id in _teacher_questions_ids[subject]] for subject in _teacher_questions_ids
-            }
-        """print(subjects)
-        print(_teacher_questions_ids)
-        print(_teacher_questions)"""
         return render_template(
             template_name_or_list="/teacher_menu/teacher_menu_questions.html",
             user=user,

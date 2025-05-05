@@ -22,6 +22,9 @@ class DataBase(ABC):
     def add_question(self, *, q_number: int, q_title: str, q_text: str, school_class: str,
                      q_image: str, q_answer_variants: str,  q_right_answer: str) -> None: pass
 
+    @abstractmethod
+    def change_question(self, *, question_id: str, data: dict[str, str]) -> None: pass
+
 
 class BaseTable(BASE):
 

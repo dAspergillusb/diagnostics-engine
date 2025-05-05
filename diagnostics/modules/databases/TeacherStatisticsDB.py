@@ -55,8 +55,9 @@ class TeacherStatisticsDB:
     Class creates or connects to database with statistics of teachers questions creation.
     """
 
-    def __init__(self, db_name: str = "teachers_statistics_db"):
+    def __init__(self, db_name: str = "teachers_statistics_db", database_path: str = "database"):
         self.db_name = db_name
+        self.database_path = database_path
         self.engine = self._create_engine()
         BASE.metadata.create_all(self.engine)
         BASE.metadata.bind = self.engine
@@ -64,7 +65,7 @@ class TeacherStatisticsDB:
         self.session: Session = self.db_session()
 
     def _create_engine(self) -> Engine:
-        db: Engine = create_engine(f"sqlite:///database/{self.db_name}.db")
+        db: Engine = create_engine(f"sqlite:///{self.database_path}/{self.db_name}.db")
         return db
 
     def _connect(self) -> Connection:
@@ -85,20 +86,27 @@ class TeacherStatisticsDB:
         self.session.add(statistics)
         self.session.commit()
 
-    def change_statistics(self, *, stat_id: Column[Integer], subject: Column[String] = None,
-                          questions_id: Column[String] = None) -> None:
+    def change_statistics(self, *, stat_id: Column[Integer], subject: Column[String] | str = None,
+                          questions_id: Column[String] | str = None, username: Column[String] | str = None) -> None:
         current_stat: TeacherStatistics = self.session.query(TeacherStatistics).get(stat_id)
         if subject:
             current_stat.subject = subject
         if questions_id:
             current_stat.questions_id = questions_id
+        if username:
+            current_stat.username = username
 
         self.session.commit()
 
 
 if __name__ == '__main__':
-    _statistics: TeacherStatisticsDB = TeacherStatisticsDB()
-    subjects: list[str] = ["informatics", "physics"]
+    _statistics: TeacherStatisticsDB = TeacherStatisticsDB(database_path="../../../database")
+    for stat in _statistics.session.query(TeacherStatistics).all():
+        _statistics.change_statistics(stat_id=stat.id, username="zelentsovna")
+    for stat in _statistics.session.query(TeacherStatistics).all():
+        print(stat)
+
+    """subjects: list[str] = ["informatics", "physics"]
     months: list[str] = [f"{month}" for month in range(1, 13)]
     days: list[str] = [f"{day}" for day in range(1, 28)]
     _teacher_statistics: dict[str, list[int]] = {
@@ -115,5 +123,5 @@ if __name__ == '__main__':
                 questions_value=stat,
                 questions_id=["1"],
                 date=_date
-            )
+            )"""
 

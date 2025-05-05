@@ -73,7 +73,9 @@ from .functions import (
     save_all_questions,
     get_datas_rc,
     get_block_data_english,
-    add_statistics_and_log
+    add_statistics_and_log,
+    get_teacher_questions,
+    get_data_question_to_change
 )
 # File operations
 from .functions import (
