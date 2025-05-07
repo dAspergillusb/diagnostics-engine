@@ -36,8 +36,12 @@
               <div class="row w-100">
                 {% for answer_variant in question.q_answer_variants.split("&") %}
                   <div class="col-md-6">
-                    <input class="form-check-input mb-5" id="radio_{{ answer_variant }}" type="radio" value="{{ answer_variant }}">
-                    <label class="form-check-label h4" for="radio_{{ answer_variant }}">{{ answer_variant }}</label>
+                    {% if answer_variant == question.q_right_answer %}
+                    <input class="form-check-input mb-5" id="radio_{{ answer_variant }}_{{ question.id }}" type="radio" value="{{ answer_variant }}" checked>
+                    {% else %}
+                    <input class="form-check-input mb-5" id="radio_{{ answer_variant }}_{{ question.id }}" type="radio" value="{{ answer_variant }}">
+                    {% endif %}
+                    <label class="form-check-label h4" for="radio_{{ answer_variant }}_{{ question.id }}">{{ answer_variant }}</label>
                   </div>
                 {% endfor %}
               </div>
@@ -48,12 +52,12 @@
                     {% for answer_variant in question.q_answer_variants.split("&") %}
                       {% if answer_variant in question.q_right_answer %}
                         <div class="col-md-6">
-                          <input checked class="form-check-input mb-5" type="checkbox" id="check_{{ answer_variant }}" value="{{ answer_variant }}">
+                          <input checked class="form-check-input mb-5" type="checkbox" id="check_{{ answer_variant }}_{{ question.id }}" value="{{ answer_variant }}">
                           <label class="form-check-label h4" for="check_{{ answer_variant }}">{{ answer_variant }}</label>
                         </div>
                       {% else %}
                         <div class="col-md-6">
-                          <input class="form-check-input mb-5" type="checkbox" id="check_{{ answer_variant }}" value="{{ answer_variant }}">
+                          <input class="form-check-input mb-5" type="checkbox" id="check_{{ answer_variant }}_{{ question.id }}" value="{{ answer_variant }}">
                           <label class="form-check-label h4" for="check_{{ answer_variant }}">{{ answer_variant }}</label>
                         </div>
                       {% endif %}
@@ -79,8 +83,16 @@
       <div class="modal-dialog modal-dialog-scrollable modal-xl">
         <div class="modal-content">
             <div class="modal-body">
-             <input type="text" class="form-control mt-3 mb-3" id="title_{{ num }}" name="q_title" value="{{ question.q_title }}" placeholder="">
-             <textarea class="ckeditor mb-3" id="text_{{ question.id }}" name="q_text">
+             <input
+                     type="text"
+                     class="form-control mt-3 mb-3"
+                     id="title_{{ num }}_{{ subject_type }}"
+                     name="q_title"
+                     value="{{ question.q_title }}"
+                     placeholder=""
+                     onchange="activateButtonSave('save_{{ subject_type }}_{{ question.id }}')"
+             >
+             <textarea class="ckeditor mb-3" id="text_{{ num }}_{{ subject_type }}" name="q_text">
               {{ question.q_text | safe }}
              </textarea>
              <p class="mt-2 mb-2"></p>
@@ -141,7 +153,7 @@
                 <button
                         class="btn btn-secondary"
                         type="button"
-                        id="remove_{{ subject_type }}_{{ q_num }}"
+                        id="remove_{{ subject_type }}_{{ q_num }}_{{ num }}"
                         onclick="removeInput('inputGroup_{{ subject_type }}_{{ question.id }}_{{ q_num }}')"
                 >
                   Удалить
@@ -158,7 +170,7 @@
             </button>
             </div>
             <div class="modal-footer">
-              <button class="btn btn-outline-primary" id="save_changes" name="save_changes" value="{{ subject_type }} {{ question.id }}" type="submit">Сохранить изменения</button>
+              <button disabled class="btn btn-outline-primary" id="save_{{ subject_type }}_{{ question.id }}" name="save_changes" value="{{ subject_type }} {{ question.id }}" type="submit">Сохранить изменения</button>
               <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Закрыть</button>
             </div>
         </div>

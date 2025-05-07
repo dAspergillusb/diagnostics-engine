@@ -158,6 +158,13 @@ class EnglishDB:
         question.q_block = new_block
         self.session.commit()
 
+    def change_block(self, block_id: str | int | Column[Integer], datas: dict[str, str | Column[String]]) -> None:
+        block_to_change: English = self.session.query(English).get(block_id)
+        for attr in datas:
+            if attr != getattr(block_to_change, f"{attr}"):
+                block_to_change.__setattr__(attr, datas.get(attr))
+        self.session.commit()
+
 
 if __name__ == '__main__':
     _questions = EnglishDB(database_path="../../../database")

@@ -96,6 +96,15 @@ class ReadingComprehension(BASE):
                 f"test_title={self.test_title},\n"
                 f")\n")
 
+    """def __getattr__(self, item: str, *, default = None):
+        attr = object.__getattribute__(self, item)
+        return attr if attr else None
+
+    def __setattr__(self, key, value):
+        if not self.__getattr__(key):
+            raise KeyError("There is no such attribute in class Reading comprehension!")
+        return object.__setattr__(self, key, value)"""
+
 
 class ReadingComprehensionDB:
     """
@@ -108,7 +117,7 @@ class ReadingComprehensionDB:
         self.engine = self._create_engine()
         BASE.metadata.create_all(self.engine)
         BASE.metadata.bind = self.engine
-        self.db_session: sessionmaker[[Session]] = sessionmaker(bind=self.engine)
+        self.db_session: sessionmaker[Session] = sessionmaker(bind=self.engine)
         self.session: Session = self.db_session()
 
     def _create_engine(self) -> Engine:
@@ -188,9 +197,17 @@ class ReadingComprehensionDB:
         self.session.add(question)
         self.session.commit()
 
+    def change_test(self, test_id: str | int| Column[Integer], data: dict[str, Column[String] | str]) -> None:
+        test: ReadingComprehension = self.session.query(ReadingComprehension).get(test_id)
+        for attr in data:
+            if attr != getattr(test, f"{attr}"):
+                test.__setattr__(attr, data.get(attr))
+        self.session.commit()
+
 
 if __name__ == '__main__':
-    rc = ReadingComprehensionDB(database_path="../../../database").session.query(ReadingComprehension).all()
+    rc = ReadingComprehensionDB(database_path="../../../database")
+    rc_list = rc.session.query(ReadingComprehension).all()
     #for num in range(100):
     #    _question.add_question(
     #        question_number=num,
@@ -203,5 +220,7 @@ if __name__ == '__main__':
         if not attr.startswith(("_", "reg", "meta")):
             print(attr, getattr(rc, attr))"""
     print(rc)
-    for block in rc:
+    for block in rc_list:
+        datas = block.__dict__
+        rc.change_test(block.id, datas)
         print(block)

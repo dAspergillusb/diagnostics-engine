@@ -185,5 +185,10 @@
 <script type="module" src="/static/js/classic.editor.mjs"></script>
 <script src="/static/js/add.answer.js"></script>
 <script src="/static/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function activateButtonSave(buttonId) {
+      document.getElementById(buttonId).removeAttribute(disabled)
+    }
+  </script>
   </body>
 </html>

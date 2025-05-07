@@ -80,7 +80,7 @@ class AlgebraDB(DataBase):
         self.session.add(question)
         self.session.commit()
 
-    def change_question(self, *, question_id: str, data: dict[str, str]) -> None:
+    def change_question(self, *, question_id: str, data: dict[str, Column[String] | str]) -> None:
         question: Algebra = self.session.query(Algebra).get(question_id)
         question.q_title = data.get("q_title")
         question.q_text = data.get("q_text")
