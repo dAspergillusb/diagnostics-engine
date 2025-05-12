@@ -1,14 +1,114 @@
 <h1 class="h4 mb-1 py-3 fw-semibold" style="color:#C62828;" align="middle">{{ subject_type }}</h1>
 {% for num, block in enumerate(teacher_questions.get(subject_type), start=1) %}
-    <form name="{{ subject_type }}_{{ block.id }}" method="post">
-        <div class="ck-content question-block">
-            <h1 class="h2 mb-5 fw-normal fw-bold" align="middle">{{ block.q_title }}</h1>
-            {% if block.q_block == 1 %}
+  <form name="{{ subject_type }}_{{ block.id }}" method="post">
+    <div class="ck-content question-block">
+        <h1 class="h2 mb-5 fw-normal fw-bold" align="middle">{{ block.q_title }}</h1>
+        {% if block.q_block == 1 %}
+          <figure>
+            <figcaption class="h4">Прослушайте аудио:</figcaption>
+            <audio controls class="mb-5" src="{{ block.q_audio }}"></audio>
+          </figure>
+        {% elif block.q_block == 2 %}
+          <table class="table table-secondary mb-5">
+            <tbody>
+              <tr>
+                <td>
+                  <h1 class="h4 mb-5 fw-normal lh-base">&emsp;
+                    {{ block.q_text | safe }}
+                  </h1>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        {% endif %}
+        {% for q_num in range(1, 11) %}
+          {% if (getattr(block, "q_%d" % (q_num)) or getattr(block, "q_i_%d" % (q_num))) and getattr(block, "q_right_ans_%d" % (q_num)) %}
+              <h1 class="h3 mb-3 fw-normal fw-bold">Вопрос {{ q_num }}</h1>
+              {% if getattr(block, "q_%d" % (q_num)) and getattr(block, "q_i_%d" % (q_num)) %}
+                <div class="row align-items-center">
+                  <div class="col-4">
+                    <img class="figure-img img-fluid rounded mb-5" src="{{ getattr(block, 'q_i_%d' % (q_num)) }}" width="auto">
+                  </div>
+                  <div class="col-8">
+                      <h1 class="h4 mb-5 fw-normal lh-base">&emsp;
+                         {{ getattr(block, 'q_%d' % (q_num)) | safe }}
+                      </h1>
+                  </div>
+                </div>
+              {% elif not getattr(block, "q_i_%d" % (q_num)) %}
+              <div class="row">
+                <div class="col">
+                  <h1 class="h4 mb-5 fw-normal lh-base">&emsp;
+                     {{ getattr(block, 'q_%d' % (q_num)) | safe }}
+                  </h1>
+                </div>
+              </div>
+              {% else %}
+              <div>
+                <figure class="figure">
+                  <img class="img-fluid figure-img mb-5" src="{{ getattr(block, 'q_i_%d' % (q_num)) }}" width="300">
+                </figure>
+              </div>
+              {% endif %}
+              <div class="form px-2">
+                {% if getattr(block, "q_ans_var_%d" % (q_num)) %}
+                  {% if len(getattr(block, "q_right_ans_%d" % (q_num)).split("&")) == 1 %}
+                    <label class="mb-5 px-2 h4">Выберете вариант ответа</label>
+                    <div class="row">
+                      {% for answer_variant in getattr(block, "q_ans_var_%d" % (q_num)).split("&") %}
+                        {% if answer_variant %}
+                          <div class="col-auto">
+                            <input class="form-check-input mb-5" id="radio_{{ q_num }}_{{ answer_variant }}" type="radio" name="{{ block }}_{{ q_num }}" value="{{ answer_variant }}">
+                            <label class="form-check-label h4" for="radio_{{ q_num }}_{{ answer_variant }}">{{ answer_variant }}</label>
+                          </div>
+                        {% endif %}
+                      {% endfor %}
+                    </div>
+                  {% else %}
+                    <div class="form">
+                        <label class="mb-5 h4 px-2">Выберете несколько вариантов</label>
+                        <div class="row">
+                          {% for answer_variant in getattr(block, "q_ans_var_%d" % (q_num)).split("&") %}
+                            {% if answer_variant %}
+                              <div class="col-auto">
+                                <input class="form-check-input mb-5" type="checkbox" id="check_{{ q_num }}_{{ answer_variant }}" name="{{ block }}_{{ q_num }}" value="{{ answer_variant }}">
+                                <label class="form-check-label h4" for="check_{{ q_num }}_{{ answer_variant }}">{{ answer_variant }}</label>
+                              </div>
+                            {% endif %}
+                          {% endfor %}
+                        </div>
+                    </div>
+                  {% endif %}
+                {% else %}
+                  <p class="h5 ms-5" align="left">Ответ здесь</p>
+                  <input type="text" class="form-control mb-5 ms-4 mt-3 w-50" id="{{ block }}_{{ q_num }}" name="{{ block }}_{{ q_num }}">
+                {% endif %}
+                <div class="mb-5"></div>
+                <hr size="10" color="blue">
+              </div>
+          {% endif %}
+        {% endfor %}
+    </div>
+    <hr size="20" color="blue">
+    <div class="modal fade w-90" data-bs-backdrop="static" id="{{ subject_type }}{{ block.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+            <div class="modal-body">
+             <input
+                     type="text"
+                     class="form-control mt-3 mb-3"
+                     id="title_{{ num }}_{{ subject_type }}"
+                     name="q_title"
+                     value="{{ block.q_title }}"
+                     placeholder=""
+                     onchange="activateButtonSave('save_{{ subject_type }}_{{ block.id }}')"
+             >
+             {% if block.q_block == 1 %}
               <figure>
                 <figcaption class="h4">Прослушайте аудио:</figcaption>
                 <audio controls class="mb-5" src="{{ block.q_audio }}"></audio>
               </figure>
-            {% elif block.q_block == 2 %}
+             {% elif block.q_block == 2 %}
               <table class="table table-secondary mb-5">
                 <tbody>
                   <tr>
@@ -20,89 +120,91 @@
                   </tr>
                 </tbody>
               </table>
-            {% endif %}
-            {% for q_num in range(1, 11) %}
-              {% if (getattr(block, "q_%d" % (q_num)) or getattr(block, "q_i_%d" % (q_num))) and getattr(block, "q_right_ans_%d" % (q_num)) %}
-                  <h1 class="h3 mb-3 fw-normal fw-bold">Вопрос {{ q_num }}</h1>
-                  {% if getattr(block, "q_%d" % (q_num)) and getattr(block, "q_i_%d" % (q_num)) %}
-                    <div class="row align-items-center">
-                      <div class="col-4">
-                        <img class="figure-img img-fluid rounded mb-5" src="{{ getattr(block, 'q_i_%d' % (q_num)) }}" width="auto">
-                      </div>
-                      <div class="col-8">
-                          <h1 class="h4 mb-5 fw-normal lh-base">&emsp;
-                             {{ getattr(block, 'q_%d' % (q_num)) | safe }}
-                          </h1>
-                      </div>
-                    </div>
-                  {% elif not getattr(block, "q_i_%d" % (q_num)) %}
-                  <div class="row">
-                    <div class="col">
-                      <h1 class="h4 mb-5 fw-normal lh-base">&emsp;
-                         {{ getattr(block, 'q_%d' % (q_num)) | safe }}
-                      </h1>
-                    </div>
+             {% endif %}
+             <textarea class="ckeditor mb-3" id="text_{{ num }}_{{ subject_type }}" name="q_text">
+              {{ block.q_text | safe }}
+             </textarea>
+             <p class="mt-2 mb-2"></p>
+            {% if len(block.q_answer_variants.split("&")) == 1 %}
+              <div class="container-fluid" id="answer_{{ subject_type }}_{{ block.id }}">
+                <div class="input-group mb-3">
+                  <div class="input-group-text">
+                    <input
+                                class="form-check-input mt-0"
+                                type="checkbox"
+                                name="q_right_answer"
+                                id="q_right_answer_{{ q_num }}{{ value }}"
+                                value="{{ block.q_right_answer }}"
+                    >
                   </div>
-                  {% else %}
-                  <div>
-                    <figure class="figure">
-                      <img class="img-fluid figure-img mb-5" src="{{ getattr(block, 'q_i_%d' % (q_num)) }}" width="300">
-                    </figure>
-                  </div>
-                  {% endif %}
-                  <div class="form px-2">
-                    {% if getattr(block, "q_ans_var_%d" % (q_num)) %}
-                      {% if len(getattr(block, "q_right_ans_%d" % (q_num)).split("&")) == 1 %}
-                        <label class="mb-5 px-2 h4">Выберете вариант ответа</label>
-                        <div class="row">
-                          {% for answer_variant in getattr(block, "q_ans_var_%d" % (q_num)).split("&") %}
-                            {% if answer_variant %}
-                              <div class="col-auto">
-                                <input class="form-check-input mb-5" id="radio_{{ q_num }}_{{ answer_variant }}" type="radio" name="{{ block }}_{{ q_num }}" value="{{ answer_variant }}">
-                                <label class="form-check-label h4" for="radio_{{ q_num }}_{{ answer_variant }}">{{ answer_variant }}</label>
-                              </div>
-                            {% endif %}
-                          {% endfor %}
-                        </div>
-                      {% else %}
-                        <div class="form">
-                            <label class="mb-5 h4 px-2">Выберете несколько вариантов</label>
-                            <div class="row">
-                              {% for answer_variant in getattr(block, "q_ans_var_%d" % (q_num)).split("&") %}
-                                {% if answer_variant %}
-                                  <div class="col-auto">
-                                    <input class="form-check-input mb-5" type="checkbox" id="check_{{ q_num }}_{{ answer_variant }}" name="{{ block }}_{{ q_num }}" value="{{ answer_variant }}">
-                                    <label class="form-check-label h4" for="check_{{ q_num }}_{{ answer_variant }}">{{ answer_variant }}</label>
-                                  </div>
-                                {% endif %}
-                              {% endfor %}
-                            </div>
-                        </div>
-                      {% endif %}
-                    {% else %}
-                      <p class="h5 ms-5" align="left">Ответ здесь</p>
-                      <input type="text" class="form-control mb-5 ms-4 mt-3 w-50" id="{{ block }}_{{ q_num }}" name="{{ block }}_{{ q_num }}">
-                    {% endif %}
-                    <div class="mb-5"></div>
-                    <hr size="10" color="blue">
-                  </div>
-              {% endif %}
-              {% if block == len(variant) and q_num == 10 %}
-                <div class="mb-3"></div>
-                <div class="flex-row d-flex justify-content-start">
-                  <button
-                          class="btn btn-secondary py-2 mb-2"
-                          id="finish"
-                          data-bs-toggle="modal"
-                          data-bs-target="#loading"
-                          type="submit"
+                  <input
+                              type="text"
+                              class="form-control"
+                              name="q_answer_variants"
+                              id="q_answer_variants_{{ q_num }}{{ value }}"
+                              onchange="inputToCheckbox('q_answer_variants_{{ q_num }}{{ value }}', 'q_right_answer_{{ q_num }}{{ value }}')"
+                              value="{{ block.q_right_answer }}"
                   >
-                    Закончить тест
-                  </button>
                 </div>
-              {% endif %}
-            {% endfor %}
+              </div>
+            {% else %}
+            <div class="container-fluid" id="answer_{{ subject_type }}_{{ block.id }}">
+              {% for q_num, value in enumerate(block.q_answer_variants.split("&"), start=1) %}
+                <div class="input-group mb-3" id="inputGroup_{{ subject_type }}_{{ block.id }}_{{ q_num }}">
+                  <div class="input-group-text">
+                    {% if value in block.q_right_answer %}
+                      <input
+                              class="form-check-input mt-0"
+                              type="checkbox"
+                              name="q_right_answer"
+                              id="q_right_answer_{{ q_num }}{{ value }}"
+                              value="{{ value }}"
+                              checked
+                      >
+                    {% else %}
+                      <input
+                              class="form-check-input mt-0"
+                              type="checkbox"
+                              name="q_right_answer"
+                              id="q_right_answer_{{ q_num }}{{ value }}"
+                              value="{{ value }}"
+                      >
+                    {% endif %}
+                  </div>
+                    <input
+                            type="text"
+                            class="form-control"
+                            name="q_answer_variants"
+                            id="q_answer_variants_{{ q_num }}{{ value }}"
+                            onchange="inputToCheckbox('q_answer_variants_{{ q_num }}{{ value }}', 'q_right_answer_{{ q_num }}{{ value }}')"
+                            value="{{ value }}"
+                    >
+                <button
+                        class="btn btn-secondary"
+                        type="button"
+                        id="remove_{{ subject_type }}_{{ q_num }}_{{ num }}"
+                        onclick="removeInput('inputGroup_{{ subject_type }}_{{ block.id }}_{{ q_num }}')"
+                >
+                  Удалить
+                </button>
+                </div>
+              {% endfor %}
+            </div>
+            {% endif %}
+            <button
+                    class="btn btn-outline-primary"
+                    onclick="addAnswer('answer_{{ subject_type }}_{{ block.id }}', 'q_answer_variants', 'q_right_answer_{{ num }}')"
+                    type="button">
+              Добавить ответ
+            </button>
+            </div>
+            <div class="modal-footer">
+              <button disabled class="btn btn-outline-primary" id="save_{{ subject_type }}_{{ block.id }}" name="save_changes" value="{{ subject_type }} {{ block.id }}" type="submit">Сохранить изменения</button>
+              <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Закрыть</button>
+            </div>
         </div>
-    </form>
+      </div>
+    </div>
+  </form>
 {% endfor %}
 

@@ -53,12 +53,12 @@
                       {% if answer_variant in question.q_right_answer %}
                         <div class="col-md-6">
                           <input checked class="form-check-input mb-5" type="checkbox" id="check_{{ answer_variant }}_{{ question.id }}" value="{{ answer_variant }}">
-                          <label class="form-check-label h4" for="check_{{ answer_variant }}">{{ answer_variant }}</label>
+                          <label class="form-check-label h4" for="check_{{ answer_variant }}_{{ question.id }}">{{ answer_variant }}</label>
                         </div>
                       {% else %}
                         <div class="col-md-6">
                           <input class="form-check-input mb-5" type="checkbox" id="check_{{ answer_variant }}_{{ question.id }}" value="{{ answer_variant }}">
-                          <label class="form-check-label h4" for="check_{{ answer_variant }}">{{ answer_variant }}</label>
+                          <label class="form-check-label h4" for="check_{{ answer_variant }}_{{ question.id }}">{{ answer_variant }}</label>
                         </div>
                       {% endif %}
                     {% endfor %}
