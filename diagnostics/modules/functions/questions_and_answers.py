@@ -613,7 +613,49 @@ def get_teacher_questions(username: str) -> dict[Column[String], list[BaseTable 
     return _teacher_questions
 
 
-def get_data_question_to_change() -> dict[str, str | int]:
+def get_data_question_to_change(subject: str) -> dict[str, str | int]:
+    match subject:
+        case "english":
+            return get_data_question_to_change_english()
+        case "reading_comprehension":
+            return get_data_question_to_change_rc()
+        case _:
+            return get_data_question_to_change_other()
+
+
+def get_data_question_to_change_english() -> dict[str, str | int]:
+    datas: dict[str, str | int] = {
+        "q_title": request.form.get("q_title"),
+        "q_text": request.form.get("q_text")
+    }
+    for q_num in range(1, 11):
+        q_ans_var: list[str] = request.form.getlist(f"q_ans_var_{q_num}")
+        q_right_ans: list[str] = request.form.getlist(f"q_right_ans_{q_num}")
+        datas.update({
+            f"q_{q_num}": request.form.get(f"q_{q_num}"),
+            f"q_ans_var_{q_num}": "&".join(q_ans_var) if q_right_ans else "",
+            f"q_right_ans_{q_num}": "&".join(q_right_ans) if q_right_ans else "&".join(q_ans_var)
+        })
+    return datas
+
+
+def get_data_question_to_change_rc() -> dict[str, str | int]:
+    datas: dict[str, str | int] = {
+        "test_title": request.form.get("test_title"),
+        "test_text": request.form.get("test_text")
+    }
+    for q_num in range(1, 16):
+        q_ans_var: list[str] = request.form.getlist(f"q_ans_var_{q_num}")
+        q_right_ans: list[str] = request.form.getlist(f"q_right_ans_{q_num}")
+        datas.update({
+            f"q_{q_num}": request.form.get(f"q_{q_num}"),
+            f"q_ans_var_{q_num}": "&".join(q_ans_var) if q_right_ans else "",
+            f"q_right_ans_{q_num}": "&".join(q_right_ans) if q_right_ans else "&".join(q_ans_var)
+        })
+    return datas
+
+
+def get_data_question_to_change_other() -> dict[str, str | int]:
     q_answer_variants: list[str] = request.form.getlist(f"q_answer_variants")
     q_right_answer: list[str] = request.form.getlist(f"q_right_answer")
     return {

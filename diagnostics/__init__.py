@@ -336,7 +336,7 @@ def teacher_questions(username: str) -> str | Response:
             ).get(question_id)"""
             database.change_question(
                 question_id=question_id,
-                data=get_data_question_to_change()
+                data=get_data_question_to_change(subject=subject)
             )
 
         _teacher_questions: dict[Column[String], list[BaseTable | English | ReadingComprehension]] = get_teacher_questions(

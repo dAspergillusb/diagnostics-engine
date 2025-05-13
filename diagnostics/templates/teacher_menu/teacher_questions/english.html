@@ -121,76 +121,78 @@
                 </tbody>
               </table>
              {% endif %}
-             <textarea class="ckeditor mb-3" id="text_{{ num }}_{{ subject_type }}" name="q_text">
-              {{ block.q_text | safe }}
-             </textarea>
-             <p class="mt-2 mb-2"></p>
-            {% if len(block.q_answer_variants.split("&")) == 1 %}
-              <div class="container-fluid" id="answer_{{ subject_type }}_{{ block.id }}">
-                <div class="input-group mb-3">
-                  <div class="input-group-text">
-                    <input
-                                class="form-check-input mt-0"
-                                type="checkbox"
-                                name="q_right_answer"
-                                id="q_right_answer_{{ q_num }}{{ value }}"
-                                value="{{ block.q_right_answer }}"
-                    >
-                  </div>
-                  <input
-                              type="text"
-                              class="form-control"
-                              name="q_answer_variants"
-                              id="q_answer_variants_{{ q_num }}{{ value }}"
-                              onchange="inputToCheckbox('q_answer_variants_{{ q_num }}{{ value }}', 'q_right_answer_{{ q_num }}{{ value }}')"
-                              value="{{ block.q_right_answer }}"
-                  >
-                </div>
-              </div>
-            {% else %}
-            <div class="container-fluid" id="answer_{{ subject_type }}_{{ block.id }}">
-              {% for q_num, value in enumerate(block.q_answer_variants.split("&"), start=1) %}
-                <div class="input-group mb-3" id="inputGroup_{{ subject_type }}_{{ block.id }}_{{ q_num }}">
-                  <div class="input-group-text">
-                    {% if value in block.q_right_answer %}
+             {% for q_num in range(1, 11) %}
+                 <h1 class="h3 mb-3 fw-normal fw-bold">Вопрос {{ q_num }}</h1>
+                 <textarea class="ckeditor mb-3" id="text_{{ num }}_{{ subject_type }}" name="q_text">
+                  {{ block.q_text | safe }}
+                 </textarea>
+                 <p class="mt-2 mb-2"></p>
+                {% if len(block.q_answer_variants.split("&")) == 1 %}
+                  <div class="container-fluid" id="answer_{{ subject_type }}_{{ block.id }}">
+                    <div class="input-group mb-3">
+                      <div class="input-group-text">
+                        <input
+                                    class="form-check-input mt-0"
+                                    type="checkbox"
+                                    name="q_right_answer"
+                                    id="q_right_answer_{{ q_num }}{{ value }}"
+                                    value="{{ block.q_right_answer }}"
+                        >
+                      </div>
                       <input
-                              class="form-check-input mt-0"
-                              type="checkbox"
-                              name="q_right_answer"
-                              id="q_right_answer_{{ q_num }}{{ value }}"
-                              value="{{ value }}"
-                              checked
+                                  type="text"
+                                  class="form-control"
+                                  name="q_answer_variants"
+                                  id="q_answer_variants_{{ q_num }}{{ value }}"
+                                  onchange="inputToCheckbox('q_answer_variants_{{ q_num }}{{ value }}', 'q_right_answer_{{ q_num }}{{ value }}')"
+                                  value="{{ block.q_right_answer }}"
                       >
-                    {% else %}
-                      <input
-                              class="form-check-input mt-0"
-                              type="checkbox"
-                              name="q_right_answer"
-                              id="q_right_answer_{{ q_num }}{{ value }}"
-                              value="{{ value }}"
-                      >
-                    {% endif %}
+                    </div>
                   </div>
-                    <input
-                            type="text"
-                            class="form-control"
-                            name="q_answer_variants"
-                            id="q_answer_variants_{{ q_num }}{{ value }}"
-                            onchange="inputToCheckbox('q_answer_variants_{{ q_num }}{{ value }}', 'q_right_answer_{{ q_num }}{{ value }}')"
-                            value="{{ value }}"
+                {% else %}
+                  <div class="container-fluid" id="answer_{{ subject_type }}_{{ block.id }}">
+                  {% for var, value in enumerate(block.q_ans_var.split("&"), start=1) %}
+                    <div class="input-group mb-3" id="inputGroup_{{ subject_type }}_{{ block.id }}_{{ var }}">
+                      <div class="input-group-text">
+                        {% if value in block.q_right_answer %}
+                          <input
+                                  class="form-check-input mt-0"
+                                  type="checkbox"
+                                  name="q_right_answer"
+                                  id="q_right_answer_{{ var }}{{ value }}"
+                                  value="{{ value }}"
+                                  checked
+                          >
+                        {% else %}
+                          <input
+                                  class="form-check-input mt-0"
+                                  type="checkbox"
+                                  name="q_right_answer"
+                                  id="q_right_answer_{{ var }}{{ value }}"
+                                  value="{{ value }}"
+                          >
+                        {% endif %}
+                      </div>
+                        <input
+                                type="text"
+                                class="form-control"
+                                name="q_answer_variants"
+                                id="q_answer_variants_{{ var }}{{ value }}"
+                                onchange="inputToCheckbox('q_answer_variants_{{ var }}{{ value }}', 'q_right_answer_{{ var }}{{ value }}')"
+                                value="{{ value }}"
+                        >
+                    <button
+                            class="btn btn-secondary"
+                            type="button"
+                            id="remove_{{ subject_type }}_{{ var }}_{{ num }}"
+                            onclick="removeInput('inputGroup_{{ subject_type }}_{{ block.id }}_{{ var }}')"
                     >
-                <button
-                        class="btn btn-secondary"
-                        type="button"
-                        id="remove_{{ subject_type }}_{{ q_num }}_{{ num }}"
-                        onclick="removeInput('inputGroup_{{ subject_type }}_{{ block.id }}_{{ q_num }}')"
-                >
-                  Удалить
-                </button>
-                </div>
-              {% endfor %}
-            </div>
-            {% endif %}
+                      Удалить
+                    </button>
+                    </div>
+                  {% endfor %}
+                  </div>
+                {% endif %}
             <button
                     class="btn btn-outline-primary"
                     onclick="addAnswer('answer_{{ subject_type }}_{{ block.id }}', 'q_answer_variants', 'q_right_answer_{{ num }}')"
