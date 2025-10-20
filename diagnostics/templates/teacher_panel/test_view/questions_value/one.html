@@ -47,7 +47,7 @@
                 <div class="form px-2">
                   {% if test_data.get("answer_variants") %}
                     {% if len(test_data.get("right_answer").split("&")) == 1 %}
-                      <label class="mb-5 px-2 h4">Выберете вариант ответа</label>
+                      <label class="mb-5 px-2 h4">Выберите вариант ответа</label>
                       <div class="row w-50">
                         {% for answer_variant in test_data.get("answer_variants").split("&") %}
                           <div class="col-md-6">
@@ -58,7 +58,7 @@
                       </div>
                     {% else %}
                       <div class="form">
-                        <label class="mb-5 h4 px-2">Выберете несколько вариантов</label>
+                        <label class="mb-5 h4 px-2">Выберите несколько вариантов</label>
                           <div class="row w-50">
                             {% for answer_variant in test_data.get("answer_variants").split("&") %}
                               <div class="col-md-6">

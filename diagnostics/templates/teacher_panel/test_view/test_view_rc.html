@@ -203,7 +203,7 @@
                     <div class="form px-2">
                       {% if variant.get("q_ans_var_%d" % (q_num)) %}
                         {% if len(variant.get("q_right_ans_%d" % (q_num)).split("&")) == 1 %}
-                          <label class="mb-5 px-2 h4">Выберете вариант ответа</label>
+                          <label class="mb-5 px-2 h4">Выберите вариант ответа</label>
                           <div class="row w-50">
                             {% for answer_variant in variant.get("q_ans_var_%d" % (q_num)).split("&") %}
                               <div class="col-md-6">
@@ -214,7 +214,7 @@
                           </div>
                         {% else %}
                           <div class="form">
-                            <label class="mb-5 h4 px-2">Выберете несколько вариантов</label>
+                            <label class="mb-5 h4 px-2">Выберите несколько вариантов</label>
                             <div class="row w-50">
                               {% for answer_variant in variant.get("q_ans_var_%d" % (q_num)).split("&") %}
                                 <div class="col-md-6">
