@@ -19,6 +19,7 @@ class Mathematics(BASE):
     """
     __tablename__: str = "mathematics"
     id: Column[Integer] = Column(Integer, primary_key=True)
+    topic: Column[String] = Column(String(250))
     q_number: Column[Integer] = Column(Integer, nullable=False)
     school_class: Column[String] = Column(String(4), nullable=False)
     q_title: Column[String] = Column(String(30), nullable=False)
@@ -37,6 +38,7 @@ class Mathematics(BASE):
     def get_question(self) -> dict[str, Column[String] | Column[Integer]]:
         return {
             "id": self.id,
+            "topic": self.topic,
             "q_number": self.q_number,
             "q_title": self.q_title,
             "q_text": self.q_text,
@@ -68,7 +70,7 @@ class MathematicsDB(DataBase):
         db_connect: Connection = self.engine.connect()
         return db_connect
 
-    def add_question(self, *, q_number: int, q_title: str, q_text: str, school_class: str,
+    def add_question(self, *, topic: str, q_number: int, q_title: str, q_text: str, school_class: str,
                      q_image: str, q_answer_variants: str,  q_right_answer: str) -> None:
         question: Mathematics = Mathematics(
             q_number=q_number,

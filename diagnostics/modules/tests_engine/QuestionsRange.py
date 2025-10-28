@@ -6,13 +6,14 @@ class QuestionsRange:
         self.school_class = school_class
 
         self.SUBJECT_QUESTIONS_RANGE: dict[str, dict[str, range]] = {
-            "mathematics": {"2": range(1, 7), "3": range(1, 7), "4": range(1, 7),
-                            "5": range(1, 12), "6": range(1, 12), "7": range(1, 11), "8": range(1, 12)},
-            "mathematics_depth": {"7": range(1, 13), "8": range(1, 13), "9": range(1, 13)},
+            "mathematics": {"2": range(1, 8), "3": range(1, 8), "4": range(1, 8),
+                            "5": range(1, 8), "6": range(1, 8), "7": range(1, 8), "8": range(1, 8),
+                            "9": range(1, 8), "10": range(1, 8), "11": range(1, 8)},
+            """"mathematics_depth": {"7": range(1, 13), "8": range(1, 13), "9": range(1, 13)},
             "mathematics_base": {"10": range(1, 18), "11": range(1, 18)},
             "mathematics_profile": {"10": range(1, 12), "11": range(1, 12)},
             "algebra": {"7": range(1, 11), "8": range(1, 12), "9": range(1, 13)},
-            "geometry": {"7": range(1, 11), "8": range(1, 12), "9": range(1, 13)},
+            "geometry": {"7": range(1, 11), "8": range(1, 12), "9": range(1, 13)},"""
             "biology": {"5": range(1, 16), "6": range(1, 16), "7": range(1, 16), "8": range(1, 18), "9": range(1, 19),
                         "10": range(1, 18), "11": range(1, 18)},
             "chemistry": {"8": range(1, 11), "9": range(1, 12), "10": range(1, 14), "11": range(1, 15)},

@@ -540,6 +540,16 @@ def get_block_data_english_other_test(
 def get_parameters(input_subject: str, q_number: int) -> dict[str, str | int]:
     q_answer_variants: list[str] = request.form.getlist(f"q_answer_variants_{q_number}")
     q_right_answer: list[str] = request.form.getlist(f"q_right_answer_{q_number}")
+    if session.get("topic_for_math"):
+        return {
+            "topic": session["topic_for_math"],
+            "q_number": q_number,
+            "q_title": request.form.get(f"q_title_{q_number}"),
+            "q_text": request.form.get(f"q_text_{q_number}"),
+            "school_class": request.args.get("school_class"),
+            "q_answer_variants": "&".join(q_answer_variants) if q_right_answer else "",
+            "q_right_answer": "&".join(q_right_answer) if q_right_answer else "&".join(q_answer_variants)
+        }
     return {
         "q_number": q_number,
         "q_title": request.form.get(f"q_title_{q_number}"),

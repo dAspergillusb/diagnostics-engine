@@ -9,7 +9,8 @@ from ..config import (
     FOR_CARDS_MIDDLE,
     FOR_CARDS_SENIOR,
     FOR_CARDS_NINTH,
-    TEST_DATA
+    TEST_DATA,
+    MATHEMATICS_TESTS_TOPICS
 )
 from ..tests_engine.QuestionsRange import QuestionsRange
 from .files_operations import get_test_filepath
@@ -87,10 +88,12 @@ def get_teacher_panel_main(username: str, input_subject: str) -> str:
     subjects_names: dict[str, str] = {SUBJECTS_NAME_TO_LINK[subject]: "".join((subject[0].title(), subject[1:])) for
                                       subject in
                                       SUBJECTS_NAME_TO_LINK}
+    topics_for_math: list[str] = MATHEMATICS_TESTS_TOPICS if input_subject =="mathematics" else None
     firstname: str = session["firstname"]
     lastname: str = session["lastname"]
     session["school_class"] = request.args.get("school_class")
     template: str = "common" if input_subject not in ["english", "reading_comprehension"] else input_subject
+    session["topic_for_math"] = request.args.get("topic_for_math")
     return render_template(
         f"/teacher_panel/subjects/teacher_{template}.html",
         firstname=firstname,
@@ -100,6 +103,8 @@ def get_teacher_panel_main(username: str, input_subject: str) -> str:
         links=SUBJECTS_NAME_TO_LINK,
         school_class=session["school_class"],
         subject=subjects_names[input_subject],
+        topic_for_math=session["topic_for_math"],
+        topics_for_math=topics_for_math,
         session_input=request.form,
         session_files=request.files,
         _range=QuestionsRange(input_subject, session["school_class"]).get_range(),

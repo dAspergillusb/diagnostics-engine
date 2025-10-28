@@ -115,7 +115,11 @@
   <body>
     {% include "/styles/style_menu.html" %}
 
-{% include "navbar/navbar_top_teacher_subject.html" %}
+{% if topics_for_math %}
+    {% include "navbar/navbar_top_teacher_math.html" %}
+{% else %}
+    {% include "navbar/navbar_top_teacher_subject.html" %}
+{% endif %}
 
 {% if school_class %}
     {% include "/teacher_panel/constructor_generator/constructor_generator.html" %}

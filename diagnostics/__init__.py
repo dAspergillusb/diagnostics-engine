@@ -78,7 +78,8 @@ from modules import (
     TEST_DATA,
     TEST_DATA_FULL_TEST,
     TEST_DATA_READING_COMPREHENSION,
-    TEST_DATA_ENGLISH
+    TEST_DATA_ENGLISH,
+    MATHEMATICS_TESTS_TOPICS
 )
 from modules import ranks
 from modules import BaseTable, DataBase
