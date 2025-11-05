@@ -29,7 +29,7 @@ class Mathematics(BASE):
     q_right_answer: Column[String] = Column(String(50), nullable=False)
 
     def __str__(self):
-        return f"Mathematics(\nid={self.id},\nnumber={self.q_number},\nclass={self.school_class}\n,title={self.q_title}\n)\n"
+        return f"Mathematics(\nid={self.id},\ntopic={self.topic}\nnumber={self.q_number},\nclass={self.school_class}\n,title={self.q_title}\n)\n"
 
     def __repr__(self):
         return f"Mathematics(\nid={self.id},\nq_number={self.q_number},\n" + \
@@ -73,6 +73,7 @@ class MathematicsDB(DataBase):
     def add_question(self, *, topic: str, q_number: int, q_title: str, q_text: str, school_class: str,
                      q_image: str, q_answer_variants: str,  q_right_answer: str) -> None:
         question: Mathematics = Mathematics(
+            topic=topic,
             q_number=q_number,
             q_title=q_title,
             q_text=q_text,

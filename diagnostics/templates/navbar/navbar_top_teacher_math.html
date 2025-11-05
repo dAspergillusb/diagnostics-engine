@@ -22,7 +22,7 @@
           </li>
         </ul>
         {% if subject == 'Математика' %}
-          <ul class="navbar-nav">
+          <ul class="navbar-nav navbar-nav-scroll">
             <li class="nav-item dropdown p-3">
               <a class="nav-link dropdown-toggle btn btn-primary" href="#" id="topics_menu" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color:white">
                 {% if topic_for_math %}
@@ -31,7 +31,7 @@
                   Выберите тему теста
                 {% endif %}
               </a>
-              <ul class="dropdown-menu" aria-labelledby="subjects">
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="topics_menu" style="max-height:400px;overflow-y:auto;">
                 {% for topic in topics_for_math %}
                 <li><a class="dropdown-item" href="{{ url_for('teacher_panel', username=username, input_subject=links[subject.lower()], topic_for_math=topic) }}" type="button">{{ topic }}</a></li>
                 {% endfor %}
