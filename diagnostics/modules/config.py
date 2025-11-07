@@ -147,6 +147,8 @@ FOR_CARDS_JUNIOR: dict[int, tuple[str, str, str, str]] = {
         "reading_comprehension"),
 }
 
+"""Deprecated!"""
+"""
 FOR_CARDS_NINTH: dict[int, tuple[str, str, str, str]] = {
     1: ("/static/images/for_subjects/algebra.svg", "Алгебра", "алгебре", "algebra"),
     2: ("/static/images/for_subjects/english.svg", "Английский язык", "английскому языку", "english"),
@@ -163,6 +165,8 @@ FOR_CARDS_NINTH: dict[int, tuple[str, str, str, str]] = {
     13: ("/static/images/for_subjects/physics.svg", "Физика", "физике", "physics"),
     14: ("/static/images/for_subjects/chemistry.svg", "Химия", "химии", "chemistry")
 }
+"""
+"""######"""
 
 FOR_CARDS_MIDDLE: dict[int, tuple[str, str, str, str]] = {
     1: ("/static/images/for_subjects/english.svg", "Английский язык", "английскому языку", "english"),
@@ -172,12 +176,10 @@ FOR_CARDS_MIDDLE: dict[int, tuple[str, str, str, str]] = {
     5: ("/static/images/for_subjects/history.svg", "История", "истории", "history"),
     6: ("/static/images/for_subjects/literature.svg", "Литература", "литературе", "literature"),
     7: ("/static/images/for_subjects/mathematics.svg", "Математика", "математике", "mathematics"),
-    8: ("/static/images/for_subjects/mathematics.svg", "Математика (углубленная)", "математике (углубленная)", "mathematics_depth"),
-    9: ("/static/images/for_subjects/social_science.svg", "Обществознание", "обществознанию", "social_science"),
-    10: ("/static/images/for_subjects/russian.svg", "Русский язык", "русскому языку", "russian"),
-    11: ("/static/images/for_subjects/probability_theory.svg", "Теория вероятностей", "теории вероятностей", "probability_theory"),
-    12: ("/static/images/for_subjects/physics.svg", "Физика", "физике", "physics"),
-    13: ("/static/images/for_subjects/chemistry.svg", "Химия", "химии", "chemistry")
+    8: ("/static/images/for_subjects/social_science.svg", "Обществознание", "обществознанию", "social_science"),
+    9: ("/static/images/for_subjects/russian.svg", "Русский язык", "русскому языку", "russian"),
+    10: ("/static/images/for_subjects/physics.svg", "Физика", "физике", "physics"),
+    11: ("/static/images/for_subjects/chemistry.svg", "Химия", "химии", "chemistry")
 }
 
 FOR_CARDS_SENIOR: dict[int, tuple[str, str, str, str]] = {
@@ -187,15 +189,11 @@ FOR_CARDS_SENIOR: dict[int, tuple[str, str, str, str]] = {
     4: ("/static/images/for_subjects/informatics.svg", "Информатика", "информатике", "informatics"),
     5: ("/static/images/for_subjects/history.svg", "История", "истории", "history"),
     6: ("/static/images/for_subjects/literature.svg", "Литература", "литературе", "literature"),
-    7: ("/static/images/for_subjects/mathematics_base.svg", "Математика (база)", "математике базового уровня",
-        "mathematics_base"),
-    8: ("/static/images/for_subjects/mathematics_profile.svg", "Математика (профиль)", "математике профильного уровня",
-        "mathematics_profile"),
-    9: ("/static/images/for_subjects/social_science.svg", "Обществознание", "обществознанию", "social_science"),
-    10: ("/static/images/for_subjects/russian.svg", "Русский язык", "русскому языку", "russian"),
-    11: ("/static/images/for_subjects/probability_theory.svg", "Теория вероятностей", "теории вероятностей", "probability_theory"),
-    12: ("/static/images/for_subjects/physics.svg", "Физика", "физике", "physics"),
-    13: ("/static/images/for_subjects/chemistry.svg", "Химия", "химии", "chemistry")
+    7: ("/static/images/for_subjects/mathematics.svg", "Математика", "математике", "mathematics"),
+    8: ("/static/images/for_subjects/social_science.svg", "Обществознание", "обществознанию", "social_science"),
+    9: ("/static/images/for_subjects/russian.svg", "Русский язык", "русскому языку", "russian"),
+    10: ("/static/images/for_subjects/physics.svg", "Физика", "физике", "physics"),
+    11: ("/static/images/for_subjects/chemistry.svg", "Химия", "химии", "chemistry")
 }
 
 TEST_DATA: dict[str, str | None | bytes] = {

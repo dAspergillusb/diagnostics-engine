@@ -8,7 +8,6 @@ from ..config import (
     FOR_CARDS_JUNIOR,
     FOR_CARDS_MIDDLE,
     FOR_CARDS_SENIOR,
-    FOR_CARDS_NINTH,
     TEST_DATA,
     MATHEMATICS_TESTS_TOPICS
 )
@@ -22,8 +21,8 @@ def choose_student_grade(school_class: str) -> tuple[str, dict[int, tuple[str, s
     students_grades: dict[bool, tuple[str, dict[int, tuple[str, str, str, str]]]] = {
         school_class < 5: ("student_elementary.html", FOR_CARDS_ELEMENTARY),
         5 <= school_class <= 6: ("student_junior.html", FOR_CARDS_JUNIOR),
-        7 <= school_class < 9: ("student_middle.html", FOR_CARDS_MIDDLE),
-        school_class == 9: ("student_middle.html", FOR_CARDS_NINTH),
+        7 <= school_class <= 9: ("student_middle.html", FOR_CARDS_MIDDLE),
+        #school_class == 9: ("student_middle.html", FOR_CARDS_NINTH),
         school_class > 9: ("student_senior.html", FOR_CARDS_SENIOR)
     }
     return students_grades[True]

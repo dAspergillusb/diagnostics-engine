@@ -255,6 +255,19 @@ def student(username: str) -> str | Response:
     return redirect(url_for("login"))
 
 
+@MAIN.route("/<subject>/topics", methods=["GET", "POST"])
+def get_topics_math(subject: str):
+    if all((session.get("user_id"), session.get("rank") in ("student", "teacher"))):
+
+
+        return render_template(
+            "topics_math/topics_math.html",
+            firstname=session.get("firstname"),
+            lastname=session.get("lastname"),
+            topics=MATHEMATICS_TESTS_TOPICS
+        )
+
+
 @MAIN.route("/teacher/<username>", methods=["GET", "POST"])
 def teacher(username: str) -> str | Response:
     if all((session.get("user_id"), session.get("rank") == "teacher")):
@@ -674,6 +687,20 @@ def admin_users(username: str):
         "/admin_panel/admin_users.html",
         labels_dates=labels_dates,
         data_all=data_all
+    )
+
+
+@MAIN.route("/admin_panel/<username>/common_statistics", methods=["GET"])
+def admin_panel_common_statistics(username: str):
+    statistics: list[Type[TeacherStatistics]] = TeacherStatisticsDB().session.query(TeacherStatistics).all()
+    _teacher_statistics: dict[str, defaultdict[str, int]] = {f"{statistic.firstname} {statistic.lastname}": defaultdict(int) for statistic in statistics}
+    for statistic in statistics:
+        _teacher_statistics[f"{statistic.firstname} {statistic.lastname}"][f"{statistic.subject}"] += int(f"{statistic.questions_value}")
+    print(_teacher_statistics)
+    return render_template(
+        "/admin_panel/common_statistics.html",
+        len=len,
+        teacher_statistics=_teacher_statistics
     )
 
 
