@@ -12,6 +12,7 @@ from flask import (
     Response
 )
 from sqlalchemy import Column, String, Integer, Boolean
+from sqlalchemy.orm import Query
 from werkzeug import Request
 from werkzeug.datastructures import FileStorage
 
@@ -694,9 +695,36 @@ def admin_users(username: str):
 def admin_panel_common_statistics(username: str):
     statistics: list[Type[TeacherStatistics]] = TeacherStatisticsDB().session.query(TeacherStatistics).all()
     _teacher_statistics: dict[str, defaultdict[str, int]] = {f"{statistic.firstname} {statistic.lastname}": defaultdict(int) for statistic in statistics}
+    _teacher_questions_subjects_count: dict[str, dict[str, defaultdict[str, int]]] = {
+        f"{statistic.subject}": {_class: defaultdict(int) for _class in QuestionsRange(f"{statistic.subject}", "").get_all_ranges()} for statistic in statistics
+    }
+    _subjects_classes_questions: defaultdict[str, list] = defaultdict(list)
     for statistic in statistics:
+        subject: Query[BaseTable] = connect_database_subject(f"{statistic.subject}").session.query(SUBJECTS[f"{statistic.subject}"]["base"])
         _teacher_statistics[f"{statistic.firstname} {statistic.lastname}"][f"{statistic.subject}"] += int(f"{statistic.questions_value}")
-    print(_teacher_statistics)
+
+        match f"{statistic.subject}":
+            case "english":
+                _subjects_classes_questions[f"{statistic.subject}"].extend(
+                    (subject.get(_id).school_class, subject.get(_id).q_block) for _id in statistic.questions_id.split("&") if subject.get(_id)
+                )
+            case "reading_comprehension":
+                _subjects_classes_questions[f"{statistic.subject}"].extend(
+                    (subject.get(_id).school_class, 1) for _id in statistic.questions_id.split("&") if subject.get(_id)
+                )
+            case _:
+                _subjects_classes_questions[f"{statistic.subject}"].extend(
+                    (subject.get(_id).school_class, subject.get(_id).q_number) for _id in statistic.questions_id.split("&") if subject.get(_id)
+                )
+
+        #_teacher_questions_subjects_count[f"{statistic.subject}"].extend(map(int, statistic.questions_id.split("&")))
+
+    for _subject in _subjects_classes_questions:
+        for pair in _subjects_classes_questions[_subject]:
+            _teacher_questions_subjects_count[_subject][pair[0]][pair[1]] += 1
+
+
+
     return render_template(
         "/admin_panel/common_statistics.html",
         len=len,
