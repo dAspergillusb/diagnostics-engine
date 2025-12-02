@@ -44,7 +44,7 @@ def is_correct_subject(subject: str) -> bool:
 
 
 def is_correct_username(username: str) -> bool:
-    candidate: Match = fullmatch(r"[a-zA-Z][a-zA-Z0-9]+[a-zA-Z0-9]+", username)
+    candidate: Match = fullmatch(r"[a-zA-Z0-9][a-zA-Z0-9]+[a-zA-Z0-9]+", username)
     if all((candidate, len(username) > 3)):
         return True
     return False
