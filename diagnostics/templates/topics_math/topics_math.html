@@ -110,7 +110,7 @@
   <!-- Header -->
     <div class="row">
       <h1 class="h4 mb-1 py-3 fw-semibold" align="middle">Выберете тему по математике для диагностики:</h1>
-      <div class="row row-cols-auto justify-content-md-center g-2">
+      <div class="d-grid gap-2 col-6 mx-auto">
       {% for topic in topics %}
         <a href="{{ url_for('generate_test', subject='mathematics', topic=topic) }}" class="btn btn-primary">
           {{ topic }}

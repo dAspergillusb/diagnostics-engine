@@ -1,9 +1,13 @@
 from sys import argv
 from os import path, mkdir
+from sys import path as path_for
 from modules import UsersDB, Users
 #from diagnostics.modules.databases.UsersDB import UsersDB, Users
 from diagnostics.modules.functions.is_correct_check import encoding_password
 from diagnostics.modules.errors.Errors import ErrorCreateUser
+
+path_for.insert(0, "/home/nikita/PycharmProjects/diagnostics/diagnostics")
+path_for.insert(0, "C:/Users/zelentsovna/PycharmProjects/site/diagnostics")
 
 
 def get_arguments_commandline() -> dict[str, str] | None:

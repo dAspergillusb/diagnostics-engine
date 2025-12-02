@@ -255,11 +255,9 @@ def student(username: str) -> str | Response:
     return redirect(url_for("login"))
 
 
-@MAIN.route("/<subject>/topics", methods=["GET", "POST"])
+@MAIN.route("/<subject>/topics_for_mathematics", methods=["GET", "POST"])
 def get_topics_math(subject: str):
     if all((session.get("user_id"), session.get("rank") in ("student", "teacher"))):
-
-
         return render_template(
             "topics_math/topics_math.html",
             firstname=session.get("firstname"),
@@ -721,6 +719,7 @@ def test():
 def generate_test(subject: str):
     if all((session.get("user_id"), session.get("rank") in ("student", "teacher"))):
         school_class: str = session.get("school_class", None)
+        topic: str | None = request.args.get("topic")
         if request.method == "POST":
             length: int = len(session["test_variant_ids"])
             ids = {question.id: question for question in
@@ -845,7 +844,8 @@ def generate_test(subject: str):
         if subject:
             test_generate: TestsGenerator = TestsGenerator(
                 subject=subject,
-                school_class=school_class.split("-")[0]
+                school_class=school_class.split("-")[0],
+                topic=topic
             )
             variant: dict[
                 Column[Integer] | int | str,

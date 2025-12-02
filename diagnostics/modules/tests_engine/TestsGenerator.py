@@ -1,4 +1,5 @@
 from collections import defaultdict
+from typing import Type
 from sqlalchemy import (
     Column,
     Integer,
@@ -15,27 +16,36 @@ from diagnostics.modules.databases.ReadingComprehensionDB import ReadingComprehe
 
 class TestsGenerator:
 
-    def __init__(self, subject: str, school_class: str):
+    def __init__(self, subject: str, school_class: str, topic: str = None):
         self.subject = subject
+        #self.topic = topic
         # self.school_class = school_class
         questions: DataBase | ReadingComprehension | English = SUBJECTS[subject]["db"]()
         match subject:
             case "reading_comprehension":
-                variants: list[ReadingComprehension] = [
+                variants: list[Type[ReadingComprehension]] = [
                     test for test in questions.session.query(ReadingComprehension).all()
                     if test.school_class == school_class
                 ]
-                self.random_variant: ReadingComprehension = variants[
+                self.random_variant: Type[ReadingComprehension] = variants[
                     randint(0, len(variants) - 1)
                 ] if variants else None
             case "english":
-                blocks_for_school_class: list[English] = [
+                blocks_for_school_class: list[Type[English]] = [
                     block for block in questions.session.query(English).all()
                     if block.school_class == school_class
                 ]
                 self.blocks_variants: defaultdict[Column[Integer], list[English]] = defaultdict(list)
                 for block in blocks_for_school_class:
                     self.blocks_variants[block.q_block].append(block)
+            case "mathematics":
+                questions_for_subject: list[BaseTable] = [
+                    question for question in questions.session.query(SUBJECTS[subject]["base"]).all()
+                    if question.school_class == school_class and question.topic == topic
+                ]
+                self.question_variants: defaultdict[Column[Integer], list[BaseTable]] = defaultdict(list)
+                for question in questions_for_subject:
+                    self.question_variants[question.q_number].append(question)
             case _:
                 questions_for_subject: list[BaseTable] = [
                     question for question in questions.session.query(SUBJECTS[subject]["base"]).all()
