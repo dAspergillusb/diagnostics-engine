@@ -1,3 +1,11 @@
+# Import endpoints register functions
+from .endpoints.main_pages import register_main_pages
+from .endpoints.teacher_menu_pages import register_teacher_menu_pages
+from .endpoints.teachet_panel_pages import register_teacher_panel_pages
+from .endpoints.student_pages import register_student_pages
+from .endpoints.tests_pages import register_tests_pages
+from .endpoints.admin_pages import register_admin_pages
+
 # Import database classes
 from .databases import TeacherStatistics, TeacherStatisticsDB
 from .databases import TestQuestions, TestQuestionsDB

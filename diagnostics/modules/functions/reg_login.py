@@ -19,8 +19,8 @@ from .is_correct_check import (
     encoding_password
 )
 from ..ranks import ranks
-from diagnostics.modules import Users, UsersDB
-from diagnostics.modules import EmailSender
+from ..databases.UsersDB import Users, UsersDB
+from ..email_engine.EmailSender import EmailSender
 from ..log.LogEngine import LogingLog
 from ..log.LogEngine import UsersRegisterLog
 from ..log.LogEngine import EmailSenderLog
@@ -34,8 +34,8 @@ def made_login(user: Users) -> str | Response:
 
     elif rank in ranks:
         add_log_login(user=user)
-
         return login(user=user)
+
 
 
 def blocked_user(message: str) -> str:
