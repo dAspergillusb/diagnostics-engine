@@ -1,4 +1,5 @@
-<h1 class="h4 mb-1 py-3 fw-semibold" style="color:#C62828;" align="middle">{{ subject_type }}</h1>
+<h1 class="h4 mb-1 py-3 fw-semibold" style="color:#C62828;" align="middle">{{ subjects_names.get(subject_type).title() }}</h1>
+
 {% for num, block in enumerate(teacher_questions.get(subject_type), start=1) %}
   <form name="{{ subject_type }}_{{ block.id }}" method="post">
     <div class="ck-content question-block">

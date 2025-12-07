@@ -42,5 +42,8 @@ class QuestionsRange:
     def get_range(self) -> range:
         return self.SUBJECT_QUESTIONS_RANGE.get(self.subject).get(self.school_class)
 
+    def get_len_range(self) -> int:
+        return len(self.SUBJECT_QUESTIONS_RANGE.get(self.subject).get(self.school_class))
+
     def get_all_ranges(self):
         return self.SUBJECT_QUESTIONS_RANGE.get(self.subject)

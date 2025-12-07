@@ -137,9 +137,9 @@
 
 <main class="w-100">
 
-<h3 class="h3">Статистика учителей</h3>
-
-<table class="table table-striped">
+<h3 class="h3 text-center">Общая статистика учителей по количеству созданных ими вопросов</h3>
+<br>
+<table class="table table-striped table-hover">
   <thead>
     <tr>
       <th scope="col">Имя</th>
@@ -155,7 +155,7 @@
         <td>{{ user.split()[1] }}</td>
       {% if len(teacher_statistics[user]) > 1 %}
         <td colspan="2">
-          <table class="table">
+          <table class="table table-hover">
             <tbody>
       {% for subject in teacher_statistics[user] %}
               <tr>
@@ -176,6 +176,58 @@
   {% endfor %}
   </tbody>
 </table>
+<br>
+<h3 class="h3 text-center">Статистика по заполняемости каждого вопроса для предмета и класса</h3>
+<br>
+
+{% for subject in teacher_questions_subjects_count %}
+  <h3 class="h4 text-center">{{ subjects_names.get(subject).capitalize() }}</h3>
+  <br>
+  <table class="table table-stripped table-hover text-center border-dark-subtle">
+    <thead>
+      <tr>
+        <th scope="col">Класс</th>
+        <th scope="col">Номер вопроса</th>
+        <th scope="col">Количество вопросов по номеру</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        {% for _class in teacher_questions_subjects_count.get(subject) %}
+          <tr>
+            {% if teacher_questions_subjects_count.get(subject).get(_class) %}
+              {% if len(teacher_questions_subjects_count.get(subject).get(_class)) == questions_range(subject, _class).get_len_range() %}
+                <td class="table-success" rowspan="{{ len(teacher_questions_subjects_count.get(subject).get(_class)) + 1 }}">
+              {% else %}
+                <td rowspan="{{ len(teacher_questions_subjects_count.get(subject).get(_class)) + 1 }}">
+              {% endif %}
+                {{ _class }}
+              </td>
+              <td>
+              {% for q_num in teacher_questions_subjects_count.get(subject).get(_class) %}
+                  <tr>
+                    <td>
+                      {{ q_num }}
+                    </td>
+                    <td>
+                      {{ teacher_questions_subjects_count.get(subject).get(_class).get(q_num) }}
+                    </td>
+                  </tr>
+              {% endfor %}
+              </td>
+            {% else %}
+              <td>{{ _class }}</td>
+              <td colspan="2">Вопросы отсутствуют</td>
+            {% endif %}
+          </tr>
+        {% endfor %}
+      </tr>
+    </tbody>
+
+
+</table>
+{% endfor %}
+
 </main>
 
 {% include "navbar/navbar_bottom.html" %}

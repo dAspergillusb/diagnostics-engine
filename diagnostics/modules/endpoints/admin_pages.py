@@ -1,3 +1,4 @@
+from pprint import pprint
 from typing import Type
 from collections import defaultdict
 from sqlalchemy import (
@@ -12,7 +13,7 @@ from flask import (
     request,
     render_template
 )
-from ..config import SUBJECTS
+from ..config import SUBJECTS, SUBJECTS_NAME_TO_LINK
 from .._types import BaseTable
 from ..databases import (
     Users,
@@ -136,13 +137,19 @@ def register_admin_pages(main: Flask) -> None:
                     )
 
             # _teacher_questions_subjects_count[f"{statistic.subject}"].extend(map(int, statistic.questions_id.split("&")))
-
+        #pprint(_subjects_classes_questions)
+        #pprint(_teacher_questions_subjects_count)
         for _subject in _subjects_classes_questions:
             for pair in _subjects_classes_questions[_subject]:
                 _teacher_questions_subjects_count[_subject][pair[0]][pair[1]] += 1
+        pprint(_teacher_questions_subjects_count)
 
         return render_template(
             "/admin_panel/common_statistics.html",
             len=len,
-            teacher_statistics=_teacher_statistics
+            str=str,
+            teacher_statistics=_teacher_statistics,
+            teacher_questions_subjects_count=_teacher_questions_subjects_count,
+            questions_range=QuestionsRange,
+            subjects_names={value: key for key, value in SUBJECTS_NAME_TO_LINK.items()}
         )
