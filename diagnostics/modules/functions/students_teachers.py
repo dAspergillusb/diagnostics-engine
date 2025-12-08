@@ -1,7 +1,12 @@
+from typing import Type
 from base64 import b64encode
+from collections import defaultdict
+from sqlalchemy.orm import Query
 from flask import request, session, render_template, redirect, url_for, Response
 from werkzeug.datastructures import FileStorage
+from .._types import BaseTable
 from ..config import (
+    SUBJECTS,
     SUBJECTS_NAME_TO_LINK,
     SUBJECTS_RANGES_FOR_CLASS,
     FOR_CARDS_ELEMENTARY,
@@ -12,6 +17,8 @@ from ..config import (
     MATHEMATICS_TESTS_TOPICS
 )
 from ..tests_engine.QuestionsRange import QuestionsRange
+from ..databases import TeacherStatistics
+from ..functions.databases_connections import connect_database_subject
 from .files_operations import get_test_filepath
 
 
@@ -109,6 +116,54 @@ def get_teacher_panel_main(username: str, input_subject: str) -> str:
         _range=QuestionsRange(input_subject, session["school_class"]).get_range(),
         _range_classes=SUBJECTS_RANGES_FOR_CLASS
     )
+
+def get_common_teacher_statistics(
+        statistics: list[Type[TeacherStatistics]]
+    ) -> tuple[dict[str, defaultdict[str, int]], dict[str, dict[str, defaultdict[str, int]]]]:
+
+    _teacher_statistics: dict[str, defaultdict[str, int]] = {
+        f"{statistic.firstname} {statistic.lastname}": defaultdict(int) for statistic in statistics}
+    _teacher_questions_subjects_count: dict[str, dict[str, defaultdict[str, int]]] = {
+        f"{statistic.subject}": {_class: defaultdict(int)
+                                for _class in QuestionsRange(f"{statistic.subject}", "").get_all_ranges()}
+                                for statistic in statistics
+    }
+    _subjects_classes_questions: defaultdict[str, list] = defaultdict(list)
+    for statistic in statistics:
+        subject: Query[BaseTable] = connect_database_subject(f"{statistic.subject}").session.query(
+            SUBJECTS[f"{statistic.subject}"]["base"])
+        _teacher_statistics[f"{statistic.firstname} {statistic.lastname}"][f"{statistic.subject}"] += int(
+            f"{statistic.questions_value}")
+
+        match f"{statistic.subject}":
+            case "english":
+                _subjects_classes_questions[f"{statistic.subject}"].extend(
+                    (subject.get(_id).school_class, subject.get(_id).q_block) for _id in
+                    statistic.questions_id.split("&") if subject.get(_id)
+                )
+            case "reading_comprehension":
+                _subjects_classes_questions[f"{statistic.subject}"].extend(
+                    (subject.get(_id).school_class, 1) for _id in statistic.questions_id.split("&") if
+                    subject.get(_id)
+                )
+            case _:
+                _subjects_classes_questions[f"{statistic.subject}"].extend(
+                    (subject.get(_id).school_class, subject.get(_id).q_number) for _id in
+                    statistic.questions_id.split("&") if subject.get(_id)
+                )
+
+        # _teacher_questions_subjects_count[f"{statistic.subject}"].extend(map(int, statistic.questions_id.split("&")))
+    # pprint(_subjects_classes_questions)
+    # pprint(_teacher_questions_subjects_count)
+    for _subject in _subjects_classes_questions:
+        for pair in _subjects_classes_questions[_subject]:
+            _teacher_questions_subjects_count[_subject][pair[0]][pair[1]] += 1
+
+    return _teacher_statistics, _teacher_questions_subjects_count
+
+def get_common_students_statistics(statistics: dict) -> dict:
+    pass
+
 
 
 

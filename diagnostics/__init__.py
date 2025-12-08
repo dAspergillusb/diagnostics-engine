@@ -1,6 +1,5 @@
 from flask import (
-    Flask,
-    render_template,
+    Flask
 )
 from modules import (
     register_main_pages,

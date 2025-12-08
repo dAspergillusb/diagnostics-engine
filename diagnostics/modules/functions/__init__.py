@@ -20,7 +20,8 @@ from .reg_login import (
 from .students_teachers import (
     choose_student_grade,
     get_test_attempt_page,
-    get_teacher_panel_main
+    get_teacher_panel_main,
+    get_common_teacher_statistics
 )
 from .databases_connections import (
     connect_database_subject,

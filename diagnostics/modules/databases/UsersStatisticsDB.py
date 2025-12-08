@@ -17,6 +17,8 @@ class UsersStatistics(BASE):
     __tablename__: str = "statistics"
     id: Column[Integer] = Column(Integer, primary_key=True)
     subject: Column[String] = Column(String(15), nullable=False)
+    firstname: Column[String] = Column(String(100), nullable=False)
+    lastname: Column[String] = Column(String(100), nullable=False)
     username: Column[String] = Column(String(15), nullable=False)
     school_class: Column[String] = Column(String(4), nullable=False)
     common_value: Column[Integer] = Column(Integer)

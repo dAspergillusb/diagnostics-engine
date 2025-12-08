@@ -25,7 +25,8 @@ from ..databases import (
 from ..tests_engine import QuestionsRange
 from ..functions import (
     connect_database_users,
-    connect_database_subject
+    connect_database_subject,
+    get_common_teacher_statistics
 )
 
 
@@ -104,45 +105,14 @@ def register_admin_pages(main: Flask) -> None:
 
     @main.route("/admin_panel/<username>/common_statistics", methods=["GET"])
     def admin_panel_common_statistics(username: str):
-        statistics: list[Type[TeacherStatistics]] = TeacherStatisticsDB().session.query(TeacherStatistics).all()
-        _teacher_statistics: dict[str, defaultdict[str, int]] = {
-            f"{statistic.firstname} {statistic.lastname}": defaultdict(int) for statistic in statistics}
-        _teacher_questions_subjects_count: dict[str, dict[str, defaultdict[str, int]]] = {
-            f"{statistic.subject}": {_class: defaultdict(int) for _class in
-                                     QuestionsRange(f"{statistic.subject}", "").get_all_ranges()} for statistic in
-            statistics
-        }
-        _subjects_classes_questions: defaultdict[str, list] = defaultdict(list)
-        for statistic in statistics:
-            subject: Query[BaseTable] = connect_database_subject(f"{statistic.subject}").session.query(
-                SUBJECTS[f"{statistic.subject}"]["base"])
-            _teacher_statistics[f"{statistic.firstname} {statistic.lastname}"][f"{statistic.subject}"] += int(
-                f"{statistic.questions_value}")
+        statistics_teachers: list[Type[TeacherStatistics]] = TeacherStatisticsDB().session.query(TeacherStatistics).all()
+        statistics_students: list[Type[UsersStatistics]] = UsersStatisticsDB().session.query(UsersStatistics).all()
+        common_statistics_teachers: tuple[dict[str, defaultdict[str, int]], dict[str, dict[str, defaultdict[str, int]]]] = get_common_teacher_statistics(statistics=statistics_teachers)
+        _teacher_statistics: dict[str, defaultdict[str, int]] = common_statistics_teachers[0]
+        _teacher_questions_subjects_count: dict[str, dict[str, defaultdict[str, int]]] = common_statistics_teachers[1]
 
-            match f"{statistic.subject}":
-                case "english":
-                    _subjects_classes_questions[f"{statistic.subject}"].extend(
-                        (subject.get(_id).school_class, subject.get(_id).q_block) for _id in
-                        statistic.questions_id.split("&") if subject.get(_id)
-                    )
-                case "reading_comprehension":
-                    _subjects_classes_questions[f"{statistic.subject}"].extend(
-                        (subject.get(_id).school_class, 1) for _id in statistic.questions_id.split("&") if
-                        subject.get(_id)
-                    )
-                case _:
-                    _subjects_classes_questions[f"{statistic.subject}"].extend(
-                        (subject.get(_id).school_class, subject.get(_id).q_number) for _id in
-                        statistic.questions_id.split("&") if subject.get(_id)
-                    )
+        common_statistics_students: dict = get_common_students_statistics
 
-            # _teacher_questions_subjects_count[f"{statistic.subject}"].extend(map(int, statistic.questions_id.split("&")))
-        #pprint(_subjects_classes_questions)
-        #pprint(_teacher_questions_subjects_count)
-        for _subject in _subjects_classes_questions:
-            for pair in _subjects_classes_questions[_subject]:
-                _teacher_questions_subjects_count[_subject][pair[0]][pair[1]] += 1
-        pprint(_teacher_questions_subjects_count)
 
         return render_template(
             "/admin_panel/common_statistics.html",
