@@ -26,7 +26,8 @@ from ..tests_engine import QuestionsRange
 from ..functions import (
     connect_database_users,
     connect_database_subject,
-    get_common_teacher_statistics
+    get_common_teacher_statistics,
+    get_common_students_statistics
 )
 
 
@@ -110,9 +111,8 @@ def register_admin_pages(main: Flask) -> None:
         common_statistics_teachers: tuple[dict[str, defaultdict[str, int]], dict[str, dict[str, defaultdict[str, int]]]] = get_common_teacher_statistics(statistics=statistics_teachers)
         _teacher_statistics: dict[str, defaultdict[str, int]] = common_statistics_teachers[0]
         _teacher_questions_subjects_count: dict[str, dict[str, defaultdict[str, int]]] = common_statistics_teachers[1]
-
-        common_statistics_students: dict = get_common_students_statistics
-
+        common_students_statistics: dict[str, dict[str, str | int]] = get_common_students_statistics(statistics=statistics_students)
+        #pprint(common_students_statistics)
 
         return render_template(
             "/admin_panel/common_statistics.html",
@@ -120,6 +120,7 @@ def register_admin_pages(main: Flask) -> None:
             str=str,
             teacher_statistics=_teacher_statistics,
             teacher_questions_subjects_count=_teacher_questions_subjects_count,
+            common_students_statistics=common_students_statistics,
             questions_range=QuestionsRange,
             subjects_names={value: key for key, value in SUBJECTS_NAME_TO_LINK.items()}
         )

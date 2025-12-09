@@ -51,10 +51,6 @@ def register_main_pages(main: Flask) -> None:
         :return:
         """
         session.permanent = True
-        users = connect_database_users()
-        registered_users: dict[str, Users] = {
-            f"{user.username}": user for user in users.session.query(Users).all()
-        }
         if request.method == "POST":
             confirmed: str = request.form.get("confirm")
             if confirmed:
@@ -66,11 +62,15 @@ def register_main_pages(main: Flask) -> None:
 
             username: str = request.form["username"]
             password: str = request.form["password"]
+            is_registered_user: dict[str, Users] = {
+                f"{username}": user for user in connect_database_users().session.query(Users).all() if user.username == username
+            }
+            print(is_registered_user)
             if not all((username, password)):
                 return check_session_login_failed(message="Введите имя пользователя и пароль")
 
-            elif username in registered_users and encoding_password(password) == registered_users[username].password:
-                user: Users = registered_users[username]
+            elif is_registered_user and encoding_password(password) == is_registered_user[username].password:
+                user: Users = is_registered_user[username]
                 return made_login(user)
 
             else:
@@ -80,8 +80,9 @@ def register_main_pages(main: Flask) -> None:
             return render_template("sign_in.html", registration_success="Успешная регистрация!")
 
         if request.args.get("delete_user"):
-            user: Users = registered_users.get(request.args.get("username"))
-            users.delete_instance(_user=user)
+            users: UsersDB = connect_database_users()
+            user_to_delete: Users = users.session.query(Users).get(session["user_id"])
+            users.delete_instance(_user=user_to_delete)
             session.clear()
             return render_template("sign_in.html", deleted_success="Пользователь успешно удалён.")
 

@@ -21,7 +21,8 @@ from .students_teachers import (
     choose_student_grade,
     get_test_attempt_page,
     get_teacher_panel_main,
-    get_common_teacher_statistics
+    get_common_teacher_statistics,
+    get_common_students_statistics
 )
 from .databases_connections import (
     connect_database_subject,

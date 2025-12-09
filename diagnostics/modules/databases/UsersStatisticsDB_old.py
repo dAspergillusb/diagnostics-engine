@@ -17,9 +17,7 @@ class UsersStatistics(BASE):
     __tablename__: str = "statistics"
     id: Column[Integer] = Column(Integer, primary_key=True)
     subject: Column[String] = Column(String(15), nullable=False)
-    firstname: Column[String] = Column(String(100), nullable=False)
-    lastname: Column[String] = Column(String(100), nullable=False)
-    user_id: Column[String] = Column(Integer, nullable=False)
+    username: Column[String] = Column(String(15), nullable=False)
     school_class: Column[String] = Column(String(4), nullable=False)
     common_value: Column[Integer] = Column(Integer)
     common_max_value: Column[Integer] = Column(Integer)
@@ -30,7 +28,7 @@ class UsersStatistics(BASE):
     def __str__(self):
         return (
             f"UserStatistics(id={self.id},"
-            f" user_id={self.user_id},"
+            f" username={self.username},"
             f" class={self.school_class},"
             f" subject={self.subject}, "
             f" common_value={self.common_value},"
@@ -43,7 +41,7 @@ class UsersStatistics(BASE):
     def __repr__(self):
         return (
             f"UserStatistics(id={self.id},"
-            f" user_id={self.user_id},"
+            f" username={self.username},"
             f" class={self.school_class},"
             f" subject={self.subject}, "
             f" common_value={self.common_value},"
@@ -76,13 +74,10 @@ class UsersStatisticsDB:
         return db_connect
 
     def add_statistics(self, *, subject: str, common_value: int, common_max_value: int, school_class: str,
-                       common_not_right: int, common_percent: int, test_date: str, user_id: int,
-                       firstname: str, lastname: str) -> None:
+                       common_not_right: int, common_percent: int, test_date: str, username: str) -> None:
         statistics: UsersStatistics = UsersStatistics(
             subject=subject,
-            user_id=user_id,
-            firstname=firstname,
-            lastname=lastname,
+            username=username,
             school_class=school_class,
             common_value=common_value,
             common_max_value=common_max_value,

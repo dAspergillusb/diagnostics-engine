@@ -17,8 +17,8 @@ from ..config import (
     MATHEMATICS_TESTS_TOPICS
 )
 from ..tests_engine.QuestionsRange import QuestionsRange
-from ..databases import TeacherStatistics
-from ..functions.databases_connections import connect_database_subject
+from ..databases import TeacherStatistics, UsersStatistics, UsersStatisticsDB
+from ..functions.databases_connections import connect_database_subject, connect_database_statistics
 from .files_operations import get_test_filepath
 
 
@@ -161,8 +161,12 @@ def get_common_teacher_statistics(
 
     return _teacher_statistics, _teacher_questions_subjects_count
 
-def get_common_students_statistics(statistics: dict) -> dict:
-    pass
+def get_common_students_statistics(statistics: list[Type[UsersStatistics]]) -> dict[str, dict[str, str | int]]:
+    return {
+        f"{statistic.firstname} {statistic.lastname}": {
+            f"{attr}": statistic.__getattribute__(attr) for attr in statistic.__dict__ if not attr.startswith("_")
+        } for statistic in statistics
+    }
 
 
 

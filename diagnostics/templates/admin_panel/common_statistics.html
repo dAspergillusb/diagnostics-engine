@@ -137,64 +137,58 @@
 
 <main class="w-100">
 
-<h3 class="h3 text-center">Общая статистика учителей по количеству созданных ими вопросов</h3>
-<br>
-<table class="table table-striped table-hover">
-  <thead>
-    <tr>
-      <th scope="col">Имя</th>
-      <th scope="col">Фамилия</th>
-      <th scope="col">Предмет</th>
-      <th scope="col">Количество вопросов</th>
-    </tr>
-  </thead>
-  <tbody>
-  {% for user in teacher_statistics %}
-    <tr>
-        <td>{{ user.split()[0] }}</td>
-        <td>{{ user.split()[1] }}</td>
-      {% if len(teacher_statistics[user]) > 1 %}
-        <td colspan="2">
-          <table class="table table-hover">
-            <tbody>
-      {% for subject in teacher_statistics[user] %}
-              <tr>
-                <td>{{ subject }}</td>
-                <td>{{ teacher_statistics[user][subject] }}</td>
-              </tr>
-        {% endfor %}
-            </tbody>
-          </table>
-        </td>
-      {% else %}
-        {% for subject in teacher_statistics[user] %}
-          <td>{{ subject }}</td>
-          <td>{{ teacher_statistics[user][subject] }}</td>
-        {% endfor %}
-      {% endif %}
-    </tr>
-  {% endfor %}
-  </tbody>
-</table>
-<br>
-<h3 class="h3 text-center">Статистика по заполняемости каждого вопроса для предмета и класса</h3>
-<br>
-
-{% for subject in teacher_questions_subjects_count %}
-  <h3 class="h4 text-center">{{ subjects_names.get(subject).capitalize() }}</h3>
+  <h3 class="h3 text-center">Общая статистика учителей по количеству созданных ими вопросов</h3>
   <br>
-  <table class="table table-stripped table-hover text-center border-dark-subtle">
+  <table class="table table-striped table-hover table-bordered">
     <thead>
       <tr>
-        <th scope="col">Класс</th>
-        <th scope="col">Номер вопроса</th>
-        <th scope="col">Количество вопросов по номеру</th>
+        <th scope="col">Имя Фамилия</th>
+        <th scope="col">Предмет</th>
+        <th scope="col">Количество вопросов</th>
       </tr>
     </thead>
     <tbody>
+    {% for user in teacher_statistics %}
+      {% if len(teacher_statistics[user]) > 1 %}
       <tr>
-        {% for _class in teacher_questions_subjects_count.get(subject) %}
-          <tr>
+          <td rowspan="{{ len(teacher_statistics[user]) + 1 }}">{{ user }}</td>
+      </tr>
+      {% for subject in teacher_statistics[user] %}
+      <tr>
+        <td>{{ subject }}</td>
+        <td>{{ teacher_statistics[user][subject] }}</td>
+      </tr>
+      {% endfor %}
+      {% else %}
+        <tr>
+          <td>{{ user }}</td>
+          {% for subject in teacher_statistics[user] %}
+            <td>{{ subject }}</td>
+            <td>{{ teacher_statistics[user][subject] }}</td>
+          {% endfor %}
+        </tr>
+      {% endif %}
+    {% endfor %}
+    </tbody>
+  </table>
+  <br>
+  <h3 class="h3 text-center">Статистика по заполняемости каждого вопроса для предмета и класса</h3>
+  <br>
+
+  {% for subject in teacher_questions_subjects_count %}
+    <h3 class="h4 text-center">{{ subjects_names.get(subject).capitalize() }}</h3>
+    <br>
+    <table class="table table-stripped table-hover text-center table-bordered border-dark-subtle">
+      <thead>
+        <tr>
+          <th scope="col">Класс</th>
+          <th scope="col">Номер вопроса</th>
+          <th scope="col">Количество вопросов по номеру</th>
+        </tr>
+      </thead>
+      <tbody>
+          {% for _class in teacher_questions_subjects_count.get(subject) %}
+            <tr>
             {% if teacher_questions_subjects_count.get(subject).get(_class) %}
               {% if len(teacher_questions_subjects_count.get(subject).get(_class)) == questions_range(subject, _class).get_len_range() %}
                 <td class="table-success" rowspan="{{ len(teacher_questions_subjects_count.get(subject).get(_class)) + 1 }}">
@@ -203,30 +197,59 @@
               {% endif %}
                 {{ _class }}
               </td>
-              <td>
+            </tr>
               {% for q_num in teacher_questions_subjects_count.get(subject).get(_class) %}
-                  <tr>
+                <tr>
                     <td>
                       {{ q_num }}
                     </td>
                     <td>
                       {{ teacher_questions_subjects_count.get(subject).get(_class).get(q_num) }}
                     </td>
-                  </tr>
+                </tr>
               {% endfor %}
-              </td>
             {% else %}
-              <td>{{ _class }}</td>
-              <td colspan="2">Вопросы отсутствуют</td>
+              <tr>
+                <td>{{ _class }}</td>
+                <td colspan="2">Вопросы отсутствуют</td>
+              </tr>
             {% endif %}
-          </tr>
-        {% endfor %}
+          {% endfor %}
+      </tbody>
+  </table>
+  {% endfor %}
+
+  <br>
+  <h3 class="h3 text-center">Общая статистика для учеников</h3>
+  <br>
+  <table class="table table-hover table-stripped table-bordered border-dark-subtle">
+    <thead>
+        <tr>
+          <th scope="col">Имя Фамилия</th>
+          <th scope="col">Класс</th>
+          <th scope="col">Предмет</th>
+          <th scope="col">Общее число вопросов в тесте</th>
+          <th scope="col">Число правильных ответов</th>
+          <th scope="col">Число неправильных ответов</th>
+          <th scope="col">Процент выполнения</th>
+          <th scope="col">Дата прохождения теста</th>
+        </tr>
+      </thead>
+    <tbody>
+    {% for name in common_students_statistics %}
+      <tr>
+        <td>{{ name }}</td>
+        <td>{{ common_students_statistics[name].get('school_class') }}</td>
+        <td>{{ common_students_statistics[name].get('subject') }}</td>
+        <td>{{ common_students_statistics[name].get('common_max_value') }}</td>
+        <td>{{ common_students_statistics[name].get('common_value') }}</td>
+        <td>{{ common_students_statistics[name].get('common_not_right') }}</td>
+        <td>{{ common_students_statistics[name].get('common_percent') }}</td>
+        <td>{{ common_students_statistics[name].get('test_date') }}</td>
       </tr>
+    {% endfor %}
     </tbody>
-
-
-</table>
-{% endfor %}
+  </table>
 
 </main>
 

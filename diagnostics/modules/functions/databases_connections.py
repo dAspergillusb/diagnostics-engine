@@ -34,7 +34,7 @@ def connect_database_subject(subject: str) -> DataBase | ReadingComprehensionDB 
     return connection if connection else None
 
 
-def connect_database_statistics(rank: Column[String]) -> TeacherStatisticsDB | UsersStatisticsDB | None:
+def connect_database_statistics(rank: Column[String] | str) -> TeacherStatisticsDB | UsersStatisticsDB | None:
     connection: TeacherStatisticsDB | UsersStatisticsDB | None = None
     if rank in ranks:
         connection = STATISTICS[f"{rank}"]["db"]()

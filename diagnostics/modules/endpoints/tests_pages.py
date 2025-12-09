@@ -127,7 +127,9 @@ def register_tests_pages(main: Flask) -> None:
                 percent = int((value / max_value) * 100) if max_value else 0  # Takes the value of succeed performed test in %
 
                 UsersStatisticsDB().add_statistics(
-                    username=session["username"],
+                    user_id=session["user_id"],
+                    firstname=session["firstname"],
+                    lastname=session["lastname"],
                     subject=subject,
                     school_class=session["school_class_full"],
                     common_value=value,
