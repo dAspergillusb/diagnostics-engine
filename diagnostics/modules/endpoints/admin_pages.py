@@ -11,7 +11,11 @@ from sqlalchemy.orm import Query
 from flask import (
     Flask,
     request,
-    render_template
+    render_template,
+    send_file
+)
+from openpyxl import (
+    Workbook
 )
 from ..config import SUBJECTS, SUBJECTS_NAME_TO_LINK
 from .._types import BaseTable
@@ -118,9 +122,21 @@ def register_admin_pages(main: Flask) -> None:
             "/admin_panel/common_statistics.html",
             len=len,
             str=str,
+            username=username,
             teacher_statistics=_teacher_statistics,
             teacher_questions_subjects_count=_teacher_questions_subjects_count,
             common_students_statistics=common_students_statistics,
             questions_range=QuestionsRange,
             subjects_names={value: key for key, value in SUBJECTS_NAME_TO_LINK.items()}
         )
+
+    @main.route("/admin_panel/<username>/common_statistics/<subject>/<data>", methods=["GET"])
+    def admin_panel_common_statistics_get_xlsx(username: str, subject: str, data: dict[str, defaultdict[str, int]]):
+        excel_file: Workbook = Workbook()
+        sheet = excel_file.active
+        sheet.title = subject
+        data_to_excel: dict[str, str | int] = {}
+        print(request.form.to_dict())
+        return None
+
+

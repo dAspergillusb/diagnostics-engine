@@ -178,7 +178,18 @@
   {% for subject in teacher_questions_subjects_count %}
     <h3 class="h4 text-center">{{ subjects_names.get(subject).capitalize() }}</h3>
     <br>
-    <table class="table table-stripped table-hover text-center table-bordered border-dark-subtle">
+    <button
+            onclick="window.open('{{ url_for('admin_panel_common_statistics_get_xlsx', username=username, subject=subject, data=str(teacher_questions_subjects_count.get(subject).values())) }}', '_blank')"
+            class="btn btn-primary"
+            type="submit"
+            name="download"
+            value="download-xlsx"
+    >
+      Скачать xlsx
+    </button>
+    <br>
+    <form class="container-fluid w-50 justify-content-center" method="post">
+    <table class="table table-stripped text-center table-bordered border-dark-subtle">
       <thead>
         <tr>
           <th scope="col">Класс</th>
@@ -193,30 +204,32 @@
               {% if len(teacher_questions_subjects_count.get(subject).get(_class)) == questions_range(subject, _class).get_len_range() %}
                 <td class="table-success" rowspan="{{ len(teacher_questions_subjects_count.get(subject).get(_class)) + 1 }}">
               {% else %}
-                <td rowspan="{{ len(teacher_questions_subjects_count.get(subject).get(_class)) + 1 }}">
+                <td class="table-light" rowspan="{{ len(teacher_questions_subjects_count.get(subject).get(_class)) + 1 }}">
               {% endif %}
                 {{ _class }}
               </td>
             </tr>
               {% for q_num in teacher_questions_subjects_count.get(subject).get(_class) %}
                 <tr>
-                    <td>
+                    <td class="table-success">
                       {{ q_num }}
                     </td>
-                    <td>
+                    <td class="table-success">
                       {{ teacher_questions_subjects_count.get(subject).get(_class).get(q_num) }}
                     </td>
                 </tr>
               {% endfor %}
             {% else %}
               <tr>
-                <td>{{ _class }}</td>
-                <td colspan="2">Вопросы отсутствуют</td>
+                <td class="table-light">{{ _class }}</td>
+                <td class="table-light" colspan="2">Вопросы отсутствуют</td>
               </tr>
             {% endif %}
           {% endfor %}
       </tbody>
   </table>
+  </form>
+  <hr size="7" color="blue">
   {% endfor %}
 
   <br>
