@@ -100,41 +100,58 @@
   {% include "/styles/style_menu.html" %}
 
     
-<main class="form-signin w-100 m-auto">
-  <form method="post">
-    {% include "icon.html" %}
-    <h1 class="h4 mb-4 fw-normal">Вход для пользователей</h1>
+  <main class="form-signin w-100 m-auto">
+    <form method="post">
+      {% include "icon.html" %}
+      <h1 class="h4 mb-4 fw-normal">Вход для пользователей</h1>
 
-    <div class="form-floating">
-      <input type="text" minlength="4" class="form-control" id="username" name="username" placeholder="">
-      <label for="username">Имя пользователя</label>
-    </div>
-    <div class="form-floating">
-      <input type="password" minlength="8" class="form-control" id="password-input" name="password" placeholder="Пароль">
-      <label for="password-input">Пароль</label>
-    </div>
-    <div class="form-floating">
-      <h1 class="h6 mb-6 fw-normal" style="color: Tomato" align="middle">{{ registration_needed }}</h1>
-      <h1 class="h6 mb-6 fw-bold" style="color: Green" align="middle">{{ deleted_success }}</h1>
-      <h1 class="h6 mb-6 fw-bold" style="color: Green" align="middle">{{ registration_success }}</h1>
-    </div>
+      <div class="form-floating">
+        <input type="text" minlength="4" class="form-control" id="username" name="username" placeholder="">
+        <label for="username">Имя пользователя</label>
+      </div>
+      <div class="form-floating">
+        <input type="password" minlength="8" class="form-control" id="password-input" name="password" placeholder="Пароль">
+        <label for="password-input">Пароль</label>
+      </div>
+      <div class="form-floating">
+        <h1 class="h6 mb-6 fw-normal" style="color: Tomato" align="middle">{{ registration_needed }}</h1>
+        <h1 class="h6 mb-6 fw-bold" style="color: Green" align="middle">{{ deleted_success }}</h1>
+        <h1 class="h6 mb-6 fw-bold" style="color: Green" align="middle">{{ registration_success }}</h1>
+      </div>
 
-    <div class="form-check text-start my-3">
-      <input class="form-check-input" type="checkbox" value="remember-me" id="flexCheckDefault">
-      <label class="form-check-label" for="flexCheckDefault">
-        Запомнить меня
-      </label>
-    </div>
-    <button class="btn btn-primary w-100 py-2 mb-2" name="confirm" value="signin"  data-bs-toggle="modal" data-bs-target="#loading" type="submit">Войти</button>
-    <button class="btn btn-primary w-100 py-2 mb-2" name="confirm" value="registration" data-bs-toggle="modal" data-bs-target="#loading" type="submit">Регистрация для учеников</button>
-    {% if login_failed %}
-      <button class="btn btn-secondary w-100 py-2 mb-2" name="confirm" value="restore" data-bs-toggle="modal" data-bs-target="#loading" type="submit">Забыли пароль?</button>
-    {% endif %}
-    <p class="mt-5 mb-3 text-body-secondary" align="middle">&copy; Все права защищены. 2024</p>
-    {% include "/teacher_panel/modals/modal_loading.html" %}
-  </form>
-</main>
-<script src="/static/js/bootstrap.bundle.min.js"></script>
+      <div class="form-check from-check-inline my-3">
+        <input class="form-check-input" type="checkbox" id="pass-checkbox" onclick="showPassword('password-input')">
+        <label class="form-check-label" for="pass-checkbox">
+          Показать пароль
+        </label>
+      </div>
+      <div class="form-check from-check-inline my-3">
+        <input class="form-check-input" type="checkbox" value="remember-me" id="flexCheckDefault">
+        <label class="form-check-label" for="flexCheckDefault">
+          Запомнить меня
+        </label>
+      </div>
+      <button class="btn btn-primary w-100 py-2 mb-2" name="confirm" value="signin"  data-bs-toggle="modal" data-bs-target="#loading" type="submit">Войти</button>
+      <button class="btn btn-primary w-100 py-2 mb-2" name="confirm" value="registration" data-bs-toggle="modal" data-bs-target="#loading" type="submit">Регистрация для учеников</button>
+      {% if login_failed %}
+        <button class="btn btn-secondary w-100 py-2 mb-2" name="confirm" value="restore" data-bs-toggle="modal" data-bs-target="#loading" type="submit">Забыли пароль?</button>
+      {% endif %}
+      <p class="mt-5 mb-3 text-body-secondary" align="middle">&copy; Все права защищены. 2024</p>
+      {% include "/teacher_panel/modals/modal_loading.html" %}
+    </form>
+  </main>
+  <script src="/static/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function showPassword(passId) {
+      var input = document.getElementById(passId);
+      if (input.type == 'password') {
+        input.type = 'text';
+      }
+      else {
+        input.type = 'password';
+      };
+    };
+  </script>
 
     </body>
 </html>
