@@ -1,4 +1,5 @@
 from pprint import pprint
+from json import loads, dumps, JSONEncoder, JSONDecoder
 from typing import Type
 from collections import defaultdict
 from sqlalchemy import (
@@ -31,7 +32,9 @@ from ..functions import (
     connect_database_users,
     connect_database_subject,
     get_common_teacher_statistics,
-    get_common_students_statistics
+    get_common_students_statistics,
+    encrypted_data,
+    decrypted_data
 )
 
 
@@ -112,16 +115,17 @@ def register_admin_pages(main: Flask) -> None:
     def admin_panel_common_statistics(username: str):
         statistics_teachers: list[Type[TeacherStatistics]] = TeacherStatisticsDB().session.query(TeacherStatistics).all()
         statistics_students: list[Type[UsersStatistics]] = UsersStatisticsDB().session.query(UsersStatistics).all()
-        common_statistics_teachers: tuple[dict[str, defaultdict[str, int]], dict[str, dict[str, defaultdict[str, int]]]] = get_common_teacher_statistics(statistics=statistics_teachers)
-        _teacher_statistics: dict[str, defaultdict[str, int]] = common_statistics_teachers[0]
-        _teacher_questions_subjects_count: dict[str, dict[str, defaultdict[str, int]]] = common_statistics_teachers[1]
+        common_statistics_teachers: tuple[dict[str, defaultdict[str, int]], dict[str, dict[str, dict[str, int]]]] = get_common_teacher_statistics(statistics=statistics_teachers)
+        _teacher_statistics: dict[str, dict[str, int]] = common_statistics_teachers[0]
+        _teacher_questions_subjects_count: dict[str, dict[str, dict[str, int]]] = common_statistics_teachers[1]
         common_students_statistics: dict[str, dict[str, str | int]] = get_common_students_statistics(statistics=statistics_students)
-        #pprint(common_students_statistics)
+        # pprint(_teacher_questions_subjects_count)
 
         return render_template(
             "/admin_panel/common_statistics.html",
             len=len,
             str=str,
+            enc=encrypted_data,
             username=username,
             teacher_statistics=_teacher_statistics,
             teacher_questions_subjects_count=_teacher_questions_subjects_count,
@@ -130,13 +134,19 @@ def register_admin_pages(main: Flask) -> None:
             subjects_names={value: key for key, value in SUBJECTS_NAME_TO_LINK.items()}
         )
 
-    @main.route("/admin_panel/<username>/common_statistics/<subject>/<data>", methods=["GET"])
-    def admin_panel_common_statistics_get_xlsx(username: str, subject: str, data: dict[str, defaultdict[str, int]]):
+    @main.route("/admin_panel/<username>/common_statistics/<subject>", methods=["GET"])
+    def admin_panel_common_statistics_get_xlsx(username: str, subject: str):
+        data: str = request.args.get("data")
         excel_file: Workbook = Workbook()
         sheet = excel_file.active
         sheet.title = subject
         data_to_excel: dict[str, str | int] = {}
-        print(request.form.to_dict())
-        return None
+        # print(request.form.to_dict())
+        c = decrypted_data(data=data).replace("'", '"')
+        print(c)
+
+        print(type(loads(c)))
+
+        return c
 
 

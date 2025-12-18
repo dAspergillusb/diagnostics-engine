@@ -179,7 +179,7 @@
     <h3 class="h4 text-center">{{ subjects_names.get(subject).capitalize() }}</h3>
     <br>
     <button
-            onclick="window.open('{{ url_for('admin_panel_common_statistics_get_xlsx', username=username, subject=subject, data=str(teacher_questions_subjects_count.get(subject).values())) }}', '_blank')"
+            onclick="window.open('{{ url_for('admin_panel_common_statistics_get_xlsx', username=username, subject=subject, data=enc(str(teacher_questions_subjects_count.get(subject)))) }}', '_blank')"
             class="btn btn-primary"
             type="submit"
             name="download"

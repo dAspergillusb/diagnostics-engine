@@ -119,12 +119,12 @@ def get_teacher_panel_main(username: str, input_subject: str) -> str:
 
 def get_common_teacher_statistics(
         statistics: list[Type[TeacherStatistics]]
-    ) -> tuple[dict[str, defaultdict[str, int]], dict[str, dict[str, defaultdict[str, int]]]]:
+    ) -> tuple[dict[str, defaultdict[str, int]], dict[str, dict[str, dict[str, int]]]]:
 
     _teacher_statistics: dict[str, defaultdict[str, int]] = {
         f"{statistic.firstname} {statistic.lastname}": defaultdict(int) for statistic in statistics}
-    _teacher_questions_subjects_count: dict[str, dict[str, defaultdict[str, int]]] = {
-        f"{statistic.subject}": {_class: defaultdict(int)
+    _teacher_questions_subjects_count: dict[str, dict[str, dict[str, int]]] = {
+        f"{statistic.subject}": {_class: {}
                                 for _class in QuestionsRange(f"{statistic.subject}", "").get_all_ranges()}
                                 for statistic in statistics
     }
@@ -157,7 +157,10 @@ def get_common_teacher_statistics(
     # pprint(_teacher_questions_subjects_count)
     for _subject in _subjects_classes_questions:
         for pair in _subjects_classes_questions[_subject]:
-            _teacher_questions_subjects_count[_subject][pair[0]][pair[1]] += 1
+            if _teacher_questions_subjects_count[_subject][pair[0]].get(f"{pair[1]}"):
+                _teacher_questions_subjects_count[_subject][pair[0]][f"{pair[1]}"] += 1
+            else:
+                _teacher_questions_subjects_count[_subject][pair[0]][f"{pair[1]}"] = 1
 
     return _teacher_statistics, _teacher_questions_subjects_count
 

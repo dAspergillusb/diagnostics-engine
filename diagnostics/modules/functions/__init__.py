@@ -48,3 +48,4 @@ from .files_operations import (
     get_filepath
 )
 from .key_operations import import_secret_key
+from .data_encryption import encrypted_data, decrypted_data
